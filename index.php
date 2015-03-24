@@ -53,6 +53,8 @@ Password:<INPUT TYPE="password" id="pword_id" name="pword_id" placeholder="Passw
 <!-- Forget Password -->
 <INPUT TYPE="button" id="forgot_pword" name="forgot_pword" value="Forgot Password?"><br>
 
+New User:
+<br>
 <!-- Registration Form -->
 <FORM action= "<?php echo $_SERVER["PHP_SELF"];?>"  method="POST">
 Registration Number:<INPUT TYPE="text" id="regno_id" name="regno_id" placeholder="12MSE0363" autocomplete="off"><br>
