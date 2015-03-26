@@ -133,3 +133,13 @@ primary key(UniqueID)
 );
 
 -----------------------------------------------------------------
+
+/* Table for Join the Question */
+
+create table joinpost(
+Comment_Id int(5)NOT NULL AUTO_INCREMENT COMMENT 'Comment ID for post',
+Regno varchar(15),
+StatusType  varchar(10) COMMENT 'Question Status',
+primary key(Comment_Id));
+
+------------------------------------------------------------------
