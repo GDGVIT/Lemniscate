@@ -115,3 +115,21 @@ ALTER TABLE `login`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-----------------------------------------------------------------
+/*Table Structure for POST content in group*/
+
+create table post(
+Regno varchar(15)NOT NULL,
+StatusType varchar(10) COMMENT 'Status for Post or Question',
+Text varchar(500)NOT NULL,
+Ineed int(5)NOT NULL,
+UniqueId int(5)NOT NULL AUTO_INCREMENT COMMENT 'Unique ID for every post',
+PostTime timestamp,
+Picture varchar(2000) COMMENT 'To Get URL of the picture',
+Anononymous int(2) NOT NULL COMMENT 'Post it with Username of Anononymous ',
+ReplyCount int(5) COMMENT 'Number of reply for Post',
+primary key(UniqueID)
+);
+
+-----------------------------------------------------------------
