@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2015 at 06:36 PM
+-- Generation Time: Mar 27, 2015 at 07:04 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -19,6 +19,66 @@ SET time_zone = "+00:00";
 --
 -- Database: `db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `events_info`
+--
+
+CREATE TABLE IF NOT EXISTS `events_info` (
+  `auto_increment` int(10) NOT NULL AUTO_INCREMENT,
+  `id` int(10) NOT NULL,
+  `date_event` date NOT NULL,
+  `venue` varchar(70) NOT NULL,
+  `from_time` time NOT NULL,
+  `to_time` time NOT NULL,
+  PRIMARY KEY (`auto_increment`),
+  UNIQUE KEY `auto_increment` (`auto_increment`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+
+--
+-- Dumping data for table `events_info`
+--
+
+INSERT INTO `events_info` (`auto_increment`, `id`, `date_event`, `venue`, `from_time`, `to_time`) VALUES
+(1, 1, '2015-03-25', 'SJT', '15:30:00', '18:30:00'),
+(2, 1, '2015-03-26', 'SJT', '16:30:00', '20:30:00'),
+(3, 2, '2015-03-26', 'SJT', '20:20:00', '21:21:00'),
+(4, 2, '2015-03-27', 'SJT', '03:00:00', '05:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `events_page`
+--
+
+CREATE TABLE IF NOT EXISTS `events_page` (
+  `unique_id` int(10) NOT NULL AUTO_INCREMENT,
+  `regno` varchar(10) NOT NULL,
+  `indiv_status` int(2) NOT NULL,
+  `club_name` varchar(50) NOT NULL,
+  `event_name` varchar(50) NOT NULL,
+  `pic_address` text NOT NULL,
+  `description` text NOT NULL,
+  `from_date` date NOT NULL,
+  `price` int(9) NOT NULL,
+  `total_days` int(5) NOT NULL,
+  `stat_part_certificates` int(2) NOT NULL,
+  `completed_status` int(2) NOT NULL,
+  `stat_ods` int(2) NOT NULL,
+  PRIMARY KEY (`unique_id`),
+  UNIQUE KEY `event_name` (`event_name`),
+  UNIQUE KEY `event_name_2` (`event_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `events_page`
+--
+
+INSERT INTO `events_page` (`unique_id`, `regno`, `indiv_status`, `club_name`, `event_name`, `pic_address`, `description`, `from_date`, `price`, `total_days`, `stat_part_certificates`, `completed_status`, `stat_ods`) VALUES
+(1, '13bce0267', 0, 'JHYJHYJ', 'yhyhyhyhyyhyhyh', 'Event_pics/10440674_309261455928737_8294077190340733924_n.jpg', 'sldnsakdnaksn', '2015-03-25', 200, 2, 0, 0, 0),
+(2, '13ncea0267', 0, 'alskdclsakc', 'jasdkjnskjnsc', 'Event_pics/12MSE0363_RajalakshmiS.jpg', 'lsaclaskmc', '2015-03-26', 500, 2, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -115,31 +175,3 @@ ALTER TABLE `login`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
------------------------------------------------------------------
-/*Table Structure for POST content in group*/
-
-create table post(
-Regno varchar(15)NOT NULL,
-StatusType varchar(10) COMMENT 'Status for Post or Question',
-Text varchar(500)NOT NULL,
-Ineed int(5)NOT NULL,
-UniqueId int(5)NOT NULL AUTO_INCREMENT COMMENT 'Unique ID for every post',
-PostTime timestamp,
-Picture varchar(2000) COMMENT 'To Get URL of the picture',
-Anononymous int(2) NOT NULL COMMENT 'Post it with Username of Anononymous ',
-ReplyCount int(5) COMMENT 'Number of reply for Post',
-primary key(UniqueID)
-);
-
------------------------------------------------------------------
-
-/* Table for Join the Question */
-
-create table joinpost(
-Comment_Id int(5)NOT NULL AUTO_INCREMENT COMMENT 'Comment ID for post',
-Regno varchar(15),
-StatusType  number(2) COMMENT 'Question Status',
-primary key(Comment_Id));
-
-------------------------------------------------------------------
