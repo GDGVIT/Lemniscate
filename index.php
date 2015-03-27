@@ -1,7 +1,8 @@
 <?php
-require("database/sql_con.php");
+
 if(isset($_POST["login"]))
 {
+	require("Database/sql_con.php");
 	$uname=$_POST["uname_id"];
 	$pword=$_POST["pword_id"];
 	$stmt = $mysqli->prepare("SELECT * FROM `login` WHERE `uid`=?  AND `password`=?");
