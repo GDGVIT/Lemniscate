@@ -40,6 +40,45 @@ if(isset($_POST["login"]))
 }
 else if(isset($_POST["register"]))
 {
+$url  ='https://vitacademics-rel.herokuapp.com/api/v2/vellore/login';
+$fields = array(
+						"regno" => "12mse0363",
+						"dob" => "01101994",
+				);
+$fields_string="";
+//url-ify the data for the POST
+foreach($fields as $key=>$value) 
+{ 
+	$fields_string .= $key.'='.$value.'&';
+}
+rtrim($fields_string, '&');
+$fields_string='regno=12mse0363&dob=01101994';
+//open connection
+$ch = curl_init();
+
+//set the url, number of POST vars, POST data
+curl_setopt($ch,CURLOPT_URL, $url);
+curl_setopt($ch,CURLOPT_POST, count($fields));
+curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, 0);
+//execute post
+$result = curl_exec($ch);
+if ($result == FALSE) 
+{
+   die("Curl failed with error: " . curl_error($ch));
+}
+$json = json_decode($result);
+if (is_null($json)) 
+{
+   die("Json decoding failed with error: ". json_last_error_msg());
+}
+$a=json_decode($result,true);
+//close connection
+curl_close($ch);
+	
+
+		
 	$flag=0;
 	$regno=$_POST["regno_id"];
 	$email=$_POST["email_id"];
@@ -149,7 +188,10 @@ else if(isset($_POST["register"]))
 ?>
 <!DOCTYPE HTML>
 <HTML>
-<HEAD><TITLE>Leminiscate</TITLE></HEAD>
+<HEAD>
+<TITLE>Leminiscate</TITLE>
+<script type="text/javascript" src="js/ajax.js"></SCRIPT>
+</HEAD>
 <BODY>
 
 <!-- Login Form-->
@@ -165,6 +207,7 @@ Password:<INPUT TYPE="password" id="pword_id" name="pword_id" placeholder="Passw
 
 New User:
 <br>
+
 <!-- Registration Form -->
 <FORM action= "<?php echo $_SERVER["PHP_SELF"];?>"  method="POST">
 Registration Number:<INPUT TYPE="text" id="regno_id" name="regno_id" placeholder="12MSE0363" autocomplete="off"><br>
