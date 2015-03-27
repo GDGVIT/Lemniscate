@@ -52,39 +52,41 @@ foreach($fields as $key=>$value)
 	$fields_string .= $key.'='.$value.'&';
 }
 rtrim($fields_string, '&');
-$fields_string='regno=12mse0363&dob=01101994';
+$fields_string="regno=12mse0363&dob=01101994";
 //open connection
 $ch = curl_init();
 
 //set the url, number of POST vars, POST data
 curl_setopt($ch,CURLOPT_URL, $url);
-curl_setopt($ch,CURLOPT_POST, count($fields));
-curl_setopt($ch,CURLOPT_POSTFIELDS, $fields_string);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch,CURLOPT_POST, true);
+curl_setopt($ch,CURLOPT_POSTFIELDS, "regno=12mse0363&dob=01101994");
+curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, 0);
+
 //execute post
 $result = curl_exec($ch);
+echo $result;
 if ($result == FALSE) 
 {
    die("Curl failed with error: " . curl_error($ch));
 }
-$json = json_decode($result);
+$json = json_decode($result,true);
 if (is_null($json)) 
 {
-   die("Json decoding failed with error: ". json_last_error_msg());
+   print_r("Json decoding failed with error: ". json_last_error_msg());
 }
-$a=json_decode($result,true);
-//close connection
-curl_close($ch);
-	
 
-		
+	$a=json_decode($result,true);
+	//close connection
+	curl_close($ch);
+
 	$flag=0;
 	$regno=$_POST["regno_id"];
 	$email=$_POST["email_id"];
 	$dob = $_POST["dob"];
 	$pattern_regno = "/^[0-1]{1}[0-9]{1}[a-zA-Z]{3}[0-9]{4}$/";
 	$pattern_email = " /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
+	
 	//Regno Check
 	if(!preg_match($pattern_regno,$regno))
 	{
