@@ -1,6 +1,9 @@
 .bg-login {
   margin: 0;
-  background: url('img/bg.jpg') fixed no-repeat;
+  background: url('img/bg.jpg') no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
   background-size: cover;
 }
 .bg-login .login-screen {
@@ -8,7 +11,7 @@
   top: 50%;
   left: 50%;
   width: 400px;
-  height: 490px;
+  height: 500px;
   border-radius: 5px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   background: rgba(0, 0, 0, 0.4);
@@ -97,4 +100,6 @@
      border-bottom: 1px solid #03a9f4;
      box-shadow: 0 1px 0 0 #03a9f4;
    }
-
+.hcenter{
+  text-align: center;
+}
