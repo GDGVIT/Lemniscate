@@ -32,9 +32,12 @@
     
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/materialize.css">
+
+
     <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script type="text/javascript" src="js/ajax.js"></SCRIPT>
+
 </head>
 
 <body class="bg-login">
@@ -93,7 +96,7 @@
                                     </div>
                                     <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
                                    	   <button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" name="action">Register
-                                        <i class="mdi-content-send right"></i>
+                                        <i class="mdi-social-person-add right"></i>
                                       </button>
                                    </div></div>
                                 </form>
