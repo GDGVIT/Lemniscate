@@ -1,0 +1,109 @@
+.bg-login {
+    margin: 0;
+    background: url('img/bg.jpg'); 
+    background-color: #000; 
+    background-repeat: no-repeat; 
+    background-position: center;
+    background-attachment: fixed;     
+    webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover; 
+}
+.bg-login .login-screen {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 400px;
+  height: 500px;
+  border-radius: 5px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.4);
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  z-index: 10;
+  -webkit-transition: height .3s, margin .3s;
+          transition: height .3s, margin .3s;
+}
+.bg-login .login-screen.forgot-password {
+  height: 300px;
+}
+.bg-login .login-screen.create-account {
+  height: 510px;
+}
+.bg-login .panel-login .panel-heading {
+  padding: 0px;
+  font-size: 26px;
+  line-height: 26px;
+  margin: 0;
+  color: #666;
+  text-align: center;
+  max-height: 80px;
+}
+.bg-login .panel-login .panel-body {
+  display: none;
+  padding: 5px 40px 20px 40px;
+}
+.bg-login .panel-login .panel-body h2 {
+  margin: 0 -40px 25px -40px;
+  font-size: 18px;
+  color: #fff;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+.bg-login .panel-login .panel-body .form-control {
+  height: 40px;
+}
+.bg-login .panel-login .panel-body .form-buttons {
+  background: transparent;
+  border: 0;
+  padding: 5px 30px;
+}
+.bg-login .panel-login .panel-body label {
+  margin: 7px 0 0 0;
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.87);
+  font-weight: normal;
+}
+.bg-login .panel-login .panel-body label input {
+  position: relative;
+  top: -1px;
+  margin-right: 3px;
+}
+.bg-login .panel-login .panel-body [type=submit] {
+  margin-bottom: 10px;
+}
+.bg-login .panel-login .panel-body .social-accounts {
+  margin: 25px 0 0 0;
+}
+.bg-login .panel-login .panel-body .extra-links {
+  margin: 20px 0 0 0;
+  padding: 0;
+  list-style-type: none;
+}
+.bg-login .panel-login .panel-body .extra-links li {
+  margin: 0;
+  text-align: center;
+}
+.bg-login .panel-login .panel-body .extra-links li a {
+  padding: 5px 0;
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+}
+.bg-login .panel-login .panel-body.active {
+  display: block;
+}
+
+.input-field input[type=text]:focus {
+     border-bottom: 1px solid #03a9f4;
+     box-shadow: 0 1px 0 0 #03a9f4;
+   }
+.input-field input[type=password]:focus {
+     border-bottom: 1px solid #03a9f4;
+     box-shadow: 0 1px 0 0 #03a9f4;
+   }
+.hcenter{
+  text-align: center;
+}
