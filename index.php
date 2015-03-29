@@ -1,6 +1,4 @@
-<<<<<<< HEAD
 <?php
-
 if(isset($_POST["login"]))
 {
 	require("Database/sql_con.php");
@@ -14,13 +12,14 @@ if(isset($_POST["login"]))
 	{
 		if($rs = $stmt->get_result())
 		{
+			$count = mysqli_num_rows($rs);
 			while ($arr = mysqli_fetch_array($rs)) 
 			{
 				$uname_db = $arr["uid"];
 				$pword_db = $arr["password"];	
 				$gen_id = $arr["gen_id"];		
 			}
-			if((strcmp($uname,$uname_db)==0)&&(strcmp($pword,$pword_db)==0))
+			if(($count==1&&$uname!=""&&$pword!=""&&strcmp($uname,$uname_db)==0)&&(strcmp($pword,$pword_db)==0))
 			{
 				if (isset($_POST["save_login"]))
 				{
@@ -41,34 +40,22 @@ if(isset($_POST["login"]))
 }
 else if(isset($_POST["register"]))
 {
-$url  ='https://vitacademics-rel.herokuapp.com/api/v2/vellore/login';
-$fields = array(
-						"regno" => "12mse0363",
-						"dob" => "01101994",
-				);
-$fields_string="";
-//url-ify the data for the POST
-foreach($fields as $key=>$value) 
-{ 
-	$fields_string .= $key.'='.$value.'&';
-}
-rtrim($fields_string, '&');
-$fields_string="regno=12mse0363&dob=01101994";
-//open connection
-$ch = curl_init();
+	$regno=$_POST["regno_id"];
+	$email=$_POST["email_id"];
+	$dob = $_POST["dob"];
+	echo $dob;
+	$url  ="https://vit-login.herokuapp.com/login?reg_no=".$regno."&dob=".$dob;
+	//open connection
+	$ch = curl_init();
 
-//set the url, number of POST vars, POST data
+//set the url
 curl_setopt($ch,CURLOPT_URL, $url);
-curl_setopt($ch,CURLOPT_POST, true);
-//curl_setopt($ch,CURLOPT_POSTFIELDS, "regno=12mse0363&dob=01101994");
 curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, 0);
-curl_setopt($ch, CURLOPT_POSTFIELDS, array('json'=>json_encode("{regno: 12mse0363},{dob:01101994}")));
-curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json; charset=utf-8","Accept:application/json"));
 
 //execute post
 $result = curl_exec($ch);
-echo $result;
+
 if ($result == FALSE) 
 {
    die("Curl failed with error: " . curl_error($ch));
@@ -81,12 +68,11 @@ if (is_null($json))
 
 	$a=json_decode($result,true);
 	//close connection
+	print_r($a);
 	curl_close($ch);
 
 	$flag=0;
-	$regno=$_POST["regno_id"];
-	$email=$_POST["email_id"];
-	$dob = $_POST["dob"];
+
 	$pattern_regno = "/^[0-1]{1}[0-9]{1}[a-zA-Z]{3}[0-9]{4}$/";
 	$pattern_email = " /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
 	
@@ -192,38 +178,7 @@ if (is_null($json))
 }
 ?>
 <!DOCTYPE HTML>
-<HTML>
-<HEAD>
-<TITLE>Leminiscate</TITLE>
-<script type="text/javascript" src="js/ajax.js"></SCRIPT>
-</HEAD>
-<BODY>
 
-<!-- Login Form-->
-<FORM action= "<?php echo $_SERVER["PHP_SELF"];?>"  method="POST">
-Username:<INPUT TYPE="text" id="uname_id" name="uname_id" placeholder="Username" autocomplete="off">
-Password:<INPUT TYPE="password" id="pword_id" name="pword_id" placeholder="Password" autocomplete="off"><br>
-<INPUT TYPE="checkbox" id="save_login" name="save_login" checked value="save_login">Keep me logged in<br>
-<INPUT TYPE="submit" id="login" name="login" value="Login"><br>
-</FORM>
-
-<!-- Forget Password -->
-<INPUT TYPE="button" id="forgot_pword" name="forgot_pword" value="Forgot Password?"><br>
-
-New User:
-<br>
-
-<!-- Registration Form -->
-<FORM action= "<?php echo $_SERVER["PHP_SELF"];?>"  method="POST">
-Registration Number:<INPUT TYPE="text" id="regno_id" name="regno_id" placeholder="12MSE0363" autocomplete="off"><br>
-Date of Birth:<INPUT type = "date" value ="1994-10-01" id = 'dob' name='dob'><br>
-Email : <INPUT TYPE="text" id="email_id" name="email_id" placeholder="xyz@vit.ac.in" autocomplete="off"><br>
-<INPUT TYPE="submit" id="register" name="register" value="Register">
-</FORM>
-</BODY>
-</HTML>
-=======
-<!Doctype html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -235,23 +190,23 @@ Email : <INPUT TYPE="text" id="email_id" name="email_id" placeholder="xyz@vit.ac
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-  <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
-<link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-<link rel="manifest" href="favicon/manifest.json">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
+	<link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+	<link rel="manifest" href="favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
 
 	<title>Lemniscate | Login</title>
     
@@ -278,23 +233,24 @@ Email : <INPUT TYPE="text" id="email_id" name="email_id" placeholder="xyz@vit.ac
                       <li class="tab col s3"><a href="#tab2">New User</a></li>
                     </ul>
                   </div>
+				  <!--login form-->
                   <div id="tab1" class="col s12">
                                  <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
-                                      <input id="uname_id" type="text" class="validate white-text">
+                                      <input name="uname_id" id="uname_id" type="text" class="validate white-text">
                                       <label for="uname_id">Username</label>
                                     </div>
                                     <div class="input-field col s12">
-                                      <input id="pword_id" type="password" class="validate white-text">
+                                      <input id="pword_id" name="pword_id" type="password" class="validate white-text">
                                       <label for="pword_id">Password</label>
                                     </div>
                                    <div class="remcheck col s12">
-                                   	<input type="checkbox" id="save_login" />
+                                   	<input type="checkbox" id="save_login" checked />
                                       <label for="save_login">Remember Me</label>
                                    </div>
                                    <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
-                                   	<button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" name="action">Submit
+                                   	<button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" name="login" id="login">Submit
                                         <i class="mdi-content-send right"></i>
                                       </button>
                                    </div>
@@ -303,24 +259,24 @@ Email : <INPUT TYPE="text" id="email_id" name="email_id" placeholder="xyz@vit.ac
                                    </div></div>
                                 </form>
                   </div>
-
+					<!--Registration form-->
                   <div id="tab2" class="col s12">
                                   <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
-                                      <input id="regno_id" type="text" class="validate white-text">
+                                      <input id="regno_id" name="regno_id" type="text" class="validate white-text">
                                       <label for="regno_id">Registration Number</label>
                                     </div>
                                    <div class="input-field col s12">
-                                      <input id="email_id" type="email" class="validate white-text">
+                                      <input name="email_id" id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email-ID</label>
                                     </div>
                                     <div class="input-field col s12">
-                                    <label for="birthdate">Birthdate</label>
-                                    <input id="birthdate" type="text" class="datepicker white-text">
+                                    <label for="dob">Birthday</label>
+                                    <input name="dob" id="dob" type="date">
                                     </div>
                                     <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
-                                   	   <button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" name="action">Register
+                                   	   <button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" id = "register" name="register">Register
                                         <i class="mdi-social-person-add right"></i>
                                       </button>
                                    </div></div>
@@ -342,4 +298,3 @@ Email : <INPUT TYPE="text" id="email_id" name="email_id" placeholder="xyz@vit.ac
                 
 </body>
 </html>
->>>>>>> origin/master
