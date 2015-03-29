@@ -46,14 +46,14 @@
 			<h3 class="white-text hcenter" style="padding-top:10px;">Lemniscate</h3>
 
 			<div id="pane-login" class="panel-body active">
-				<div><div class="row">
-                  <div class="col s12">
+				<div class="row">
+                  <div class="col s12 tabln">
                     <ul class="tabs">
-                      <li class="tab col s3"><a href="#tab1">Login</a></li>
-                      <li class="tab col s3"><a href="#tab2">New User</a></li>
+                      <li class="tab col s3"><a href="#tab1" class="active" onclick="hide1tab3();">Login</a></li>
+                      <li class="tab col s3"><a href="#tab2" onclick="hide2tab3();">New User</a></li>
                     </ul>
                   </div>
-                  <div id="tab1" class="col s12">
+                  <div id="tab1" class="col s12 tab1">
                                  <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
@@ -73,22 +73,24 @@
                                         <i class="mdi-content-send right"></i>
                                       </button>
                                    </div>
-                                   <div class="col s12 hcenter">
-                                   	<a class="waves-effect waves-light btn-flat white-text">Forgot Password</a>
-                                   </div></div>
+                                 </div>
                                 </form>
                   </div>
 
-                  <div id="tab2" class="col s12">
+                  <div id="tab2" class="col s12 tab2">
                                   <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
                                       <input id="regno_id" type="text" class="validate white-text">
                                       <label for="regno_id">Registration Number</label>
                                     </div>
+                                    <div class="input-field col s12">
+                                      <input id="pwd" type="password" class="validate white-text">
+                                      <label for="pwd">Password</label>
+                                    </div>
                                    <div class="input-field col s12">
                                       <input id="email_id" type="email" class="validate white-text">
-                                      <label for="email_id">Email-ID</label>
+                                      <label for="email_id">Email ID</label>
                                     </div>
                                     <div class="input-field col s12">
                                     <label for="birthdate">Birthdate</label>
@@ -101,9 +103,29 @@
                                    </div></div>
                                 </form>
                   </div>
+                  <div class="col s12" id="fwpd" style="text-align:center;">
+                  <a class="waves-effect waves-light btn-flat tab3 white-text" onclick="showtab3();">Forgot Password</a>
+                  </div>
+                  <div id="tab3" class="col s12 tab3c">
+                                  <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
+                                  <div class="row">
+                                    <div class="input-field col s12" style="margin-top:30px;">
+                                      <input id="regno_id" type="email" class="validate white-text">
+                                      <label for="regno_id">Email ID</label>
+                                    </div>
+                                    <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
+                                       <button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" name="action">Get Password
+                                        <i class="mdi-action-get-app right"></i>
+                                      </button>
+                                   </div></div>
+                                </form>
+                                <div class="col s12" style="text-align:center;">
+                                <a class="waves-effect waves-light btn-flat white-text" onclick="showtab1();">Login</a>
+                                </div>
+                  </div>
+
                 </div>
                 </div>
-			</div>
 			</div></div>
 
 	<div class="bg-blur dark">
@@ -114,6 +136,33 @@
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 50 // Creates a dropdown of 15 years to control year
   });</script>
+<script type="text/javascript">
+function showtab1(){
+      $("#tab1").show();
+      $(".tabln").show();
+      $("#tab3").hide();
+     }
+function hide1tab3(){
+      $("#tab3").hide();
+      $("#fwpd").show();
+     }
+function hide2tab3(){
+      $("#tab3").hide();
+      $("#fwpd").hide();
+     }
+function showtab3(){
+      $("#tab3").show();
+     }
+  $(document).ready(function(){ 
+     $(".tab3c").hide();
+     $(".tab3").click(function(){
+        $(".tab1").hide("slow");
+        $(".tabln").hide();
+
+     });
+   
+});
+</script>
                 
 </body>
 </html>
