@@ -177,12 +177,9 @@ if (is_null($json))
 	
 }
 ?>
-<<<<<<< HEAD
+
 <!DOCTYPE HTML>
 
-=======
-<!Doctype html>
->>>>>>> origin/master
 <html>
 <head>
     <meta charset="utf-8">
@@ -212,7 +209,7 @@ if (is_null($json))
 	<meta name="msapplication-TileColor" content="#ffffff">
 	<meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
-=======
+
 <link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
 <link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
 <link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
@@ -230,7 +227,6 @@ if (is_null($json))
 <meta name="msapplication-TileColor" content="#ffffff">
 <meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
 <meta name="theme-color" content="#ffffff">
->>>>>>> origin/master
 
 	<title>Lemniscate | Login</title>
     
@@ -257,12 +253,11 @@ if (is_null($json))
                       <li class="tab col s3"><a href="#tab2" onclick="hide2tab3();">New User</a></li>
                     </ul>
                   </div>
-<<<<<<< HEAD
 				  <!--login form-->
                   <div id="tab1" class="col s12">
-=======
+
                   <div id="tab1" class="col s12 tab1">
->>>>>>> origin/master
+
                                  <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
@@ -285,13 +280,12 @@ if (is_null($json))
                                  </div>
                                 </form>
                   </div>
-<<<<<<< HEAD
+
 					<!--Registration form-->
                   <div id="tab2" class="col s12">
-=======
 
                   <div id="tab2" class="col s12 tab2">
->>>>>>> origin/master
+
                                   <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
@@ -303,13 +297,12 @@ if (is_null($json))
                                       <label for="pwd">Password</label>
                                     </div>
                                    <div class="input-field col s12">
-<<<<<<< HEAD
+
                                       <input name="email_id" id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email-ID</label>
-=======
                                       <input id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email ID</label>
->>>>>>> origin/master
+
                                     </div>
                                     <div class="input-field col s12">
                                     <label for="dob">Birthday</label>
