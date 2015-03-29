@@ -177,8 +177,12 @@ if (is_null($json))
 	
 }
 ?>
+<<<<<<< HEAD
 <!DOCTYPE HTML>
 
+=======
+<!Doctype html>
+>>>>>>> origin/master
 <html>
 <head>
     <meta charset="utf-8">
@@ -190,6 +194,7 @@ if (is_null($json))
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+<<<<<<< HEAD
 	<link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
@@ -207,6 +212,25 @@ if (is_null($json))
 	<meta name="msapplication-TileColor" content="#ffffff">
 	<meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
+=======
+<link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+<link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+<link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+<link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+<link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+<link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+<link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+<link rel="manifest" href="favicon/manifest.json">
+<meta name="msapplication-TileColor" content="#ffffff">
+<meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
+<meta name="theme-color" content="#ffffff">
+>>>>>>> origin/master
 
 	<title>Lemniscate | Login</title>
     
@@ -226,15 +250,19 @@ if (is_null($json))
 			<h3 class="white-text hcenter" style="padding-top:10px;">Lemniscate</h3>
 
 			<div id="pane-login" class="panel-body active">
-				<div><div class="row">
-                  <div class="col s12">
+				<div class="row">
+                  <div class="col s12 tabln">
                     <ul class="tabs">
-                      <li class="tab col s3"><a href="#tab1">Login</a></li>
-                      <li class="tab col s3"><a href="#tab2">New User</a></li>
+                      <li class="tab col s3"><a href="#tab1" class="active" onclick="hide1tab3();">Login</a></li>
+                      <li class="tab col s3"><a href="#tab2" onclick="hide2tab3();">New User</a></li>
                     </ul>
                   </div>
+<<<<<<< HEAD
 				  <!--login form-->
                   <div id="tab1" class="col s12">
+=======
+                  <div id="tab1" class="col s12 tab1">
+>>>>>>> origin/master
                                  <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
@@ -254,22 +282,34 @@ if (is_null($json))
                                         <i class="mdi-content-send right"></i>
                                       </button>
                                    </div>
-                                   <div class="col s12 hcenter">
-                                   	<a class="waves-effect waves-light btn-flat white-text">Forgot Password</a>
-                                   </div></div>
+                                 </div>
                                 </form>
                   </div>
+<<<<<<< HEAD
 					<!--Registration form-->
                   <div id="tab2" class="col s12">
+=======
+
+                  <div id="tab2" class="col s12 tab2">
+>>>>>>> origin/master
                                   <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
                                       <input id="regno_id" name="regno_id" type="text" class="validate white-text">
                                       <label for="regno_id">Registration Number</label>
                                     </div>
+                                    <div class="input-field col s12">
+                                      <input id="pwd" type="password" class="validate white-text">
+                                      <label for="pwd">Password</label>
+                                    </div>
                                    <div class="input-field col s12">
+<<<<<<< HEAD
                                       <input name="email_id" id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email-ID</label>
+=======
+                                      <input id="email_id" type="email" class="validate white-text">
+                                      <label for="email_id">Email ID</label>
+>>>>>>> origin/master
                                     </div>
                                     <div class="input-field col s12">
                                     <label for="dob">Birthday</label>
@@ -282,9 +322,29 @@ if (is_null($json))
                                    </div></div>
                                 </form>
                   </div>
+                  <div class="col s12" id="fwpd" style="text-align:center;">
+                  <a class="waves-effect waves-light btn-flat tab3 white-text" onclick="showtab3();">Forgot Password</a>
+                  </div>
+                  <div id="tab3" class="col s12 tab3c">
+                                  <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
+                                  <div class="row">
+                                    <div class="input-field col s12" style="margin-top:30px;">
+                                      <input id="regno_id" type="email" class="validate white-text">
+                                      <label for="regno_id">Email ID</label>
+                                    </div>
+                                    <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
+                                       <button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" name="action">Get Password
+                                        <i class="mdi-action-get-app right"></i>
+                                      </button>
+                                   </div></div>
+                                </form>
+                                <div class="col s12" style="text-align:center;">
+                                <a class="waves-effect waves-light btn-flat white-text" onclick="showtab1();">Login</a>
+                                </div>
+                  </div>
+
                 </div>
                 </div>
-			</div>
 			</div></div>
 
 	<div class="bg-blur dark">
@@ -295,6 +355,33 @@ if (is_null($json))
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 50 // Creates a dropdown of 15 years to control year
   });</script>
+<script type="text/javascript">
+function showtab1(){
+      $("#tab1").show();
+      $(".tabln").show();
+      $("#tab3").hide();
+     }
+function hide1tab3(){
+      $("#tab3").hide();
+      $("#fwpd").show();
+     }
+function hide2tab3(){
+      $("#tab3").hide();
+      $("#fwpd").hide();
+     }
+function showtab3(){
+      $("#tab3").show();
+     }
+  $(document).ready(function(){ 
+     $(".tab3c").hide();
+     $(".tab3").click(function(){
+        $(".tab1").hide("slow");
+        $(".tabln").hide();
+
+     });
+   
+});
+</script>
                 
 </body>
 </html>

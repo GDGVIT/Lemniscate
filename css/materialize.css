@@ -5615,12 +5615,12 @@ small {
       -ms-transition: color 0.28s ease;
       transition: color 0.28s ease; }
       .tabs li.tab a:hover {
-        color: #cfd8dc; }
+        color: #03a9f4; }
   .tabs .indicator {
     position: absolute;
     bottom: 0;
     height: 2px;
-    background-color: #fff;
+    background-color: #03a9f4;
     will-change: left, right; }
 
 ul.tabs li.tab {
@@ -6117,7 +6117,7 @@ label {
     -o-transform: translateY(-140%);
     transform: translateY(-140%); }
   .input-field input[type=text]:focus + label, .input-field input[type=password]:focus + label, .input-field input[type=email]:focus + label, .input-field input[type=url]:focus + label, .input-field input[type=date]:focus + label, .input-field input[type=tel]:focus + label, .input-field input[type=number]:focus + label, .input-field input[type=search]:focus + label, .input-field textarea:focus.materialize-textarea + label {
-    color: #26a69a; }
+    color: #03a9f4; }
   .input-field input[type=text].valid, .input-field input[type=password].valid, .input-field input[type=email].valid, .input-field input[type=url].valid, .input-field input[type=date].valid, .input-field input[type=tel].valid, .input-field input[type=number].valid, .input-field input[type=search].valid, .input-field textarea.materialize-textarea.valid {
     border-bottom: 1px solid #4CAF50;
     -webkit-box-shadow: 0 1px 0 0 #4CAF50;
@@ -6376,8 +6376,8 @@ form p:last-child {
   height: 22px;
   border-top: 2px solid transparent;
   border-left: 2px solid transparent;
-  border-right: 2px solid #26a69a;
-  border-bottom: 2px solid #26a69a;
+  border-right: 2px solid #03a9f4;
+  border-bottom: 2px solid #03a9f4;
   -webkit-transform: rotateZ(40deg);
   -moz-transform: rotateZ(40deg);
   -ms-transform: rotateZ(40deg);

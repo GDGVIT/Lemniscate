@@ -1,3 +1,9 @@
+.hidden {
+        display: none;
+}
+.visible {
+        display: block;
+   }
 .bg-login {
     margin: 0;
     background: url('img/bg.jpg'); 
@@ -15,7 +21,7 @@
   top: 50%;
   left: 50%;
   width: 400px;
-  height: 500px;
+  height: 550px;
   border-radius: 5px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   background: rgba(0, 0, 0, 0.4);
@@ -104,6 +110,15 @@
      border-bottom: 1px solid #03a9f4;
      box-shadow: 0 1px 0 0 #03a9f4;
    }
+   .input-field input[type=email]:focus {
+     border-bottom: 1px solid #03a9f4;
+     box-shadow: 0 1px 0 0 #03a9f4;
+   }
+   .input-field input[type=date]:focus {
+     border-bottom: 1px solid #03a9f4;
+     box-shadow: 0 1px 0 0 #03a9f4;
+   }
 .hcenter{
   text-align: center;
 }
+
