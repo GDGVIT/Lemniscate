@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <?php
 
 if(isset($_POST["login"]))
@@ -391,4 +390,3 @@ function showtab3(){
                 
 </body>
 </html>
->>>>>>> origin/master
