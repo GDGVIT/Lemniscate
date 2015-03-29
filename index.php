@@ -59,9 +59,11 @@ $ch = curl_init();
 //set the url, number of POST vars, POST data
 curl_setopt($ch,CURLOPT_URL, $url);
 curl_setopt($ch,CURLOPT_POST, true);
-curl_setopt($ch,CURLOPT_POSTFIELDS, "regno=12mse0363&dob=01101994");
+//curl_setopt($ch,CURLOPT_POSTFIELDS, "regno=12mse0363&dob=01101994");
 curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, 0);
+curl_setopt($ch, CURLOPT_POSTFIELDS, array('json'=>json_encode("{regno: 12mse0363},{dob:01101994}")));
+curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/json; charset=utf-8","Accept:application/json"));
 
 //execute post
 $result = curl_exec($ch);
