@@ -6366,7 +6366,7 @@ form p:last-child {
   top: 0px;
   width: 18px;
   height: 18px;
-  border: 2px solid #5a5a5a; }
+  border: 2px solid #c6c8c8; }
 
 /* Checked styles */
 [type="checkbox"]:checked + label:before {
