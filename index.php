@@ -293,12 +293,6 @@ else if(isset($_POST["register"]))
                                    <div class="input-field col s12">
                                       <input name="email_id" id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email-ID</label>
-<<<<<<< HEAD
-                                      <input id="email_id" type="email" class="validate white-text">
-                                      <label for="email_id">Email ID</label>
-=======
-
->>>>>>> origin/master
                                     </div>
                                     <div class="input-field col s12">
                                     <label for="dob">Birthday</label>
