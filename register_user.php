@@ -1,5 +1,6 @@
 <?php
 	
+	$flag =0; //To know if the dob and regno are valid
 	$regno=$_POST["regno_id"];
 	$email=$_POST["email_id"];
 	$dob = $_POST["dob"];
@@ -15,38 +16,43 @@
 	$result = curl_exec($ch);
 	if ($result == FALSE) 
 	{
-	   die("Curl failed with error: " . curl_error($ch));
+	   echo "Curl failed with error: " . curl_error($ch);
+	   $flag=1;
 	}
 	$json = json_decode($result,true);
 	if (is_null($json)) 
 	{
-	   print_r("Json decoding failed with error: ". json_last_error_msg());
-	}
-	$a=json_decode($result,true);
-	//close connection
-	print_r($a);
-	curl_close($ch);
-
-	$flag=0;
-
-	$pattern_regno = "/^[0-1]{1}[0-9]{1}[a-zA-Z]{3}[0-9]{4}$/";
-	$pattern_email = " /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-	
-	//Regno Check
-	if(!preg_match($pattern_regno,$regno))
-	{
-		echo"Invalid Regno";
+	    echo "Json decoding failed with error: ". json_last_error_msg();
 		$flag=1;
 	}
+	$class_details=json_decode($result,true);
+	//Close connection
+	curl_close($ch);
 	
-	//Email Check
-	if(preg_match($pattern_email,$email))
+	if(!is_array($class_details))
 	{
-		//VIT Email Format check
-		if(strrpos($email,"@vit.ac.in")>1)
+		$flag=1;
+	}
+	else
+	{
+		$q1 = $mysqli->prepare("INSERT INTO `courses_now` (`regno`, `dob`, `email`, `gen_password`, `activated`) VALUES (?, ?, ?, ?, ?)");
+		$q1->bind_param("ssssi", $regno, $dob,$email,$ResultStr,$activated);	
+		if($q1->execute())
 		{
-			if($flag==0)
-			{
+				$q2= $mysqli->prepare("INSERT INTO `alumini_classes` (`regno`, `dob`, `email`, `gen_password`, `activated`) VALUES (?, ?, ?, ?, ?)");
+				$q2->bind_param("ssssi", $regno, $dob,$email,$ResultStr,$activated);	
+				if($q2->execute())
+				{
+					
+				}
+		}		
+	}
+	if($flag==1)
+	{
+		echo "Regno and  DOB do not match!";
+	}
+	else
+	{
 				$RandomStr = base64_encode(microtime());
 				$ResultStr = substr($RandomStr,0,20);
 				$ResultStr = strtolower($ResultStr);
@@ -59,8 +65,10 @@
 					require 'mail/PHPMailerAutoload.php';
 					//Create a new PHPMailer instance
 					$mail = new PHPMailer();
-					/*if($mail->smtpConnect())
-					{*/
+					/*
+					if($mail->smtpConnect())
+					{
+					*/
 							$to= $email; 
 							$subject= "Leminiscate | Verification" ;
 							$message="Pls check this link localhost/lemniscate/verify_registration.php?p=$ResultStr&e=$email&d=$dob";
@@ -110,23 +118,32 @@
 							{
 								echo "Message sent! Check your mail for details";
 							}
-				/*	}
+				/*
+					}
 					else
-						echo "Mailer connection problem";*/
+						echo "Mailer connection problem";
+				*/
 				}
 				else
 				{
 					echo "Error in inserting the data into reg_verification";	
 				}
-			}
-		}
-		else
-		{	
-			echo "Enter VIT Email ID";
-		}			
 	}
-	else
+	
+	$pattern_regno = "/^[0-1]{1}[0-9]{1}[a-zA-Z]{3}[0-9]{4}$/";
+	$pattern_email = " /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
+	
+	//Regno Check
+	if(!preg_match($pattern_regno,$regno))
 	{
-		echo "Invalid Email ID";
+		echo"Invalid Regno";
+		$flag=1;
 	}
+	
+	//Email Check
+	if(preg_match($pattern_email,$email))
+	{
+		//VIT Email Format check
+		if(strrpos($email,"@vit.ac.in")>1)
+		
 ?>

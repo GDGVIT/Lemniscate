@@ -1,4 +1,37 @@
 <?php
+ if (isset($_COOKIE['cow']) && isset($_COOKIE['calf'])) 
+ {
+	require("Database/sql_con.php");
+	$uname = base64_decode($_COOKIE['cow']); 
+	$pword = base64_decode($_COOKIE['calf']);
+	
+	$stmt = $mysqli->prepare("SELECT * FROM `login` WHERE `uid`=?  AND `password`=?");
+	$stmt->bind_param("ss", $uname, $pword);	
+	$uname_db="";
+	$pword_db="";
+	
+	if($stmt->execute())
+	{
+		if($rs = $stmt->get_result())
+		{
+			$count = mysqli_num_rows($rs);
+			while ($arr = mysqli_fetch_array($rs)) 
+			{
+				$uname_db = $arr["uid"];
+				$pword_db = $arr["password"];	
+				$gen_id = $arr["gen_id"];		
+			}
+			if(($count==1&&$uname!=""&&$pword!=""&&strcmp($uname,$uname_db)==0)&&(strcmp($pword,$pword_db)==0))
+			{
+				session_start();
+				$_SESSION["gen_id"]=$gen_id;
+				header("location:home.php");
+			}
+		}
+	}
+ }
+
+
 if(isset($_POST["login"]))
 {
 	require("Database/sql_con.php");
@@ -23,8 +56,12 @@ if(isset($_POST["login"]))
 			{
 				if (isset($_POST["save_login"]))
 				{
-						//cookie to be created
+						//Cookie to be created
+						setcookie('cow',base64_encode($uname),time()+3600*24*60);
+						setcookie('calf',base64_encode($pword),time()+3600*24*60);
 				}
+				session_start();
+				$_SESSION["gen_id"]=$gen_id;
 				header("location:home.php");
 			}
 			else
@@ -38,155 +75,15 @@ if(isset($_POST["login"]))
 	else
 		echo "Query not executed mysqli_error()";
 }
-else if(isset($_POST["register"]))
-{
-	$regno=$_POST["regno_id"];
-	$email=$_POST["email_id"];
-	$dob = $_POST["dob"];
-	echo $dob;
-	$url  ="https://vit-login.herokuapp.com/login?reg_no=".$regno."&dob=".$dob;
-	//open connection
-	$ch = curl_init();
-
-	//set the url
-	curl_setopt($ch,CURLOPT_URL, $url);
-	curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, 0);
-
-	//execute post
-	$result = curl_exec($ch);
-
-	if ($result == FALSE) 
-	{
-	   die("Curl failed with error: " . curl_error($ch));
-	}
-	$json = json_decode($result,true);
-	if (is_null($json)) 
-	{
-	   print_r("Json decoding failed with error: ". json_last_error_msg());
-	}
-
-	$a=json_decode($result,true);
-	//close connection
-	print_r($a);
-	curl_close($ch);
-
-	$flag=0;
-
-	$pattern_regno = "/^[0-1]{1}[0-9]{1}[a-zA-Z]{3}[0-9]{4}$/";
-	$pattern_email = " /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-	
-	//Regno Check
-	if(!preg_match($pattern_regno,$regno))
-	{
-		echo"Invalid Regno";
-		$flag=1;
-	}
-	
-	//Email Check
-	if(preg_match($pattern_email,$email))
-	{
-		//VIT Email Format check
-		if(strrpos($email,"@vit.ac.in")>1)
-		{
-			if($flag==0)
-			{
-				$RandomStr = base64_encode(microtime());
-				$ResultStr = substr($RandomStr,0,20);
-				$ResultStr = strtolower($ResultStr);
-				$activated=0;
-				$stmt = $mysqli->prepare("INSERT INTO `reg_verification` (`regno`, `dob`, `email`, `gen_password`, `activated`) VALUES (?, ?, ?, ?, ?)");
-				$stmt->bind_param("ssssi", $regno, $dob,$email,$ResultStr,$activated);	
-				if($stmt->execute())
-				{
-					date_default_timezone_set('Asia/Calcutta');
-					require 'mail/PHPMailerAutoload.php';
-					//Create a new PHPMailer instance
-					$mail = new PHPMailer();
-					/*if($mail->smtpConnect())
-					{*/
-							$to= $email; 
-							$subject= "Leminiscate | Verification" ;
-							$message="Pls check this link localhost/lemniscate/verify_registration.php?p=$ResultStr&e=$email&d=$dob";
-							//Tell PHPMailer to use SMTP
-							$mail->isSMTP();
-
-							//Enable SMTP debugging
-							$mail->SMTPDebug = 0;						
-							$mail->Host = 'smtp.gmail.com';
-
-							//Set the SMTP port number - 465 for authenticated TLS, a.k.a. RFC4409 SMTP submission
-							$mail->Port =  587;
-
-							//Set the encryption system to use - ssl (deprecated) or tls
-							$mail->SMTPSecure = 'tls';
-
-							//Whether to use SMTP authentication
-							$mail->SMTPAuth = true;
-
-							//Username to use for SMTP authentication - use full email address for gmail
-							$mail->Username = "gdgriviera@gmail.com";
-
-							//Password to use for SMTP authentication
-							$mail->Password = "gdgriviera1";
-
-							//Set who the message is to be sent from
-							$mail->setFrom('gdgriviera@gmail.com', 'Leminiscate Verification');
-
-							//Set an alternative reply-to address
-							$mail->addReplyTo('gdgriviera@gmail.com', 'Leminiscate Verification');
-
-							//Set who the message is to be sent to
-							$mail->addAddress($to, 'Student');
-
-							//Set the subject line
-							$mail->Subject = $subject;
-
-							//Replace the plain text body with one created manually
-							$mail->Body = $message;
-
-							//send the message, check for errors
-							if (!$mail->send())
-							{
-								echo "Mailer Error: " . $mail->ErrorInfo;
-							}
-							else 
-							{
-								echo "Message sent! Check your mail for details";
-							}
-				/*	}
-					else
-						echo "Mailer connection problem";*/
-				}
-				else
-				{
-					echo "Error in inserting the data into reg_verification";	
-				}
-			}
-		}
-		else
-		{	
-			echo "Enter VIT Email ID";
-		}			
-	}
-	else
-	{
-		echo "Invalid Email ID";
-	}
-	
-	
-}
 ?>
-
 <!DOCTYPE HTML>
-
 <html>
 <head>
     <meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="description" content="">
 	<meta name="author" content="">
-
+	
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -209,23 +106,23 @@ else if(isset($_POST["register"]))
 	<meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
 	<meta name="theme-color" content="#ffffff">
 
-<link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
-<link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
-<link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
-<link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
-<link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
-<link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
-<link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
-<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
-<link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-<link rel="manifest" href="favicon/manifest.json">
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
-<meta name="theme-color" content="#ffffff">
+	<link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+	<link rel="manifest" href="favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
 
 	<title>Lemniscate | Login</title>
     
@@ -286,10 +183,7 @@ else if(isset($_POST["register"]))
                                       <input id="regno_id" name="regno_id" type="text" class="validate white-text">
                                       <label for="regno_id">Registration Number</label>
                                     </div>
-                                    <div class="input-field col s12">
-                                      <input id="pwd" type="password" class="validate white-text">
-                                      <label for="pwd">Password</label>
-                                    </div>
+                                  
                                    <div class="input-field col s12">
                                       <input name="email_id" id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email-ID</label>
@@ -299,7 +193,7 @@ else if(isset($_POST["register"]))
                                     <input name="dob" id="dob" type="date" class="datepicker">
                                     </div>
                                     <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
-                                   	   <button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" id = "register" name="register">Register
+                                   	   <button class="btn waves-effect waves-light #03a9f4 light-blue" type="button" onclick="register()" id = "register" name="register">Register
                                         <i class="mdi-social-person-add right"></i>
                                       </button>
                                    </div>
@@ -354,15 +248,15 @@ function hide2tab3(){
       $("#tab3").hide();
       $("#fwpd").hide();
      }
-function showtab3(){
+function showtab3()
+{
       $("#tab3").show();
-     }
+}
   $(document).ready(function(){ 
      $(".tab3c").hide();
      $(".tab3").click(function(){
         $(".tab1").hide();
         $(".tabln").hide();
-
      });
    
 });
