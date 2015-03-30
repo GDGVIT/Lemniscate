@@ -253,8 +253,6 @@ else if(isset($_POST["register"]))
                     </ul>
                   </div>
 				  <!--login form-->
-                  <div id="tab1" class="col s12">
-
                   <div id="tab1" class="col s12 tab1">
 
                                  <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
@@ -281,8 +279,6 @@ else if(isset($_POST["register"]))
                   </div>
 
 					<!--Registration form-->
-                  <div id="tab2" class="col s12">
-
                   <div id="tab2" class="col s12 tab2">
                                   <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
@@ -297,18 +293,23 @@ else if(isset($_POST["register"]))
                                    <div class="input-field col s12">
                                       <input name="email_id" id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email-ID</label>
+<<<<<<< HEAD
                                       <input id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email ID</label>
+=======
+
+>>>>>>> origin/master
                                     </div>
                                     <div class="input-field col s12">
                                     <label for="dob">Birthday</label>
-                                    <input name="dob" id="dob" type="date">
+                                    <input name="dob" id="dob" type="date" class="datepicker">
                                     </div>
                                     <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
                                    	   <button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" id = "register" name="register">Register
                                         <i class="mdi-social-person-add right"></i>
                                       </button>
-                                   </div></div>
+                                   </div>
+                                   </div>
                                 </form>
                   </div>
                   <div class="col s12" id="fwpd" style="text-align:center;">
@@ -340,7 +341,8 @@ else if(isset($_POST["register"]))
 		<div class="overlay"></div><!--.overlay-->
 	</div><!--.bg-blur-->
 
-<script type="text/javascript"> $('.datepicker').pickadate({
+<script type="text/javascript"> 
+    $('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 50 // Creates a dropdown of 15 years to control year
   });</script>
