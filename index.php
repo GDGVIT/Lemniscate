@@ -360,7 +360,7 @@ function showtab3(){
   $(document).ready(function(){ 
      $(".tab3c").hide();
      $(".tab3").click(function(){
-        $(".tab1").hide("slow");
+        $(".tab1").hide();
         $(".tabln").hide();
 
      });
