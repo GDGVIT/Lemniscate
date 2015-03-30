@@ -191,7 +191,6 @@ if (is_null($json))
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<<<<<<< HEAD
 	<link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
@@ -254,8 +253,6 @@ if (is_null($json))
                     </ul>
                   </div>
 				  <!--login form-->
-                  <div id="tab1" class="col s12">
-
                   <div id="tab1" class="col s12 tab1">
 
                                  <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
@@ -282,8 +279,6 @@ if (is_null($json))
                   </div>
 
 					<!--Registration form-->
-                  <div id="tab2" class="col s12">
-
                   <div id="tab2" class="col s12 tab2">
 
                                   <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
@@ -300,19 +295,18 @@ if (is_null($json))
 
                                       <input name="email_id" id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email-ID</label>
-                                      <input id="email_id" type="email" class="validate white-text">
-                                      <label for="email_id">Email ID</label>
 
                                     </div>
                                     <div class="input-field col s12">
                                     <label for="dob">Birthday</label>
-                                    <input name="dob" id="dob" type="date">
+                                    <input name="dob" id="dob" type="date" class="datepicker">
                                     </div>
                                     <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
                                    	   <button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" id = "register" name="register">Register
                                         <i class="mdi-social-person-add right"></i>
                                       </button>
-                                   </div></div>
+                                   </div>
+                                   </div>
                                 </form>
                   </div>
                   <div class="col s12" id="fwpd" style="text-align:center;">
@@ -344,7 +338,8 @@ if (is_null($json))
 		<div class="overlay"></div><!--.overlay-->
 	</div><!--.bg-blur-->
 
-<script type="text/javascript"> $('.datepicker').pickadate({
+<script type="text/javascript"> 
+    $('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 50 // Creates a dropdown of 15 years to control year
   });</script>
