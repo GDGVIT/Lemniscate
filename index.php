@@ -48,23 +48,23 @@ else if(isset($_POST["register"]))
 	//open connection
 	$ch = curl_init();
 
-//set the url
-curl_setopt($ch,CURLOPT_URL, $url);
-curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, 0);
+	//set the url
+	curl_setopt($ch,CURLOPT_URL, $url);
+	curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, 0);
 
-//execute post
-$result = curl_exec($ch);
+	//execute post
+	$result = curl_exec($ch);
 
-if ($result == FALSE) 
-{
-   die("Curl failed with error: " . curl_error($ch));
-}
-$json = json_decode($result,true);
-if (is_null($json)) 
-{
-   print_r("Json decoding failed with error: ". json_last_error_msg());
-}
+	if ($result == FALSE) 
+	{
+	   die("Curl failed with error: " . curl_error($ch));
+	}
+	$json = json_decode($result,true);
+	if (is_null($json)) 
+	{
+	   print_r("Json decoding failed with error: ". json_last_error_msg());
+	}
 
 	$a=json_decode($result,true);
 	//close connection
@@ -191,7 +191,6 @@ if (is_null($json))
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<<<<<<< HEAD
 	<link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
 	<link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
 	<link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
@@ -285,7 +284,6 @@ if (is_null($json))
                   <div id="tab2" class="col s12">
 
                   <div id="tab2" class="col s12 tab2">
-
                                   <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
@@ -297,12 +295,10 @@ if (is_null($json))
                                       <label for="pwd">Password</label>
                                     </div>
                                    <div class="input-field col s12">
-
                                       <input name="email_id" id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email-ID</label>
                                       <input id="email_id" type="email" class="validate white-text">
                                       <label for="email_id">Email ID</label>
-
                                     </div>
                                     <div class="input-field col s12">
                                     <label for="dob">Birthday</label>
