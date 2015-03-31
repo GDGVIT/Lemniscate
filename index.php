@@ -1,5 +1,31 @@
 <?php
- if (isset($_COOKIE['cow']) && isset($_COOKIE['calf'])) 
+session_start();
+//Login automatically if a session already exists
+if(isset($_SESSION["gen_id"]))
+{
+	require("Database/sql_con.php");
+	$gen_id = base64_decode($_SESSION["gen_id"]);
+	$stmt = $mysqli->prepare("SELECT * FROM `login` WHERE `gen_id`=? ");
+	$stmt->bind_param("i", $gen_id);	
+	if($stmt->execute())
+	{
+		if($rs = $stmt->get_result())
+		{
+			$count = mysqli_num_rows($rs);
+			while ($arr = mysqli_fetch_array($rs)) 
+			{
+				$gen_id_db = $arr["gen_id"];		
+			}
+			if(($count==1&&$gen_id!=""&&strcmp($gen_id,$gen_id_db)==0))
+			{
+				header("location:home.php");
+			}
+		}
+	}
+	mysqli_close($mysqli);
+}
+//Login automatically if "Remember Me" has been choosen
+else if (isset($_COOKIE['cow']) && isset($_COOKIE['calf'])) 
  {
 	require("Database/sql_con.php");
 	$uname = base64_decode($_COOKIE['cow']); 
@@ -23,15 +49,15 @@
 			}
 			if(($count==1&&$uname!=""&&$pword!=""&&strcmp($uname,$uname_db)==0)&&(strcmp($pword,$pword_db)==0))
 			{
-				session_start();
-				$_SESSION["gen_id"]=$gen_id;
+				$_SESSION["gen_id"]=base64_encode($gen_id);
 				header("location:home.php");
 			}
 		}
 	}
+	mysqli_close($mysqli);
  }
 
-
+//When the user wants to login
 if(isset($_POST["login"]))
 {
 	require("Database/sql_con.php");
@@ -56,17 +82,16 @@ if(isset($_POST["login"]))
 			{
 				if (isset($_POST["save_login"]))
 				{
-						//Cookie to be created
+						//Cookie to be created for auto login when "Remember me" has been chosen and the saved id and password expires in 60 days
 						setcookie('cow',base64_encode($uname),time()+3600*24*60);
 						setcookie('calf',base64_encode($pword),time()+3600*24*60);
 				}
-				session_start();
-				$_SESSION["gen_id"]=$gen_id;
+				$_SESSION["gen_id"]=base64_encode($gen_id);
 				header("location:home.php");
 			}
 			else
 			{
-				echo "Enter a valid username and password";
+				echo "Enter a valid Username and password";
 			}
 		}
 		else
@@ -74,6 +99,115 @@ if(isset($_POST["login"]))
 	}
 	else
 		echo "Query not executed mysqli_error()";
+mysqli_close($mysqli);
+}
+else if(isset($_POST["get_password"]))
+{
+	require("Database/sql_con.php");
+	
+	$email_f = $_POST["email_forgot"];
+	$regno_f = $_POST["regno_forgot"];
+	
+	$gen_id_db ="";
+	$regno_db="";
+	$email_db="";
+	
+	$stmt = $mysqli->prepare("SELECT `gen_id`, `regno` FROM `info_user` WHERE `email`=? AND `regno`=? ");
+	$stmt->bind_param("ss", $email_f,$regno_f);	
+	if($stmt->execute())
+	{
+		if($rs = $stmt->get_result())
+		{
+			$count = mysqli_num_rows($rs);
+			while ($arr = mysqli_fetch_array($rs)) 
+			{
+				$email_db =  $arr["email"];
+				$regno_db = $arr["regno"];
+				$gen_id_db = $arr["gen_id"];		
+			}
+			if(($count==1&&$email_f!=""&&$regno_f!=""&&strcmp($email_f,$email_db)==0)&&(strcmp($regno_f,$regno_db)==0))
+			{
+				$RandomStr = base64_encode(microtime());
+				$ResultStr = substr($RandomStr,0,20);
+				$ResultStr = strtolower($ResultStr);
+				$activated=0;
+				$date=date("Y-m-d");
+				$stmt = $mysqli->prepare("INSERT INTO `forgot_password` ( `gen_id`, `hash`, `date_apply`, `email` ,`activated`) VALUES (?, ?, ?, ?, ?)");
+				$stmt->bind_param("issi", $gen_id_db, $ResultStr,$date,$email_db,$activated);	
+				if($stmt->execute())
+				{
+					date_default_timezone_set('Asia/Calcutta');
+					require 'mail/PHPMailerAutoload.php';
+					//Create a new PHPMailer instance
+					$mail = new PHPMailer();
+					/*
+					if($mail->smtpConnect())
+					{
+					*/
+							$to= $email; 
+							$subject= "Leminiscate | Password Reset" ;
+							$message="Pls check this link localhost/lemniscate/password_reset.php?p=$ResultStr&e=$email_db&d=$date";
+							//Tell PHPMailer to use SMTP
+							$mail->isSMTP();
+
+							//Enable SMTP debugging
+							$mail->SMTPDebug = 0;						
+							$mail->Host = 'smtp.gmail.com';
+
+							//Set the SMTP port number - 465 for authenticated TLS, a.k.a. RFC4409 SMTP submission
+							$mail->Port =  587;
+
+							//Set the encryption system to use - ssl (deprecated) or tls
+							$mail->SMTPSecure = 'tls';
+
+							//Whether to use SMTP authentication
+							$mail->SMTPAuth = true;
+
+							//Username to use for SMTP authentication - use full email address for gmail
+							$mail->Username = "gdgriviera@gmail.com";
+
+							//Password to use for SMTP authentication
+							$mail->Password = "gdgriviera1";
+
+							//Set who the message is to be sent from
+							$mail->setFrom('gdgriviera@gmail.com', 'Leminiscate Verification');
+
+							//Set an alternative reply-to address
+							$mail->addReplyTo('gdgriviera@gmail.com', 'Leminiscate Verification');
+
+							//Set who the message is to be sent to
+							$mail->addAddress($to, 'Student');
+
+							//Set the subject line
+							$mail->Subject = $subject;
+
+							//Replace the plain text body with one created manually
+							$mail->Body = $message;
+
+							//send the message, check for errors
+							if (!$mail->send())
+							{
+								echo "Mailer Error: " . $mail->ErrorInfo;
+							}
+							else 
+							{
+								echo "Message sent! Check your mail for resetting your password";
+							}
+				/*
+					}
+					else
+						echo "Mailer connection problem";
+				*/
+				}
+				else
+				{
+					echo "Error in inserting the data into reg_verification";	
+				}
+			
+			}
+		}
+	}
+	mysqli_close($mysqli);
 }
 ?>
 <!DOCTYPE HTML>
@@ -149,21 +283,24 @@ if(isset($_POST["login"]))
                       <li class="tab col s3"><a href="#tab2" onclick="hide2tab3();">New User</a></li>
                     </ul>
                   </div>
+				  
+				  
 				  <!--login form-->
-                  <div id="tab1" class="col s12 tab1">
+                  <!---Self PHP call which validates the user-->
+				  <div id="tab1" class="col s12 tab1">
 
                                  <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
-                                      <input name="uname_id" id="uname_id" type="text" class="validate white-text">
+                                      <input name="uname_id" id="uname_id" type="text" class="validate white-text" autocomplete="off">
                                       <label for="uname_id">Username</label>
                                     </div>
                                     <div class="input-field col s12">
-                                      <input id="pword_id" name="pword_id" type="password" class="validate white-text">
+                                      <input id="pword_id" name="pword_id" type="password" class="validate white-text" autocomplete="off">
                                       <label for="pword_id">Password</label>
                                     </div>
                                    <div class="remcheck col s12">
-                                   	<input type="checkbox" id="save_login" checked />
+                                   	<input type="checkbox" id="save_login" name="save_login"checked />
                                       <label for="save_login">Remember Me</label>
                                    </div>
                                    <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
@@ -180,12 +317,12 @@ if(isset($_POST["login"]))
                                   <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
-                                      <input id="regno_id" name="regno_id" type="text" class="validate white-text">
+                                      <input id="regno_id" name="regno_id" type="text" class="validate white-text" autocomplete="off">
                                       <label for="regno_id">Registration Number</label>
                                     </div>
                                   
                                    <div class="input-field col s12">
-                                      <input name="email_id" id="email_id" type="email" class="validate white-text">
+                                      <input name="email_id" id="email_id" type="email" class="validate white-text" autocomplete="off">
                                       <label for="email_id">Email-ID</label>
                                     </div>
                                     <div class="input-field col s12">
@@ -206,12 +343,16 @@ if(isset($_POST["login"]))
                   <div id="tab3" class="col s12 tab3c">
                                   <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
                                   <div class="row">
+								  <div class="input-field col s12" style="margin-top:30px;">
+                                      <input id="regno_forgot" name="regno_forgot" type="text" class="validate white-text" autocomplete="off">
+                                      <label for="regno_forgot">Registration Number</label>
+                                    </div>
                                     <div class="input-field col s12" style="margin-top:30px;">
-                                      <input id="regno_id" type="email" class="validate white-text">
-                                      <label for="regno_id">Email ID</label>
+                                      <input id="email_forgot"  name="email_forgot" type="email" class="validate white-text" autocomplete="off">
+                                      <label for="email_forgot">Email ID</label>
                                     </div>
                                     <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
-                                       <button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" name="action">Get Password
+                                       <button class="btn waves-effect waves-light #03a9f4 light-blue" type="submit" name="get_password" name="get_password">Get Password
                                         <i class="mdi-action-get-app right"></i>
                                       </button>
                                    </div></div>
