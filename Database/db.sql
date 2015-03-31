@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2015 at 07:04 PM
+-- Generation Time: Mar 31, 2015 at 06:26 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -33,19 +33,22 @@ CREATE TABLE IF NOT EXISTS `events_info` (
   `venue` varchar(70) NOT NULL,
   `from_time` time NOT NULL,
   `to_time` time NOT NULL,
+  `room_no` int(11) NOT NULL,
   PRIMARY KEY (`auto_increment`),
   UNIQUE KEY `auto_increment` (`auto_increment`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `events_info`
 --
 
-INSERT INTO `events_info` (`auto_increment`, `id`, `date_event`, `venue`, `from_time`, `to_time`) VALUES
-(1, 1, '2015-03-25', 'SJT', '15:30:00', '18:30:00'),
-(2, 1, '2015-03-26', 'SJT', '16:30:00', '20:30:00'),
-(3, 2, '2015-03-26', 'SJT', '20:20:00', '21:21:00'),
-(4, 2, '2015-03-27', 'SJT', '03:00:00', '05:00:00');
+INSERT INTO `events_info` (`auto_increment`, `id`, `date_event`, `venue`, `from_time`, `to_time`, `room_no`) VALUES
+(1, 3, '2015-03-30', 'SJT', '20:30:00', '22:30:00', 23),
+(2, 3, '2015-03-31', 'SJT', '21:30:00', '23:30:00', 24),
+(3, 6, '2015-03-30', 'SJT', '20:30:00', '22:30:00', 0),
+(4, 6, '2015-03-31', 'SJT', '22:30:00', '23:30:00', 0),
+(5, 7, '2015-03-31', 'SJT', '20:30:00', '22:30:00', 202),
+(6, 7, '2015-04-01', 'SJT', '19:30:00', '22:30:00', 0);
 
 -- --------------------------------------------------------
 
@@ -70,15 +73,16 @@ CREATE TABLE IF NOT EXISTS `events_page` (
   PRIMARY KEY (`unique_id`),
   UNIQUE KEY `event_name` (`event_name`),
   UNIQUE KEY `event_name_2` (`event_name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `events_page`
 --
 
 INSERT INTO `events_page` (`unique_id`, `regno`, `indiv_status`, `club_name`, `event_name`, `pic_address`, `description`, `from_date`, `price`, `total_days`, `stat_part_certificates`, `completed_status`, `stat_ods`) VALUES
-(1, '13bce0267', 0, 'JHYJHYJ', 'yhyhyhyhyyhyhyh', 'Event_pics/10440674_309261455928737_8294077190340733924_n.jpg', 'sldnsakdnaksn', '2015-03-25', 200, 2, 0, 0, 0),
-(2, '13ncea0267', 0, 'alskdclsakc', 'jasdkjnskjnsc', 'Event_pics/12MSE0363_RajalakshmiS.jpg', 'lsaclaskmc', '2015-03-26', 500, 2, 0, 0, 0);
+(3, 'sd', 0, 'dskmlkm', 'lksdmsd', 'Event_pics/10426565_10152989294186840_1728699685022817030_n.jpg', 'sdckm', '2015-03-30', 550, 2, 0, 0, 0),
+(6, 'lsjdcnasjc', 0, 'sdknaslkdna', 'sndkajs', 'Event_pics/10615323_345564478937593_7696205393269083077_n.jpg', 'skcmasdjasjcn', '2015-03-30', 250, 2, 0, 0, 0),
+(7, '13nce0236', 0, 'asidnasc', 'new', 'Event_pics/hulk_smash-wallpaper-1920x1080.jpg', 'lsdklaskdlkasmdlksamdlkclaskdmlsk', '2015-03-31', 67545, 2, 0, 0, 0);
 
 -- --------------------------------------------------------
 

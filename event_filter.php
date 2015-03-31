@@ -11,6 +11,19 @@
 			$club_name=$_REQUEST['org_name'];
 			$date_event=$_REQUEST['date_event'];
 
+			/*if($venue!="all")//a button to reset venue search
+			echo "<button onclick='reset_fields(1)' value='Reset venue search'></button>";
+
+			if(($from_time!="")&&($to_time!=""))//a button to reset time search
+			echo "<button onclick='reset_fields(2)' value='Reset time search'></button>";
+
+			if($club_name!="")//a button to reset club name search
+			echo "<button onclick='reset_fields(3)' value='Reset club name search'></button>";
+
+			if($date_event!="")//a button to reset date search
+			echo "<button onclick='reset_fields(4)' value='Reset date search'></button>";*/
+
+
 			$date_event=mysqli_real_escape_string($mysqli,$date_event);
 			$from_time=mysqli_real_escape_string($mysqli,$from_time);
 			$to_time=mysqli_real_escape_string($mysqli,$to_time);
@@ -25,12 +38,11 @@
 					{
 						if($date_event=="")//none
 						{
-							
+
 						}
 						else//date_event
 						{
 							$info=1;
-							echo "Im here";
 							$sql_event="SELECT * FROM `events_page` WHERE unique_id IN(SELECT distinct id FROM `events_info` WHERE date_event='$date_event');";
 						}
 
@@ -216,13 +228,14 @@
 							echo "date";
 						}
 					}
-					if($fake_event==0)
+					$d=date('Y-m-d');
+					if(($fake_event==0)&&($d<=$arr_date_event))
 					{
 						echo"
 						Status : $indiv_status <br/>
 						Club name : $club_name <br/>
 						Description : $description<br/>
-						Venue : $venue<br/>
+						Venue : $arr_venue<br/>
 						Date : $arr_date_event</br>";
 						if($res_room_no!=0)
 							echo"Room : $res_room_no";

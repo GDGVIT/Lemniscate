@@ -127,8 +127,8 @@ session_start();
 								else
 									$price=$price;
 
-								
-								
+
+
 
 								if($indiv_status==0)
 								{
@@ -379,7 +379,7 @@ function event_filtering()
 	
 	if(date_today==event_date_id) //dnt take the event's date for searching
 	{
-		sending_date=date_today;
+		sending_date=event_date_id;
 	}
 	else
 	{
@@ -426,6 +426,23 @@ function event_filtering()
   }
   xmlhttp.open("GET","event_filter.php?event_venue="+sending_venue+"&org_name="+sending_org_id+"&from_time="+sending_from_time+"&to_time="+sendind_to_time+"&date_event="+sending_date,true);
   xmlhttp.send();	
+}
+
+
+function reset_details(id)
+{
+	/*if(id==1)//venue
+		document.getElementById("club_event_search").value='';
+
+	if(id==2)//time
+		document.getElementById('search_event_time_from').value;
+		document.getElementById('search_event_time_to').value;
+
+	if(id==3)//club_name
+
+	if(id==4)//date 
+	*/
+
 }
 
 </script>
