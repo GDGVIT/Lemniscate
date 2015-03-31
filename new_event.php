@@ -1,8 +1,9 @@
 <?php
     session_start();
-        if(true)
+        if(true)//check the session variable
         {
             require 'Database/sql_con.php';
+            echo "</br><a href='events_page.php' title='Click here to go to Events page'>Click here to go back</a>"; 
     echo "<form action='update_event_details.php' method='POST' enctype='multipart/form-data'>";
     echo "
     	<p>Enter the event's name</p></br>

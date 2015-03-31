@@ -19,6 +19,7 @@ if(isset($_POST['submit']))//session variable checking
 		$time_event_from=array();
 		$time_event_to=array();
 		$venues=array();
+		$room_no=array();
 
 		$event_name=$_POST['event_name'];
 		$reg_event=$_POST['reg_event'];
@@ -37,8 +38,9 @@ if(isset($_POST['submit']))//session variable checking
 			$time_event_from[$i]=$_POST["time_event_from".$i.""];
 			$time_event_to[$i]=$_POST["time_event_to".$i.""];
 			$venues[$i]=$_POST["venue".$i.""];
-				
+			$room_no[$i]=$_POST["room_no".$i.""];
 		}
+
 		echo "<a href='events_page.php' alt='Click here to go back' title='Event's page>Click here to go to event's page</a>";
 		$reg_event=mysqli_real_escape_string($mysqli,$reg_event);
 		$event_type=mysqli_real_escape_string($mysqli,$event_type);
@@ -66,10 +68,15 @@ if(isset($_POST['submit']))//session variable checking
 				while($arr_1=mysqli_fetch_array($res_get_event_id))
 				{
 					$id_event=$arr_1['unique_id'];
-				
+
 					for($i=0;$i<$total_no_days;$i++)
-					{
-						$sql_3 ="INSERT INTO `events_info` (id,date_event,venue,from_time,to_time) VALUES($id_event,'$date_event[$i]','$venues[$i]','$time_event_from[$i]','$time_event_to[$i]')"; 
+					{			
+						if($room_no[$i]!="")
+						$sql_3 ="INSERT INTO `events_info`(id,date_event,venue,from_time,to_time,room_no) VALUES($id_event,'$date_event[$i]','$venues[$i]','$time_event_from[$i]','$time_event_to[$i]',$room_no[$i])"; 
+						
+						else
+						$sql_3 ="INSERT INTO `events_info`(id,date_event,venue,from_time,to_time,room_no) VALUES($id_event,'$date_event[$i]','$venues[$i]','$time_event_from[$i]','$time_event_to[$i]',0)"; 
+							
 						$rs = mysqli_query($mysqli,$sql_3);
 						if($rs==true)
 						{

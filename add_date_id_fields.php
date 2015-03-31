@@ -19,8 +19,15 @@
 				//dropdowns for venues
 				echo "<select name='venue".$i."' id='venue".$i."'>
     					<option value='SJT'>Silver Jublie Tower (SJT)</option>
-   						<option value='TT'>Technology Tower(TT)</option>
-    				 </select><br/>";
+   						<option value='TT'>Technology Tower (TT)</option>
+   						<option value='SMV'>SMV (Hexagon)</option>
+   						<option value='MB'>Main Building(MB)</option>
+   						<option value='greenos'>Greenos</option>
+   						<option value='GDN'>G.D Naidu</option>
+    				 </select>";
+    			echo "Room no(optional)";
+    			echo "<input type='text' name='room_no".$i."' id='room_no".$i."' placeholder='Enter the room number'><br/>";
+
 			}
 			mysqli_close($mysqli);
 		}
