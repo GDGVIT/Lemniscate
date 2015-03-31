@@ -201,7 +201,7 @@ else if(isset($_POST["get_password"]))
 				}
 				else
 				{
-					echo "Error in inserting the data into reg_verification";	
+					echo "Error in inserting the data into forget_passwords";	
 				}
 			
 			}
@@ -314,7 +314,7 @@ else if(isset($_POST["get_password"]))
 
 					<!--Registration form-->
                   <div id="tab2" class="col s12 tab2">
-                                  <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
+                                  
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
                                       <input id="regno_id" name="regno_id" type="text" class="validate white-text" autocomplete="off">
@@ -330,12 +330,12 @@ else if(isset($_POST["get_password"]))
                                     <input name="dob" id="dob" type="date" class="datepicker">
                                     </div>
                                     <div class="col s12" style="margin:40px 0 10px 0; text-align:center;">
-                                   	   <button class="btn waves-effect waves-light #03a9f4 light-blue" type="button" onclick="register()" id = "register" name="register">Register
+                                   	   <button class="btn waves-effect waves-light #03a9f4 light-blue"  onclick="register();" id = "register" name="register">Register
                                         <i class="mdi-social-person-add right"></i>
                                       </button>
                                    </div>
                                    </div>
-                                </form>
+                                
                   </div>
                   <div class="col s12" id="fwpd" style="text-align:center;">
                   <a class="waves-effect waves-light btn-flat tab3 white-text" onclick="showtab3();">Forgot Password</a>
@@ -376,6 +376,23 @@ else if(isset($_POST["get_password"]))
     selectYears: 50 // Creates a dropdown of 15 years to control year
   });</script>
 <script type="text/javascript">
+function register()
+{
+	var regno = document.getElementById("regno_id").value;
+	var email = document.getElementById("email_id").value;
+	var dob = document.getElementById("dob").value;
+	var xmlhttp = new XMLHttpRequest();
+  	xmlhttp.onreadystatechange=function()
+  	{
+    	if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    	{
+      		document.write(xmlhttp.responseText);
+    	}
+  	}
+	xmlhttp.open("POST","register_user.php",true);
+	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+	xmlhttp.send("regno="+regno+"&email="+email+"&dob="+dob);
+}
 function showtab1(){
       $("#tab1").show();
       $(".tabln").show();

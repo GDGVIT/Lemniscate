@@ -1,9 +1,13 @@
 <?php
+	require("Database/sql_con.php");
 	
 	$flag =0; //To know if the dob and regno are valid
-	$regno=$_POST["regno_id"];
-	$email=$_POST["email_id"];
+	$regno=$_POST["regno"];
+	$email=$_POST["email"];
 	$dob = $_POST["dob"];
+	
+	$date = date_create_from_format('j M, Y', $dob);
+	$dob =date_format($date, 'dmY');
 	
 	$url  ="https://vit-login.herokuapp.com/login?reg_no=".$regno."&dob=".$dob;
 	//Open connection
@@ -28,30 +32,51 @@
 	$class_details=json_decode($result,true);
 	//Close connection
 	curl_close($ch);
-	
 	if(!is_array($class_details))
 	{
 		$flag=1;
 	}
 	else
 	{
-		$q1 = $mysqli->prepare("INSERT INTO `courses_now` (`regno`, `dob`, `email`, `gen_password`, `activated`) VALUES (?, ?, ?, ?, ?)");
-		$q1->bind_param("ssssi", $regno, $dob,$email,$ResultStr,$activated);	
-		if($q1->execute())
+		$i=0;
+		$subjects=array();
+		$past=array();
+		$each_subject=array();
+		$past_subject=array();
+		
+		//Taking  class details and past grades
+		foreach($class_details as $k)
 		{
-				$q2= $mysqli->prepare("INSERT INTO `alumini_classes` (`regno`, `dob`, `email`, `gen_password`, `activated`) VALUES (?, ?, ?, ?, ?)");
-				$q2->bind_param("ssssi", $regno, $dob,$email,$ResultStr,$activated);	
-				if($q2->execute())
-				{
-					
-				}
-		}		
+			if ($i==0)
+				$subjects=$k;
+			if($i==1)
+			{
+				$past=$k;
+				break;
+			}
+			$i++;
+		}
+		foreach($past as $code=>$s)
+		{	
+			$past_subject = $s;
+			print_r($past_subject);
+			$stmt = $mysqli->prepare("INSERT INTO `alumni_classes` (`code`, `title`) VALUES (?, ?)");
+			$stmt->bind_param("ss",$code, $past_subject);	
+			$stmt->execute();	
+		}
+		foreach($subjects as $code =>$s)
+		{	
+			$each_subject = $s;
+			$stmt = $mysqli->prepare("INSERT INTO `courses_now` (`class_num`, `slot`, `title`, `code`, `venue`, `faculty`) VALUES (?, ?, ?, ?, ?, ?)");
+			$stmt->bind_param("ssssss",$code, $each_subject[0], $each_subject[1],$each_subject[2],$each_subject[3],$each_subject[4]);	
+			$stmt->execute();	
+		}
 	}
 	if($flag==1)
 	{
 		echo "Regno and  DOB do not match!";
 	}
-	else
+	else 
 	{
 				$RandomStr = base64_encode(microtime());
 				$ResultStr = substr($RandomStr,0,20);
@@ -145,5 +170,8 @@
 	{
 		//VIT Email Format check
 		if(strrpos($email,"@vit.ac.in")>1)
-		
+		{
+			
+		}
+	}
 ?>

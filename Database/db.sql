@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2015 at 06:26 PM
+-- Generation Time: Mar 31, 2015 at 07:58 PM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -19,6 +19,39 @@ SET time_zone = "+00:00";
 --
 -- Database: `db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `alumni_classes`
+--
+
+CREATE TABLE IF NOT EXISTS `alumni_classes` (
+  `gen_id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(10) NOT NULL,
+  `title` varchar(30) NOT NULL,
+  PRIMARY KEY (`code`),
+  UNIQUE KEY `gen_id` (`gen_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `courses_now`
+--
+
+CREATE TABLE IF NOT EXISTS `courses_now` (
+  `gen_id` int(11) NOT NULL AUTO_INCREMENT,
+  `class_num` int(11) NOT NULL,
+  `slot` varchar(6) NOT NULL,
+  `title` varchar(30) NOT NULL,
+  `code` varchar(6) NOT NULL,
+  `venue` varchar(10) NOT NULL,
+  `faculty` varchar(50) NOT NULL,
+  `alumni_id` int(11) NOT NULL,
+  PRIMARY KEY (`class_num`),
+  UNIQUE KEY `gen_id` (`gen_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -87,6 +120,22 @@ INSERT INTO `events_page` (`unique_id`, `regno`, `indiv_status`, `club_name`, `e
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `forgot_password`
+--
+
+CREATE TABLE IF NOT EXISTS `forgot_password` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `gen_id` int(11) NOT NULL,
+  `hash` varchar(25) NOT NULL,
+  `date_apply` date NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `activated` int(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `hosteller`
 --
 
@@ -138,10 +187,19 @@ CREATE TABLE IF NOT EXISTS `location` (
 --
 
 CREATE TABLE IF NOT EXISTS `login` (
-  `regno` varchar(9) NOT NULL,
+  `gen_id` int(11) NOT NULL,
+  `uid` varchar(10) NOT NULL,
   `password` varchar(10) NOT NULL,
-  PRIMARY KEY (`regno`)
+  PRIMARY KEY (`gen_id`),
+  UNIQUE KEY `uid` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `login`
+--
+
+INSERT INTO `login` (`gen_id`, `uid`, `password`) VALUES
+(1, '12mse0363', '123');
 
 -- --------------------------------------------------------
 
@@ -154,11 +212,18 @@ CREATE TABLE IF NOT EXISTS `reg_verification` (
   `regno` varchar(9) NOT NULL COMMENT 'VIT Registration no',
   `dob` date NOT NULL COMMENT 'DOB for parent login',
   `email` text NOT NULL COMMENT 'VIT Gmail ID',
-  `gen_password` varchar(15) NOT NULL COMMENT 'Generated hash sent for verification',
+  `gen_password` varchar(20) NOT NULL COMMENT 'Generated hash sent for verification',
   `activated` int(1) NOT NULL DEFAULT '0' COMMENT 'Account activated or not( 0 - not activated)',
   PRIMARY KEY (`id`),
   UNIQUE KEY `regno` (`regno`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Temporary table for new user' AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 COMMENT='Temporary table for new user' AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `reg_verification`
+--
+
+INSERT INTO `reg_verification` (`id`, `regno`, `dob`, `email`, `gen_password`, `activated`) VALUES
+(5, '12mse0363', '1994-10-01', 's.rajalakshmi2012@vit.ac.in', 'mc41mdu5ndewmcaxndi3', 0);
 
 --
 -- Constraints for dumped tables
@@ -169,12 +234,6 @@ CREATE TABLE IF NOT EXISTS `reg_verification` (
 --
 ALTER TABLE `hosteller`
   ADD CONSTRAINT `hosteller_ibfk_1` FOREIGN KEY (`regno`) REFERENCES `info_user` (`regno`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Constraints for table `login`
---
-ALTER TABLE `login`
-  ADD CONSTRAINT `login_ibfk_1` FOREIGN KEY (`regno`) REFERENCES `info_user` (`regno`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
