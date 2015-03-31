@@ -59,7 +59,6 @@
 		foreach($past as $code=>$s)
 		{	
 			$past_subject = $s;
-			print_r($past_subject);
 			$stmt = $mysqli->prepare("INSERT INTO `alumni_classes` (`code`, `title`) VALUES (?, ?)");
 			$stmt->bind_param("ss",$code, $past_subject);	
 			$stmt->execute();	
@@ -151,7 +150,8 @@
 				}
 				else
 				{
-					echo "Error in inserting the data into reg_verification";	
+					echo "data inserted";
+					//echo "Error in inserting the data into reg_verification";	
 				}
 	}
 	
