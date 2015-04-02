@@ -7748,7 +7748,7 @@ ul.side-nav .collapsible-body li.active, ul.side-nav.fixed .collapsible-body li.
 
 .picker__date-display {
   text-align: center;
-  background-color: #26a69a;
+  background-color: #03a9f4;
   color: #fff;
   padding-bottom: 15px;
   font-weight: 300; }
@@ -7759,7 +7759,7 @@ ul.side-nav .collapsible-body li.active, ul.side-nav.fixed .collapsible-body li.
   background: #a1ded8; }
 
 .picker__weekday-display {
-  background-color: #1f897f;
+  background-color: #0288d1;
   padding: 10px;
   font-weight: 200;
   letter-spacing: 0.5;
@@ -7798,7 +7798,7 @@ ul.side-nav .collapsible-body li.active, ul.side-nav.fixed .collapsible-body li.
   border: 1px solid transparent; }
 
 .picker__day.picker__day--today {
-  color: #26a69a; }
+  color: #03a9f4; }
 
 .picker__day.picker__day--today.picker__day--selected {
   color: #fff; }
@@ -7813,7 +7813,7 @@ ul.side-nav .collapsible-body li.active, ul.side-nav.fixed .collapsible-body li.
   -ms-transform: scale(0.9);
   -o-transform: scale(0.9);
   transform: scale(0.9);
-  background-color: #26a69a;
+  background-color: #03a9f4;
   color: #ffffff; }
   .picker__day--selected.picker__day--outfocus, .picker__day--selected:hover.picker__day--outfocus, .picker--focused .picker__day--selected.picker__day--outfocus {
     background-color: #a1ded8; }
@@ -7825,7 +7825,7 @@ ul.side-nav .collapsible-body li.active, ul.side-nav.fixed .collapsible-body li.
 .picker__close, .picker__today {
   font-size: 1.1rem;
   padding: 0 1rem;
-  color: #26a69a; }
+  color: #03a9f4; }
 
 .picker__nav--prev:before, .picker__nav--next:before {
   content: " ";
