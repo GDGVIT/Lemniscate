@@ -20,20 +20,24 @@
 	$result = curl_exec($ch);
 	if ($result == FALSE) 
 	{
-	   echo "Curl failed with error: " . curl_error($ch);
+	   //"Curl failed with error: " . curl_error($ch);
+	   echo "01";
 	   $flag=1;
 	}
 	$json = json_decode($result,true);
 	if (is_null($json)) 
 	{
-	    echo "Json decoding failed with error: ". json_last_error_msg();
+	    //"Json decoding failed with error: ". json_last_error_msg();
+		echo "02";
 		$flag=1;
 	}
 	$class_details=json_decode($result,true);
+	
 	//Close connection
 	curl_close($ch);
 	if(!is_array($class_details))
 	{
+		echo "03";
 		$flag=1;
 	}
 	else
@@ -71,16 +75,13 @@
 			$stmt->execute();	
 		}
 	}
-	if($flag==1)
-	{
-		echo "Regno and  DOB do not match!";
-	}
-	else 
+	if($flag!=1)
 	{
 				$RandomStr = base64_encode(microtime());
 				$ResultStr = substr($RandomStr,0,20);
 				$ResultStr = strtolower($ResultStr);
 				$activated=0;
+				$dob = date_format($date, 'Y-m-d');
 				$stmt = $mysqli->prepare("INSERT INTO `reg_verification` (`regno`, `dob`, `email`, `gen_password`, `activated`) VALUES (?, ?, ?, ?, ?)");
 				$stmt->bind_param("ssssi", $regno, $dob,$email,$ResultStr,$activated);	
 				if($stmt->execute())
@@ -137,10 +138,12 @@
 							if (!$mail->send())
 							{
 								echo "Mailer Error: " . $mail->ErrorInfo;
+								echo "04";
 							}
 							else 
 							{
-								echo "Message sent! Check your mail for details";
+								//echo "Message sent! Check your mail for details";
+								echo "05";
 							}
 				/*
 					}
@@ -150,28 +153,8 @@
 				}
 				else
 				{
-					echo "data inserted";
+					echo "06";
 					//echo "Error in inserting the data into reg_verification";	
 				}
-	}
-	
-	$pattern_regno = "/^[0-1]{1}[0-9]{1}[a-zA-Z]{3}[0-9]{4}$/";
-	$pattern_email = " /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/";
-	
-	//Regno Check
-	if(!preg_match($pattern_regno,$regno))
-	{
-		echo"Invalid Regno";
-		$flag=1;
-	}
-	
-	//Email Check
-	if(preg_match($pattern_email,$email))
-	{
-		//VIT Email Format check
-		if(strrpos($email,"@vit.ac.in")>1)
-		{
-			
-		}
 	}
 ?>
