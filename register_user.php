@@ -21,15 +21,17 @@
 	if ($result == FALSE) 
 	{
 	   //"Curl failed with error: " . curl_error($ch);
-	   echo "01";
+	   echo "01: Curl Error";
 	   $flag=1;
+	   return;
 	}
 	$json = json_decode($result,true);
 	if (is_null($json)) 
 	{
 	    //"Json decoding failed with error: ". json_last_error_msg();
-		echo "02";
+		echo "02: JSON Decoding Error";
 		$flag=1;
+		return;
 	}
 	$class_details=json_decode($result,true);
 	
@@ -37,8 +39,9 @@
 	curl_close($ch);
 	if(!is_array($class_details))
 	{
-		echo "03";
+		echo "03: Null Array Error";
 		$flag=1;
+		return;
 	}
 	else
 	{
@@ -137,13 +140,12 @@
 							//send the message, check for errors
 							if (!$mail->send())
 							{
-								echo "Mailer Error: " . $mail->ErrorInfo;
-								echo "04";
+								echo "04: Mailer Error: " . $mail->ErrorInfo;
+								
 							}
 							else 
 							{
-								//echo "Message sent! Check your mail for details";
-								echo "05";
+								echo "Message sent! Check your mail for details";
 							}
 				/*
 					}
@@ -153,7 +155,7 @@
 				}
 				else
 				{
-					echo "06";
+					echo "06: Error in inserting the data into reg_verification";
 					//echo "Error in inserting the data into reg_verification";	
 				}
 	}

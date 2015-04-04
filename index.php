@@ -380,12 +380,14 @@ function register()
   	{
     	if (xmlhttp.readyState==4 && xmlhttp.status==200)
     	{
-      		document.write(xmlhttp.responseText);
+      		var result = xmlhttp.responseText;
+			toast(result, 3000, "#e53935 red darken-1");
     	}
   	}
 	xmlhttp.open("POST","register_user.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send("regno="+regno+"&email="+email+"&dob="+dob);
+	
 	
 }
 function showtab1(){
