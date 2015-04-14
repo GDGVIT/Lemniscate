@@ -4,8 +4,8 @@ session_start();
 if(isset($_SESSION["gen_id"]))
 {
 	require("Database/sql_con.php");
-	$gen_id = base64_decode($_SESSION["gen_id"]);
-	$stmt = $mysqli->prepare("SELECT * FROM `login` WHERE `gen_id`=? ");
+	$gen_id = substr($_SESSION["gen_id"],0,-10);
+	$stmt = $mysqli->prepare("SELECT * FROM `login` WHERE md5(`gen_id`)=? ");
 	$stmt->bind_param("i", $gen_id);	
 	if($stmt->execute())
 	{
@@ -14,7 +14,7 @@ if(isset($_SESSION["gen_id"]))
 			$count = mysqli_num_rows($rs);
 			while ($arr = mysqli_fetch_array($rs)) 
 			{
-				$gen_id_db = $arr["gen_id"];		
+				$gen_id_db = md5($arr["gen_id"]);		
 			}
 			if(($count==1&&$gen_id!=""&&strcmp($gen_id,$gen_id_db)==0))
 			{
@@ -28,14 +28,13 @@ if(isset($_SESSION["gen_id"]))
 else if (isset($_COOKIE['cow']) && isset($_COOKIE['calf'])) 
 {
 	require("Database/sql_con.php");
-	$uname = base64_decode($_COOKIE['cow']); 
-	$pword = base64_decode($_COOKIE['calf']);
-	
-	$stmt = $mysqli->prepare("SELECT * FROM `login` WHERE `uid`=?  AND `password`=?");
-	$stmt->bind_param("ss", $uname, $pword);	
+	$uname = substr($_COOKIE['cow'],0,-10); 
+	$gen_id = substr($_COOKIE['calf'],0,-10);
+	$stmt = $mysqli->prepare("SELECT * FROM `login` WHERE md5(`uid`)=?  AND md5(`gen_id`)=?");
+	$stmt->bind_param("ss", $uname, $gen_id);	
 	$uname_db="";
-	$pword_db="";
-	
+	$gen_id_db="";
+	$salt = "pswqghniaz";
 	if($stmt->execute())
 	{
 		if($rs = $stmt->get_result())
@@ -43,19 +42,20 @@ else if (isset($_COOKIE['cow']) && isset($_COOKIE['calf']))
 			$count = mysqli_num_rows($rs);
 			while ($arr = mysqli_fetch_array($rs)) 
 			{
-				$uname_db = $arr["uid"];
-				$pword_db = $arr["password"];	
-				$gen_id = $arr["gen_id"];		
+				$uname_db = md5($arr["uid"]);
+				$gen_id_db = md5($arr["gen_id"]);		
 			}
-			if(($count==1&&$uname!=""&&$pword!=""&&strcmp($uname,$uname_db)==0)&&(strcmp($pword,$pword_db)==0))
+			if(($count==1&&$uname!=""&&$gen_id!=""&&strcmp($uname,$uname_db)==0)&&(strcmp($gen_id,$gen_id_db)==0))
 			{
-				$_SESSION["gen_id"]=base64_encode($gen_id);
+				$_SESSION["gen_id"]=$gen_id_db.$salt;
 				header("location:home.php");
 			}
 		}
 	}
 	mysqli_close($mysqli);
 }
+
+//When the user wants to login
 if(isset($_POST["login"]))
 {
 	require("Database/sql_con.php");
@@ -78,13 +78,14 @@ if(isset($_POST["login"]))
 			}
 			if(($count==1&&$uname!=""&&$pword!=""&&strcmp($uname,$uname_db)==0)&&(strcmp($pword,$pword_db)==0))
 			{
+				$salt = "pswqghniaz";
 				if (isset($_POST["save_login"]))
 				{
 						//Cookie to be created for auto login when "Remember me" has been chosen and the saved id and password expires in 60 days
-						setcookie('cow',base64_encode($uname),time()+3600*24*60);
-						setcookie('calf',base64_encode($pword),time()+3600*24*60);
+						setcookie('cow',md5($uname_db).$salt,time()+3600*24*60);
+						setcookie('calf',md5($gen_id).$salt,time()+3600*24*60);
 				}
-				$_SESSION["gen_id"]=base64_encode($gen_id);
+				$_SESSION["gen_id"]=md5($gen_id).$salt;
 				header("location:home.php");
 			}
 			else
@@ -99,8 +100,8 @@ if(isset($_POST["login"]))
 		echo "Query not executed mysqli_error()";
 mysqli_close($mysqli);
 }
-//When the user wants to login
 
+//forgot_password
 else if(isset($_POST["get_password"]))
 {
 	require("Database/sql_con.php");
@@ -112,7 +113,7 @@ else if(isset($_POST["get_password"]))
 	$regno_db="";
 	$email_db="";
 	
-	$stmt = $mysqli->prepare("SELECT `gen_id`, `regno` FROM `info_user` WHERE `email`=? AND `regno`=? ");
+	$stmt = $mysqli->prepare("SELECT `gen_id`, `regno`, `email` FROM `info_user` WHERE `email`=? AND `regno`=? ");
 	$stmt->bind_param("ss", $email_f,$regno_f);	
 	if($stmt->execute())
 	{
@@ -127,13 +128,12 @@ else if(isset($_POST["get_password"]))
 			}
 			if(($count==1&&$email_f!=""&&$regno_f!=""&&strcmp($email_f,$email_db)==0)&&(strcmp($regno_f,$regno_db)==0))
 			{
-				$RandomStr = base64_encode(microtime());
-				$ResultStr = substr($RandomStr,0,20);
-				$ResultStr = strtolower($ResultStr);
+				require("generate_hash.php");
+				$ResultStr = generateHash();
 				$activated=0;
 				$date=date("Y-m-d");
 				$stmt = $mysqli->prepare("INSERT INTO `forgot_password` ( `gen_id`, `hash`, `date_apply`, `email` ,`activated`) VALUES (?, ?, ?, ?, ?)");
-				$stmt->bind_param("issi", $gen_id_db, $ResultStr,$date,$email_db,$activated);	
+				$stmt->bind_param("isssi", $gen_id_db, $ResultStr,$date,$email_db,$activated);	
 				if($stmt->execute())
 				{
 					date_default_timezone_set('Asia/Calcutta');
@@ -144,7 +144,7 @@ else if(isset($_POST["get_password"]))
 					if($mail->smtpConnect())
 					{
 					*/
-							$to= $email; 
+							$to= $email_db; 
 							$subject= "Leminiscate | Password Reset" ;
 							$message="Pls check this link localhost/lemniscate/password_reset.php?p=$ResultStr&e=$email_db&d=$date";
 							//Tell PHPMailer to use SMTP
@@ -355,8 +355,8 @@ else if(isset($_POST["get_password"]))
     $('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 50 // Creates a dropdown of 15 years to control year
-  });</script>
-<script type="text/javascript">
+  });
+  
 function register()
 {
 	var result="";
@@ -370,16 +370,20 @@ function register()
 		toast("Invalid Registration Number!", 3000, "#e53935 red darken-1");
 		return false;
 	}
-	if(!email.match(pattern_email))
+	
+	/*if(!email.match(pattern_email))
 	{
 		toast("Invalid Email!", 3000, "#e53935 red darken-1");
 		return false;
-	}
+	}*/
+	
+	document.getElementById("register").disabled=true;
 	var xmlhttp = new XMLHttpRequest();
   	xmlhttp.onreadystatechange=function()
   	{
     	if (xmlhttp.readyState==4 && xmlhttp.status==200)
     	{
+			document.getElementById("register").disabled=false;
       		var result = xmlhttp.responseText;
 			toast(result, 3000, "#e53935 red darken-1");
     	}

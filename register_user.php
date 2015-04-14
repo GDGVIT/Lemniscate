@@ -33,10 +33,12 @@
 		$flag=1;
 		return;
 	}
+	
 	$class_details=json_decode($result,true);
 	
 	//Close connection
 	curl_close($ch);
+	
 	if(!is_array($class_details))
 	{
 		echo "03: Null Array Error";
@@ -45,6 +47,12 @@
 	}
 	else
 	{
+		//Check if success or failure
+		if($class_details["status"]=="success")
+		echo "success";
+	else
+		echo"failure";
+		return;
 		$i=0;
 		$subjects=array();
 		$past=array();
