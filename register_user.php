@@ -22,7 +22,6 @@
 	{
 	   //"Curl failed with error: " . curl_error($ch);
 	   echo "01: Curl Error";
-	   $flag=1;
 	   return;
 	}
 	$json = json_decode($result,true);
@@ -30,7 +29,6 @@
 	{
 	    //"Json decoding failed with error: ". json_last_error_msg();
 		echo "02: JSON Decoding Error";
-		$flag=1;
 		return;
 	}
 	
@@ -42,43 +40,72 @@
 	if(!is_array($class_details))
 	{
 		echo "03: Null Array Error";
-		$flag=1;
 		return;
 	}
 	else
 	{
 		//Check if success or failure
-		if($class_details["status"]=="success")
-		echo "success";
-	else
-		echo"failure";
-		return;
+		if($class_details["status"]!="success")
+		{
+			echo "Failure";
+			return;
+		}
+		
 		$i=0;
-		$subjects=array();
-		$past=array();
+		$subjects_present=$class_details["class_details"];
+		$past=$class_details["past_grades"];
 		$each_subject=array();
 		$past_subject=array();
 		
-		//Taking  class details and past grades
-		foreach($class_details as $k)
-		{
-			if ($i==0)
-				$subjects=$k;
-			if($i==1)
-			{
-				$past=$k;
-				break;
-			}
-			$i++;
-		}
 		foreach($past as $code=>$s)
 		{	
-			$past_subject = $s;
-			$stmt = $mysqli->prepare("INSERT INTO `alumni_classes` (`code`, `title`) VALUES (?, ?)");
-			$stmt->bind_param("ss",$code, $past_subject);	
-			$stmt->execute();	
+			$stmt1 = $mysqli->prepare("SELECT * `alumni_classes` WHERE `code`= ?");
+			$stmt1->bind_param("s",$code);	
+			$stmt1->execute();
+			$count = mysqli_num_rows($stmt1);
+			if($count==0)
+			{
+				$stmt = $mysqli->prepare("INSERT INTO `alumni_classes` (`code`, `title`) VALUES (?, ?)");
+				$stmt->bind_param("ss",$code, $s);	
+				if($stmt->execute())
+				{
+						$stmt2 = $mysqli->prepare("CREATE TABLE  alumni_$code ()");
+						$stmt2->bind_param("s",$code);	
+						if($stmt2->execute())
+						{
+							$stmt2 = $mysqli->prepare("CREATE TABLE  alumni_$code ()");
+							$stmt2->bind_param("s",$code);	
+							if($stmt2->execute())
+							{
+							}
+							else
+							{
+							}
+						}
+						else
+						{
+							
+						}
+				}
+				else
+				{
+					
+				}
+			}
+			else if($count==1)
+			{
+				$stmt2 = $mysqli->prepare("CREATE TABLE  alumni_$code ()");
+				$stmt2->bind_param("s",$code);	
+				if($stmt2->execute())
+				{
+				}
+				else
+				{
+				}
+			}
 		}
-		foreach($subjects as $code =>$s)
+		
+		foreach($subjects_present as $code =>$s)
 		{	
 			$each_subject = $s;
 			$stmt = $mysqli->prepare("INSERT INTO `courses_now` (`class_num`, `slot`, `title`, `code`, `venue`, `faculty`) VALUES (?, ?, ?, ?, ?, ?)");
@@ -88,9 +115,8 @@
 	}
 	if($flag!=1)
 	{
-				$RandomStr = base64_encode(microtime());
-				$ResultStr = substr($RandomStr,0,20);
-				$ResultStr = strtolower($ResultStr);
+				require("generate_hash.php");
+				$ResultStr = generateHash();
 				$activated=0;
 				$dob = date_format($date, 'Y-m-d');
 				$stmt = $mysqli->prepare("INSERT INTO `reg_verification` (`regno`, `dob`, `email`, `gen_password`, `activated`) VALUES (?, ?, ?, ?, ?)");
