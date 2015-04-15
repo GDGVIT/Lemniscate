@@ -1,59 +1,103 @@
 <HTML>
-</html>
+<head>
+    <meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<link rel="apple-touch-icon" sizes="57x57" href="favicon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="favicon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="favicon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="favicon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="favicon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="favicon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="favicon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="favicon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192" href="favicon/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+	<link rel="manifest" href="favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+
+	<title>Lemniscate | Events</title>
+    
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/css/materialize.min.css">
+
+
+    <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.96.1/js/materialize.min.js"></script>
+    <script type="text/javascript" src="js/ajax.js"></SCRIPT>
+
+</head>
 <?php
 session_start();
 	//Seaching all events according to cost ,time and also w.r.t to the location.
 	if(true)//isset($_SESSION['id'])
 	{
 		require 'Database/sql_con.php';
-		echo "<div id='display'>";
-		{
-			echo "<input type='button' value='Add an Event' onclick='add_event()' title='Click here to add an event'></input>";
-			
+		
 
-			//name
-			//Not a filter
-			echo "<h3>Search by name<br/></h3>";
-			echo "<h2>Enter the event's name to search</h2>";
-			echo "<input type='text' id='name_event' placeholder='Search by event's name' onkeyup='showHint(this.value)'>";
-			echo "<div id=hint>";
-			echo "</div>";
+		echo "<div id='display' align='center'>
+		<br><br><br>
+		<ul class='collapsible eventsearch' data-collapsible='accordion'>
+    <li>
+      <div class='collapsible-header'><i class='mdi-action-search'></i>Search by Event name</div>
+      <div class='collapsible-body'><p><input type='text' id='name_event' placeholder='Search by event's name' onkeyup='showHint(this.value)'><div id=hint></div></p></div>
+    </li>";
 
-			// Event Filtering starts
 
-			// Dropdown-club && chap names-db
-			$sql_club = "SELECT * FROM `events_page`";
+
+    echo "
+    <li>
+      <div class='collapsible-header'><i class='mdi-social-person'></i>Seach by Organiser's name</div>
+      <div class='collapsible-body'><p>";
+
+    $sql_club = "SELECT * FROM `events_page`";
 			$res_club = mysqli_query($mysqli,$sql_club);
 			if(mysqli_num_rows($res_club)>0)
 			{
 				$d=date('Y-m-d');
-				echo "<h3>Seach by organiser's name</h3>";
-				echo "<select name='club_event_search' id='club_event_search' onchange='event_filtering()'>";
-				echo "<option value='0' id='event_none'>Choose anyone</option>";
+                echo "<select name='club_event_search' id='club_event_search' onchange='event_filtering()' class='browser-default'>";
+				echo "<option value='0' id='event_none' class='disabled'>Choose anyone</option>";
 				while($club=mysqli_fetch_array($res_club))
 				{
 					$search_club=$club['club_name'];
 					echo "<option value='$search_club' id='$search_club' >$search_club</option>";
 				}
 				echo"</select>";
-			}
 
-			//Date && Time
-			echo "<h3>Seach by Date and Time</h3>";
-			$d=date('Y-m-d');
+      echo "</p></div>
+    </li>
+    <li>
+      <div class='collapsible-header'><i class='mdi-action-schedule'></i>Seach by Date and Time</div>
+      <div class='collapsible-body'><p>";
+
+            $d=date('Y-m-d');
 			echo "<input type='date' id='search_event_date' value=".$d." name='search_event_date' onchange='event_filtering()'>";
 			
-			echo "<h3>From Time</h3>";
+			echo "<h5>From Time</h5>";
 			echo "<input type='time' id='search_event_time_from' name='search_event_time_from' onchange='event_filtering()''>";
 
-			echo "<h3>To Time</h3>";
-			echo "<input type='time' id='search_event_time_to' name='search_event_time_to' onchange='event_filtering()''>";			
-			
+			echo "<h5>To Time</h5>";
+			echo "<input type='time' id='search_event_time_to' name='search_event_time_to' onchange='event_filtering()''>";	
 
 
-			//Venue
-			echo "<h3>Seach by Venue</h3>";
-			echo "<select name='search_event_venue' onchange='event_filtering()' id='search_event_venue'>
+
+
+      echo "</p></div>
+    </li>
+    <li>
+      <div class='collapsible-header'><i class='mdi-maps-place'></i>Seach by Venue</div>
+      <div class='collapsible-body'><p>";
+ 
+      echo "<select name='search_event_venue' onchange='event_filtering()' id='search_event_venue' class='browser-default'>
 						<option value='0' id='event_none'>Choose anyone</option>
     					<option value='SJT'>Silver Jublie Tower (SJT)</option>
    						<option value='TT'>Technology Tower (TT)</option>
@@ -64,6 +108,13 @@ session_start();
     				 </select></br></br></br>";
 
 
+      echo "</p></div>
+    </li>
+  </ul>";
+		{
+			echo "<a class='waves-effect waves-light btn' onclick='add_event()'>Add Event</a>";
+				
+			}
 			//filtering ends
 
     		echo "<div id='event_filter'>";
@@ -446,3 +497,4 @@ function reset_details(id)
 }
 
 </script>
+</html>

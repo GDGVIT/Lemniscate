@@ -121,4 +121,10 @@
 .hcenter{
   text-align: center;
 }
+.paddl{
+  padding-left: 10px;
+}
+.eventsearch{
+  width: 50%;
+}
 
