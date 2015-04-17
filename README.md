@@ -8,8 +8,6 @@ Checklist :
 1. Come up with a good UI/UX for the website.
 2. Get a good  name for this project.
 
-
-
 Work done:
-1. Login UI Linked with backend
-2. Events Page
+1. Login UI Linked with backend.
+2. Events Page.
