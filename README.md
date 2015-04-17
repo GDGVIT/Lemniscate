@@ -7,9 +7,9 @@ Checklist :
 
 1. Come up with a good UI/UX for the website.
 2. Get a good  name for this project.
-3. The dob column has to be resized.
-4. forgot password and registration activation page has to be made
+
 
 
 Work done:
 1. Login UI Linked with backend
+2. Events Page
