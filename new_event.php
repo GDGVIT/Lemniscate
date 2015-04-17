@@ -6,43 +6,62 @@
             echo "</br><a href='events_page.php' title='Click here to go to Events page'>Click here to go back</a>"; 
     echo "<form action='update_event_details.php' method='POST' enctype='multipart/form-data'>";
     echo "
-    	<p>Enter the event's name</p></br>
-    	<input type='text' id='event_name' name='event_name' autocomplete='off' placeholder='Polymer' onkeypress='return isAlpha(event)'></input></br></br></br>
-    	
-    	<p>Enter the Registration number of event-organiser</p>
-    	<input type='text' id='reg_event' name='reg_event' autocomplete='off' placeholder='13BCE0000' onkeypress='return isRegno()'></input><br/></br></br>
-    	
-    	<p>Enter the type of the event</p>
-    		<input type = 'radio' value ='0' name ='event_type' checked='checked' id='club' >Club Event
-        	<input type = 'radio' value ='1' name ='event_type' id='indiv'>Individual Event</br></br></br>
-        
-        <p>Enter the name of the Event's organising club/individual name:</p>
-        <input type='text' id='club_name' name='club_name' autocomplete='off' onkeypress='return isAlpha(event)'></input></br></br>
-        
-        <p>Picture of the Event</p>
-    	<input type='file' name='File_up' id='File_up' accept='image/x-png, image/gif, image/jpeg' /></br></br>
-    	
-    	<p>Description of the event</p>
-    	<textarea id='event_desc' name='event_desc' rows='10' cols='50' autocomplete='off' onkeypress='return isAlpha(event)'></textarea></br></br>
-        
-    	<p>Cost of the event</p>
-    	<input type='text' id='cost_event' name='cost_event' autocomplete='off' onkeypress='return isNumber(event)'></input></br></br>
+        <br>
+        <div class='input-field col s12'>
+          <input id='event_name' type='text' class='validate' autocomplete='off' onkeypress='return isAlpha(event)'>
+          <label for='last_name'>Event Name</label>
+        </div>
+        <div class='input-field col s12'>
+          <input id='reg_event' name='reg_event' type='text' class='validate' autocomplete='off' onkeypress='return isRegno()'>
+          <label for='last_name'>Registration number of Event Organiser</label>
+        </div>
+        <p>Type of the event :  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+        <input name='addevent' type='radio' id='club' class='with-gap'/>
+        <label for='club'>Club Event</label>
+        <input name='addevent' type='radio' id='indiv' class='with-gap'/>
+        <label for='indiv'>Individual Event</label>
+        </p>
+    	<div class='input-field col s12'>
+          <input id='club_name' name='club_name' type='text' class='validate' autocomplete='off' onkeypress='return isAlpha(event)'>
+          <label for='club_name'>Event Organiser's Name/Club</label>
+        </div>
 
-        <p>Are participation-certificates provided?</p>
-        <input type = 'radio' value ='0' name ='part_certif' checked='checked' id='part_certif_no' >No
-        <input type = 'radio' value ='1' name ='part_certif' id='part_certif_yes'>Yes</br></br></br>
-        
-        <p>Are On Duties provided?</p>
-        <input type = 'radio' value ='0' name ='od_status' checked='checked' id='od_status_no' >No
-        <input type = 'radio' value ='1' name ='od_status' id='od_status_yes'>Yes</br></br></br>
-        
+        <p>Event Picture : &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+    	<input type='file' name='File_up' id='File_up' accept='image/x-png, image/gif, image/jpeg' /></p>
+    	
+        <div class='input-field col s12'>
+          <textarea id='event_desc' name='event_desc' class='materialize-textarea' onkeypress='return isAlpha(event)'></textarea>
+          <label for='event_desc'>Event Description</label>
+        </div>
 
-        <p>Enter the starting date of the event</p>
-        <input type='date' id='date_from' name='date_from' autocomplete='off' onkeypress='return isNumber(event)'></input></br>
+        <div class='input-field col s12'>
+          <input id='cost_event' name='cost_event' type='text' class='validate' autocomplete='off' onkeypress='return isNumber(event)'>
+          <label for='cost_event'>Event cost</label>
+        </div>
+        <br>
+        <p>Are participation-certificates provided ? :  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+        <input name ='part_certif' type='radio' id='part_certif_no' class='with-gap' checked='true'/>
+        <label for='part_certif_no'>No</label>
+        <input name ='part_certif' type='radio' id='part_certif_yes' class='with-gap'/>
+        <label for='part_certif_yes'>Yes</label>
+        </p>
 
-        <p>Enter the total number of days</p>
-        <input type='text' id='total_no_days' name='total_no_days' autocomplete='off' onkeyup='book_id_fields()' placeholder='Eg:2,3,4' onkeypress='return isNumber(event)'></input></br></br>
-       	<div id='date_event'></div>			
+        <p>Are On Duties provided ? :   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
+        <input name ='od_status' type='radio' id='od_status_no' class='with-gap' checked='true'/>
+        <label for='od_status_no'>No</label>
+        <input name ='od_status' type='radio' id='od_status_yes' class='with-gap'/>
+        <label for='od_status_yes'>Yes</label>
+        </p>
+        <br>
+        <p>Starting date of the event
+        <input type='date' id='date_from' name='date_from' autocomplete='off' onkeypress='return isNumber(event)'></input></p>
+
+        <div class='input-field col s12'>
+          <input id='total_no_days' name='total_no_days' type='text' class='validate' autocomplete='off' onkeyup='book_id_fields()' onkeypress='return isNumber(event)'>
+          <label for='cost_event'>Total number of days</label>
+        </div>
+
+        <div id='date_event'></div>			
         ";
     //file for adding fields is add_date_id_file.php
     echo "<input type='submit' value='Submit' name='submit' onclick='return verify_input()'>

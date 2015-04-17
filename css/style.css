@@ -127,4 +127,9 @@
 .eventsearch{
   width: 50%;
 }
+.events{
+  width: 50%;
+  margin-right: auto;
+  margin-left: auto;
+}
 

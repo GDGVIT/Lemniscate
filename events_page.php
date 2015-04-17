@@ -42,20 +42,22 @@ session_start();
 	if(true)//isset($_SESSION['id'])
 	{
 		require 'Database/sql_con.php';
-		
+	
 
-		echo "<div id='display' align='center'>
+		echo "<div id='display' class='events' align='center'>
 		<br><br><br>
-		<ul class='collapsible eventsearch' data-collapsible='accordion'>
-    <li>
-      <div class='collapsible-header'><i class='mdi-action-search'></i>Search by Event name</div>
-      <div class='collapsible-body'><p><input type='text' id='name_event' placeholder='Search by event's name' onkeyup='showHint(this.value)'><div id=hint></div></p></div>
-    </li>";
+		<div class='input-field col s12'>
+          <i class='mdi-action-search prefix'></i>
+          <input id='name_event' type='text' class='validate' onkeyup='showHint(this.value)'>
+          <label for='icon_prefix'>Event Name</label>
+        </div>
+        <div style='float:right;'><a href='#' onclick='toggle_search()'>Advanced Search</a></div><br><br>
+        <div id='hint' style='margin-bottom: 30px;'></div>";
 
 
 
-    echo "
-    <li>
+    echo "<div class='asearch' style='display:none; margin-bottom: 50px;'><ul class='collapsible' data-collapsible='expandable'>
+     <li>
       <div class='collapsible-header'><i class='mdi-social-person'></i>Seach by Organiser's name</div>
       <div class='collapsible-body'><p>";
 
@@ -89,8 +91,6 @@ session_start();
 			echo "<input type='time' id='search_event_time_to' name='search_event_time_to' onchange='event_filtering()''>";	
 
 
-
-
       echo "</p></div>
     </li>
     <li>
@@ -105,12 +105,12 @@ session_start();
    						<option value='MB'>Main Building(MB)</option>
    						<option value='greenos'>Greenos</option>
    						<option value='GDN'>G.D Naidu</option>
-    				 </select></br></br></br>";
+    				 </select>";
 
 
       echo "</p></div>
     </li>
-  </ul>";
+  </ul></div>";
 		{
 			echo "<a class='waves-effect waves-light btn' onclick='add_event()'>Add Event</a>";
 				
@@ -256,6 +256,10 @@ session_start();
 ?>
 <script type="text/javascript">
 
+function toggle_search()
+{
+ 	$(".asearch").toggle();
+}
 
 function isNumber(evt)  
 {
@@ -362,7 +366,6 @@ function add_event()
   xmlhttp.open("GET","new_event.php",true);
   xmlhttp.send();
 }
-
 
 function showHint(str) 
 {
