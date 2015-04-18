@@ -10,12 +10,15 @@
 	$dob =date_format($date, 'dmY');
 	
 	$url  ="https://vit-login.herokuapp.com/login?reg_no=".$regno."&dob=".$dob;
+	
 	//Open connection
 	$ch = curl_init();
+	
 	//Set the url
 	curl_setopt($ch,CURLOPT_URL, $url);
 	curl_setopt($ch,CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, 0);
+	
 	//Execute CURL
 	$result = curl_exec($ch);
 	if ($result == FALSE) 
@@ -24,6 +27,7 @@
 	   echo "01: Curl Error";
 	   return;
 	}
+	
 	$json = json_decode($result,true);
 	if (is_null($json)) 
 	{
@@ -59,48 +63,56 @@
 		
 		foreach($past as $code=>$s)
 		{	
-			$stmt1 = $mysqli->prepare("SELECT * `alumni_classes` WHERE `code`= ?");
-			$stmt1->bind_param("s",$code);	
-			$stmt1->execute();
-			$count = mysqli_num_rows($stmt1);
-			if($count==0)
+			$stmt = $mysqli->prepare("SELECT * `alumni_classes` WHERE `code`= ?");
+			$stmt->bind_param("s",$code);	
+			$stmt->execute();
+			$alumni_class = mysqli_num_rows($stmt);
+			//If the course is not in the alumni table
+			if($alumni_class==0)
 			{
-				$stmt = $mysqli->prepare("INSERT INTO `alumni_classes` (`code`, `title`) VALUES (?, ?)");
-				$stmt->bind_param("ss",$code, $s);	
-				if($stmt->execute())
+				$stmt1 = $mysqli->prepare("INSERT INTO `alumni_classes` (`code`, `title`) VALUES (?, ?)");
+				$stmt1->bind_param("ss",$code, $s);	
+				if($stmt1->execute())
 				{
-						$stmt2 = $mysqli->prepare("CREATE TABLE  alumni_$code ()");
-						$stmt2->bind_param("s",$code);	
+						$stmt2 = $mysqli->prepare("CREATE TABLE  alumni_".$code." (id INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY, regno VARCHAR(9) UNIQUE, active INT(1) DEFAULT '0') AUTO_INCREMENT = 231");	
 						if($stmt2->execute())
 						{
-							$stmt2 = $mysqli->prepare("CREATE TABLE  alumni_$code ()");
-							$stmt2->bind_param("s",$code);	
-							if($stmt2->execute())
+							$stmt3 = $mysqli->prepare("INSERT INTO `alumni_".$code."` (`regno`)VALUES(?)");
+							$stmt3->bind_param("s",$regno);	
+							if($stmt3->execute())
 							{
+								$flag=0;
 							}
 							else
 							{
+								
 							}
 						}
 						else
 						{
-							
+							$stmt4 = $mysqli->prepare("DELETE FROM `alumni_classes` WHERE `code`= ? AND `title`=?");
+							$stmt4->bind_param("ss",$code, $s);	
+							$stmt4->execute();
 						}
 				}
+			
 				else
 				{
 					
 				}
 			}
+			//If the course is already there in the alumni table
 			else if($count==1)
 			{
-				$stmt2 = $mysqli->prepare("CREATE TABLE  alumni_$code ()");
-				$stmt2->bind_param("s",$code);	
-				if($stmt2->execute())
+				$stmt4 = $mysqli->prepare("INSERT INTO `alumni_".$code."` (`regno`)VALUES(?)");
+				$stmt4->bind_param("s",$regno);	
+				if($stmt4->execute())
 				{
+					$flag=0;
 				}
 				else
 				{
+					$flag=1;
 				}
 			}
 		}

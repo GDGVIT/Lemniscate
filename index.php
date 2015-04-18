@@ -146,7 +146,7 @@ else if(isset($_POST["get_password"]))
 					*/
 							$to= $email_db; 
 							$subject= "Leminiscate | Password Reset" ;
-							$message="Pls check this link localhost/lemniscate/password_reset.php?p=$ResultStr&e=$email_db&d=$date";
+							$message="Pls check this link  <a href='localhost/lemniscate/password_reset.php?p=$ResultStr&e=$email_db&d=$date'>Link</a> ";
 							//Tell PHPMailer to use SMTP
 							$mail->isSMTP();
 
