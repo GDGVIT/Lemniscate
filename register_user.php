@@ -9,7 +9,7 @@
 	$date = date_create_from_format('j M, Y', $dob);
 	$dob =date_format($date, 'dmY');
 	
-	$url  ="https://vit-login.herokuapp.com/class-details?reg_no=".$regno."&dob=".$dob;
+	$url  ="https://vit-login.herokuapp.com/login?reg_no=".$regno."&dob=".$dob;
 	
 	//Open connection
 	$ch = curl_init();
@@ -48,9 +48,8 @@
 	}
 	else
 	{
-		print_r($class_details["status"]);
 		//Check if success or failure
-		if($class_details["status"]!="Success")
+		if($class_details["status"]!="success")
 		{
 			echo "Failure";
 			return;
@@ -64,37 +63,28 @@
 		
 		foreach($past as $code=>$s)
 		{	
-			$stmt = $mysqli->prepare("SELECT * FROM `alumni_classes` WHERE `code`= ?");
+			$stmt = $mysqli->prepare("SELECT * `alumni_classes` WHERE `code`= ?");
 			$stmt->bind_param("s",$code);	
 			$stmt->execute();
-			$result = $stmt->get_result();
-			
-			$alumni_class = mysqli_num_rows($result);
-	
+			$alumni_class = mysqli_num_rows($stmt);
 			//If the course is not in the alumni table
 			if($alumni_class==0)
 			{
-				$stmt1 = $mysqli->prepare("INSERT INTO `alumni_classes` (code, title) VALUES (?, ?)");
+				$stmt1 = $mysqli->prepare("INSERT INTO `alumni_classes` (`code`, `title`) VALUES (?, ?)");
 				$stmt1->bind_param("ss",$code, $s);	
 				if($stmt1->execute())
 				{
 						$stmt2 = $mysqli->prepare("CREATE TABLE  alumni_".$code." (id INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY, regno VARCHAR(9) UNIQUE, active INT(1) DEFAULT '0') AUTO_INCREMENT = 231");	
 						if($stmt2->execute())
 						{
-							
 							$stmt3 = $mysqli->prepare("INSERT INTO `alumni_".$code."` (`regno`)VALUES(?)");
 							$stmt3->bind_param("s",$regno);	
 							if($stmt3->execute())
 							{
-								$stmt4 = $mysqli->prepare("SELECT id FROM `alumni_classes` WHERE `code`= ?");
-								$stmt4->bind_param("s",$each_subject[2]);	
-								$stmt4->execute();
-								$result = $stmt4->get_result();
-								$arr = mysqli_fetch_array($result);
-								
-								$stmt5 = $mysqli->prepare("UPDATE `courses_now` SET `alumni_id` = ? WHERE `code`= ?");
-								$stmt5->bind_param("is",$arr[0],$code);	
-								$stmt5->execute();
+								$flag=0;
+							}
+							else
+							{
 								
 							}
 						}
@@ -103,21 +93,24 @@
 							$stmt4 = $mysqli->prepare("DELETE FROM `alumni_classes` WHERE `code`= ? AND `title`=?");
 							$stmt4->bind_param("ss",$code, $s);	
 							$stmt4->execute();
-							$flag = 1;
 						}
 				}
 			
 				else
 				{
-					$flag = 1;
+					
 				}
 			}
 			//If the course is already there in the alumni table
-			else if($alumni_class==1)
+			else if($count==1)
 			{
-				$stmt3 = $mysqli->prepare("INSERT INTO `alumni_".$code."` (`regno`)VALUES(?)");
-				$stmt3->bind_param("s",$regno);	
-				if(!$stmt3->execute())
+				$stmt4 = $mysqli->prepare("INSERT INTO `alumni_".$code."` (`regno`)VALUES(?)");
+				$stmt4->bind_param("s",$regno);	
+				if($stmt4->execute())
+				{
+					$flag=0;
+				}
+				else
 				{
 					$flag=1;
 				}
@@ -127,59 +120,9 @@
 		foreach($subjects_present as $code =>$s)
 		{	
 			$each_subject = $s;
-			
-			$stmt = $mysqli->prepare("SELECT * FROM `courses_now` WHERE `class_num`= ? AND `slot`=?  AND `code` = ? AND  `venue`=? ");
-			$stmt->bind_param("ssss",$code, $each_subject[0], $each_subject[2], $each_subject[3]);	
-			$stmt->execute();
-			$result = $stmt->get_result();
-			$class_now = mysqli_num_rows($result);
-			
-			//If the course is not in the CURRENT CLASS table
-			if($class_now==0)
-			{
-				$stmt = $mysqli->prepare("SELECT id FROM `alumni_classes` WHERE `code`= ?");
-				$stmt->bind_param("s",$each_subject[2]);	
-				$stmt->execute();
-				$result = $stmt->get_result();
-				$arr = mysqli_fetch_array($result);
-				
-				$stmt1 = $mysqli->prepare("INSERT INTO `courses_now` (`class_num`, `slot`, `title`, `code`, `venue`, `faculty`,`alumni_id`) VALUES (?, ?, ?, ?, ?, ?,?)");
-				$stmt1->bind_param("ssssssi",$code, $each_subject[0], $each_subject[1],$each_subject[2],$each_subject[3],$each_subject[4],$arr[0]);	
-				if($stmt1->execute())
-				{
-						$stmt2 = $mysqli->prepare("CREATE TABLE  ".$code."_class_".$each_subject[2]." (id INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY, regno VARCHAR(9) UNIQUE, active INT(1) DEFAULT '0') AUTO_INCREMENT = 231");	
-						if($stmt2->execute())
-						{
-							$stmt3 = $mysqli->prepare("INSERT INTO `".$code."_class_".$each_subject[2]."` (`regno`)VALUES(?)");
-							$stmt3->bind_param("s",$regno);	
-							if(!$stmt3->execute())
-							{
-								$flag=1;
-							}
-						}
-						else
-						{
-							$stmt4 = $mysqli->prepare("DELETE FROM `courses_now`  WHERE `class_num`= ? AND `slot`=?  AND `code` = ? AND  `venue`=? ");
-							$stmt4->bind_param("ssssss",$code, $each_subject[0], $each_subject[1],$each_subject[2],$each_subject[3],$each_subject[4]);	
-							$stmt4->execute();
-						}
-				}
-			
-				else
-				{
-					echo "Not able to add to alumni table";
-				}
-			}
-			//If the course is already there in the alumni table
-			else if($class_now==1)
-			{
-				$stmt3 = $mysqli->prepare("INSERT INTO `".$code."_class_".$each_subject[2]."` (`regno`)VALUES(?)");
-				$stmt3->bind_param("s",$regno);	
-				if(!$stmt3->execute())
-				{
-					$flag = 1;
-				}
-			}
+			$stmt = $mysqli->prepare("INSERT INTO `courses_now` (`class_num`, `slot`, `title`, `code`, `venue`, `faculty`) VALUES (?, ?, ?, ?, ?, ?)");
+			$stmt->bind_param("ssssss",$code, $each_subject[0], $each_subject[1],$each_subject[2],$each_subject[3],$each_subject[4]);	
+			$stmt->execute();	
 		}
 	}
 	if($flag!=1)
@@ -187,10 +130,9 @@
 				require("generate_hash.php");
 				$ResultStr = generateHash();
 				$activated=0;
-				$res=substr(md5($ResultStr),0,20);
 				$dob = date_format($date, 'Y-m-d');
 				$stmt = $mysqli->prepare("INSERT INTO `reg_verification` (`regno`, `dob`, `email`, `gen_password`, `activated`) VALUES (?, ?, ?, ?, ?)");
-				$stmt->bind_param("ssssi", $regno, $dob,$email,$res,$activated);	
+				$stmt->bind_param("ssssi", $regno, $dob,$email,$ResultStr,$activated);	
 				if($stmt->execute())
 				{
 					date_default_timezone_set('Asia/Calcutta');
