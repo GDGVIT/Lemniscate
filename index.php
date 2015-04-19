@@ -386,6 +386,7 @@ function register()
 			document.getElementById("register").disabled=false;
       		var result = xmlhttp.responseText;
 			toast(result, 3000, "#e53935 red darken-1");
+			document.write(result);
     	}
   	}
 	xmlhttp.open("POST","register_user.php",true);
