@@ -310,6 +310,10 @@ else if(isset($_POST["get_password"]))
                                       <input name="p_no" id="p_no" type="text" class="validate white-text" autocomplete="off">
                                       <label for="p_no">Parent's Mobile Number</label>
                                     </div>
+									<div class="input-field col s12">
+                                      <input name="mobno" id="mobno" type="text" class="validate white-text" autocomplete="off" maxlength="10" onkeypress='return isNumber(event)' >
+                                      <label for="mobno"> Parent Mobile no</label>
+                                    </div>
                                     <div class="input-field col s12">
                                     <label for="dob">Birthday</label>
                                     <input name="dob" id="dob" type="date" class="datepicker white-text">
@@ -360,10 +364,17 @@ else if(isset($_POST["get_password"]))
     selectMonths: true, // Creates a dropdown to control month
     selectYears: 50 // Creates a dropdown of 15 years to control year
   });
-  
+ function isNumber(evt)  
+{
+		var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
+             return false;
+        return true;
+}
 function register()
 {
 	var result="";
+	var mob= document.getElementById("mobno").value;
 	var pattern_regno = /^[0-1]{1}[0-9]{1}[a-zA-Z]{3}[0-9]{4}$/;
 	var pattern_email = /^\w+([\.-]?\w+)*@vit.ac.in+$/;
 	var regno = document.getElementById("regno_id").value;
@@ -393,9 +404,9 @@ function register()
 			document.write(result);
     	}
   	}
-	xmlhttp.open("POST","register_user.php",true);
+	xmlhttp.open("POST","registration/register_user.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-	xmlhttp.send("regno="+regno+"&email="+email+"&dob="+dob);
+	xmlhttp.send("regno="+regno+"&email="+email+"&dob="+dob+"&mob="+mob);
 	
 	
 }
