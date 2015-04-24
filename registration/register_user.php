@@ -1,15 +1,16 @@
 <?php
-	require("Database/sql_con.php");
+	require("../Database/sql_con.php");
 	
 	$flag =0; //To know if the dob and regno are valid
 	$regno=$_POST["regno"];
 	$email=$_POST["email"];
 	$dob = $_POST["dob"];
+	$mob=$_POST["mob"];
 	
 	$date = date_create_from_format('j M, Y', $dob);
 	$dob =date_format($date, 'dmY');
 	
-	$url  ="https://vit-login.herokuapp.com/class-details?reg_no=".$regno."&dob=".$dob;
+	$url  ="https://vit-login.herokuapp.com/class-details?reg_no=".$regno."&dob=".$dob."&mob_num=".$mob;
 	
 	//Open connection
 	$ch = curl_init();
@@ -184,7 +185,7 @@
 	}
 	if($flag!=1)
 	{
-				require("generate_hash.php");
+				require("../generate_hash.php");
 				$ResultStr = generateHash();
 				$activated=0;
 				$res=substr(md5($ResultStr),0,20);
@@ -203,7 +204,9 @@
 					*/
 							$to= $email; 
 							$subject= "Leminiscate | Verification" ;
-							$message="Pls check this link localhost/lemniscate/verify_registration.php?p=$ResultStr&e=$email&d=$dob";
+							
+							$link="localhost/lemniscate/verify_registration.php?p=$ResultStr&e=$email&d=$dob";
+							require("etemplate/reg_msg.php");
 							//Tell PHPMailer to use SMTP
 							$mail->isSMTP();
 
@@ -234,12 +237,18 @@
 
 							//Set who the message is to be sent to
 							$mail->addAddress($to, 'Student');
-
+							
 							//Set the subject line
 							$mail->Subject = $subject;
 
+							$mail->Encoding = "base64";
+							$mail->Timeout = 200;
+							$mail->ContentType = "text/html";
+							
 							//Replace the plain text body with one created manually
 							$mail->Body = $message;
+							
+							$mail->AltBody = "Use an HTML compatible email client";
 
 							//send the message, check for errors
 							if (!$mail->send())

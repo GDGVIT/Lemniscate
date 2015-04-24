@@ -937,7 +937,7 @@ a{border-bottom:1px solid #41637e}.wrapper .one-col-feature p a:hover,.wrapper .
                             <td class="padded" style="padding: 0;vertical-align: top;padding-left: 32px;padding-right: 32px;word-break: break-word;word-wrap: break-word">
                               
             <p style="Margin-top: 0;color: #565656;font-family: Tahoma,sans-serif;font-size: 16px;line-height: 25px;Margin-bottom: 25px">Hi name,</p><p style="Margin-top: 0;color: #565656;font-family: Tahoma,sans-serif;font-size: 16px;line-height: 25px;Margin-bottom: 25px">Welcome to Project : Lemniscate</p><p style="Margin-top: 0;color: #565656;font-family: Tahoma,sans-serif;font-size: 16px;line-height: 25px;Margin-bottom: 25px">To activate your account please click the link below:-<br />
-Link</p><p style="Margin-top: 0;color: #565656;font-family: Tahoma,sans-serif;font-size: 16px;line-height: 25px;Margin-bottom: 25px">&nbsp;</p>
+<a href='.$link.'>Click on this</a></p><p style="Margin-top: 0;color: #565656;font-family: Tahoma,sans-serif;font-size: 16px;line-height: 25px;Margin-bottom: 25px">&nbsp;</p>
           
                             </td>
                           </tr>

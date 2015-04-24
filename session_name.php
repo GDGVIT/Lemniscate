@@ -2,6 +2,7 @@
 session_start();
 require("Database/sql_con.php");
 $uname="";
+$regno="";
 $gen_id = substr($_SESSION["gen_id"],0,-10);
 $stmt = $mysqli->prepare("SELECT * FROM `info_user` WHERE md5(`gen_id`)=? ");
 $stmt->bind_param("i", $gen_id);	
@@ -13,6 +14,7 @@ if($stmt->execute())
 		while ($arr = mysqli_fetch_array($rs)) 
 		{
 			$uname = $arr["name"];		
+			$uregno = $arr["regno"];
 		}
 	}
 }
