@@ -306,10 +306,6 @@ else if(isset($_POST["get_password"]))
                                       <input name="email_id" id="email_id" type="email" class="validate white-text" autocomplete="off">
                                       <label for="email_id">VIT Gmail-ID</label>
                                     </div>
-                                    <div class="input-field col s12">
-                                      <input name="p_no" id="p_no" type="text" class="validate white-text" autocomplete="off">
-                                      <label for="p_no">Parent's Mobile Number</label>
-                                    </div>
 									<div class="input-field col s12">
                                       <input name="mobno" id="mobno" type="text" class="validate white-text" autocomplete="off" maxlength="10" onkeypress='return isNumber(event)' >
                                       <label for="mobno"> Parent Mobile no</label>
