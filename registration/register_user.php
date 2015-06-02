@@ -2,10 +2,10 @@
 	require("../Database/sql_con.php");
 	
 	$flag =0; //To know if the dob and regno are valid
-	$regno=$_POST["regno"];
-	$email=$_POST["email"];
+	$regno = $_POST["regno"];
+	$email = $_POST["email"];
 	$dob = $_POST["dob"];
-	$mob=$_POST["mob"];
+	$mob = $_POST["mob"];
 	
 	$date = date_create_from_format('j M, Y', $dob);
 	$dob =date_format($date, 'dmY');
@@ -36,7 +36,7 @@
 		echo "02: JSON Decoding Error";
 		return;
 	}
-	
+
 	$class_details=json_decode($result,true);
 	
 	//Close connection
@@ -53,7 +53,7 @@
 		//Check if success or failure
 		if($class_details["status"]!="Success")
 		{
-			echo "Failure";
+			echo "Failure - Invalid Credentials";
 			return;
 		}
 		
@@ -107,7 +107,6 @@
 							$flag = 1;
 						}
 				}
-			
 				else
 				{
 					$flag = 1;
@@ -128,7 +127,6 @@
 		foreach($subjects_present as $code =>$s)
 		{	
 			$each_subject = $s;
-			
 			$stmt = $mysqli->prepare("SELECT * FROM `courses_now` WHERE `class_num`= ? AND `slot`=?  AND `code` = ? AND  `venue`=? ");
 			$stmt->bind_param("ssss",$code, $each_subject[0], $each_subject[2], $each_subject[3]);	
 			$stmt->execute();
@@ -142,16 +140,18 @@
 				$stmt->bind_param("s",$each_subject[2]);	
 				$stmt->execute();
 				$result = $stmt->get_result();
-				$arr = mysqli_fetch_array($result);
-				
-				$stmt1 = $mysqli->prepare("INSERT INTO `courses_now` (`class_num`, `slot`, `title`, `code`, `venue`, `faculty`,`alumni_id`) VALUES (?, ?, ?, ?, ?, ?,?)");
-				$stmt1->bind_param("ssssssi",$code, $each_subject[0], $each_subject[1],$each_subject[2],$each_subject[3],$each_subject[4],$arr[0]);	
+				if(mysqli_num_rows($result)>0)
+					$arr = mysqli_fetch_array($result);
+				else
+					$arr[0]=0;
+				$stmt1 = $mysqli->prepare("INSERT INTO `courses_now` (`class_num`, `slot`, `title`, `code`, `venue`, `faculty`,`alumni_id`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+				$stmt1->bind_param("isssssi",$code, $each_subject[0], $each_subject[1],$each_subject[2],$each_subject[3],$each_subject[4],$arr[0]);	
 				if($stmt1->execute())
 				{
 						$stmt2 = $mysqli->prepare("CREATE TABLE  ".$code."_class_".$each_subject[2]." (id INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY, regno VARCHAR(9) UNIQUE, active INT(1) DEFAULT '0') AUTO_INCREMENT = 231");	
 						if($stmt2->execute())
 						{
-							$stmt3 = $mysqli->prepare("INSERT INTO `".$code."_class_".$each_subject[2]."` (`regno`)VALUES(?)");
+							$stmt3 = $mysqli->prepare("INSERT INTO `".$code."_class_".$each_subject[2]."` (`regno`) VALUES (?)");
 							$stmt3->bind_param("s",$regno);	
 							if(!$stmt3->execute())
 							{
@@ -165,16 +165,15 @@
 							$stmt4->execute();
 						}
 				}
-			
 				else
 				{
-					echo "Not able to add to alumni table";
+					echo "Not able to add to courses table";
 				}
 			}
-			//If the course is already there in the alumni table
+			//If the course is already there in the courses_now table
 			else if($class_now==1)
 			{
-				$stmt3 = $mysqli->prepare("INSERT INTO `".$code."_class_".$each_subject[2]."` (`regno`)VALUES(?)");
+				$stmt3 = $mysqli->prepare("INSERT INTO `".$code."_class_".$each_subject[2]."` (`regno`) VALUES (?)");
 				$stmt3->bind_param("s",$regno);	
 				if(!$stmt3->execute())
 				{
@@ -183,8 +182,10 @@
 			}
 		}
 	}
+	echo "here1";
 	if($flag!=1)
 	{
+				echo "here";
 				require("../generate_hash.php");
 				$ResultStr = generateHash();
 				$activated=0;
@@ -195,7 +196,7 @@
 				if($stmt->execute())
 				{
 					date_default_timezone_set('Asia/Calcutta');
-					require 'mail/PHPMailerAutoload.php';
+					require ('../mail/PHPMailerAutoload.php');
 					//Create a new PHPMailer instance
 					$mail = new PHPMailer();
 					/*
@@ -206,7 +207,7 @@
 							$subject= "Leminiscate | Verification" ;
 							
 							$link="localhost/lemniscate/verify_registration.php?p=$ResultStr&e=$email&d=$dob";
-							require("etemplate/reg_msg.php");
+							require("../etemplate/reg_msg.php");
 							//Tell PHPMailer to use SMTP
 							$mail->isSMTP();
 

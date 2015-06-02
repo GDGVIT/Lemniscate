@@ -382,12 +382,11 @@ function register()
 		return false;
 	}
 	
-	/*if(!email.match(pattern_email))
+	if(!email.match(pattern_email))
 	{
 		toast("Invalid Email!", 3000, "#e53935 red darken-1");
 		return false;
-	}*/
-	
+	}
 	document.getElementById("register").disabled=true;
 	var xmlhttp = new XMLHttpRequest();
   	xmlhttp.onreadystatechange=function()
@@ -396,7 +395,6 @@ function register()
     	{
 			document.getElementById("register").disabled=false;
       		var result = xmlhttp.responseText;
-			toast(result, 3000, "#e53935 red darken-1");
 			document.write(result);
     	}
   	}
