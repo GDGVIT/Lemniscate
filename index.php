@@ -253,7 +253,7 @@ else if(isset($_POST["get_password"]))
 
 <body class="bg-login">
 <div class="htitle">
-    <h1>Project Lemniscate.</h1>
+    <h1>Project Lemniscate</h1>
     <h3>Think. Explore. Know.</h3>
 </div>
 
@@ -359,7 +359,7 @@ else if(isset($_POST["get_password"]))
 	<div class="bg-blur dark">
 		<div class="overlay"></div><!--.overlay-->
 	</div><!--.bg-blur-->
-
+<div class="ftitle"><h6>Copyright © 2015 GDG VIT Vellore. All rights reserved.</h6></div>
 <script type="text/javascript"> 
     $('.datepicker').pickadate({
     selectMonths: true, // Creates a dropdown to control month
