@@ -252,11 +252,16 @@ else if(isset($_POST["get_password"]))
 </head>
 
 <body class="bg-login">
+<div class="htitle">
+    <h1>Project Lemniscate.</h1>
+    <h3>Think. Explore. Know.</h3>
+</div>
+
 	<div class="login-screen">
 		<div class="panel-login blur-content">
-			<h3 class="white-text hcenter" style="padding-top:10px;">Lemniscate</h3>
+         
 
-			<div id="pane-login" class="panel-body active">
+			<div id="pane-login" class="panel-body active" style="margin-top : 50px;">
 				<div class="row">
                   <div class="col s12 tabln">
                     <ul class="tabs">
@@ -270,7 +275,7 @@ else if(isset($_POST["get_password"]))
                   <!---Self PHP call which validates the user-->
 				  <div id="tab1" class="col s12 tab1">
 
-                                 <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST">
+                                 <form class="col s12" action='<?php echo $_SERVER["PHP_SELF"];?>'  method="POST"><br><br>
                                   <div class="row">
                                     <div class="input-field col s12" style="margin-top:30px;">
                                       <input name="uname_id" id="uname_id" type="text" class="validate white-text" autocomplete="off">

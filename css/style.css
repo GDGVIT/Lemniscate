@@ -4,10 +4,14 @@
 .visible {
         display: block;
    }
+.htitle{
+  color: #fff;
+  margin-left: 30px;
+  margin-top: 250px;
+}
 .bg-login {
-    margin: 0;
-    background: url('img/bg.jpg'); 
-    background-color: #000; 
+    margin: 0; 
+    background-color: #3E50B4; 
     background-repeat: no-repeat; 
     background-position: center;
     background-attachment: fixed;     
@@ -19,7 +23,7 @@
 .bg-login .login-screen {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 80%;
   width: 400px;
   height: 550px;
   border-radius: 5px;
