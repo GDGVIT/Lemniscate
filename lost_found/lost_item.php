@@ -1,18 +1,17 @@
 <?php
 	$conn=mysql_connect("localhost","root","");
-if(isset($item_name)&&isset($location)&&isset($description)){
 $u_id='4';
 $item_name=$_GET['title'];
-$location=$_GET['category'];
+$location=$_GET['location'];
 $description = $_GET['description'];
 $date = $_GET['date_on'];
 $color = $_GET['color'];
 $contact = $_GET['contact'];
+$category=$_GET['category'];
 
+$db=mysql_select_db("db");
 
-$db=mysql_select_db("lemniscate");
-
-$result=mysql_query("insert into lost (user_id,name,location,item_desc,date_on,colour,contact) values('$u_id','$item_name','$location','$description','$date','$color','$contact')") or die(mysql_error());
+$result=mysql_query("insert into lost (user_id,name,location,item_desc,date_on,colour,contact,category) values('$u_id','$item_name','$location','$description','$date','$color','$contact','$category')") or die(mysql_error());
 
 if(isset($result)&&isset($conn))
 {
@@ -26,6 +25,4 @@ else
 {
 	echo "Some error";
 }
-}
-else echo " please enter all the details! <a href = 'lost.php'>Back</a>!" ;
 ?>

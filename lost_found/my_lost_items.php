@@ -2,7 +2,7 @@
 
 <?php  
 $conn=mysql_connect("localhost","root","");
-$db=mysql_select_db("lemniscate");
+$db=mysql_select_db("db");
 if(isset($_GET['submit'])){
 	$id=$_GET['id'];
 	$stmt = "UPDATE lost
@@ -25,6 +25,7 @@ $result=mysql_query($sql,$conn) or die(mysql_error());
 		echo "Description: ".$row['item_desc']."<br>";
 		echo "Date: ".$row['date_on']."<br>";
 		echo "Colour: ".$row['colour']."<br>";
+		echo "Category:".$row['category']."<br>";
 		echo "Contact: ".$row['contact']."<br>";
 		
 		

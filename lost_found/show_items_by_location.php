@@ -1,6 +1,6 @@
 <?php  
 $conn=mysql_connect("localhost","root","");
-$db=mysql_select_db("lemniscate");
+$db=mysql_select_db("db");
 $location=$_GET['location'];
 if($location=="all"){
 	$sql="select * from lost where status=0";
@@ -15,6 +15,7 @@ $result=mysql_query($sql,$conn) or die(mysql_error());
 		echo "Date: ".$row['date_on']."<br>";
 		echo "Colour: ".$row['colour']."<br>";
 		echo "Contact: ".$row['contact']."<br>";
+		echo "Category:".$row['category']."<br>";
 		echo "<hr>";
 		$id++;
 	}
@@ -33,6 +34,7 @@ $result=mysql_query($sql,$conn) or die(mysql_error());
 		echo "Date: ".$row['date_on']."<br>";
 		echo "Colour: ".$row['colour']."<br>";
 		echo "Contact: ".$row['contact']."<br>";
+		echo "Category:".$row['category']."<br>";
 		echo "<hr>";
 		$id++;
 	}
