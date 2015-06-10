@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 10, 2015 at 11:50 PM
+-- Generation Time: Jun 11, 2015 at 12:23 AM
 -- Server version: 5.6.20
 -- PHP Version: 5.5.15
 
@@ -160,20 +160,23 @@ CREATE TABLE IF NOT EXISTS `found` (
   `name` varchar(100) NOT NULL,
   `location` varchar(100) NOT NULL,
   `item_desc` varchar(256) NOT NULL,
+  `category` varchar(100) NOT NULL,
   `handed_over` varchar(256) NOT NULL,
   `date_on` date NOT NULL,
   `colour` varchar(50) NOT NULL,
   `contact` varchar(15) NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0'
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `found`
 --
 
-INSERT INTO `found` (`id`, `user_id`, `name`, `location`, `item_desc`, `handed_over`, `date_on`, `colour`, `contact`, `status`) VALUES
-(1, 4, 'Watch', 'SJT', 'found a watch Rado Limited edition near ', '', '2015-06-10', 'Golden', '9978755656', 1),
-(3, 4, 'football', 'TT', 'Nike football', 'SJT gaurd Mr. Thomas', '2015-06-04', 'Black', '9985877878', 0);
+INSERT INTO `found` (`id`, `user_id`, `name`, `location`, `item_desc`, `category`, `handed_over`, `date_on`, `colour`, `contact`, `status`) VALUES
+(1, 4, 'Watch', 'SJT', 'found a watch Rado Limited edition near ', '', '', '2015-06-10', 'Golden', '9978755656', 1),
+(3, 4, 'football', 'TT', 'Nike football', '', 'SJT gaurd Mr. Thomas', '2015-06-04', 'Black', '9985877878', 0),
+(4, 4, 'Pen drive', 'TT', '8 gb pendrive in room number 123', 'Electronics', 'Dean Office 345', '2015-06-10', 'Red and Black', '788989787', 0),
+(5, 4, 'Pen drive', 'TT', '8 gb pendrive in room number 123', 'Electronics', 'Dean Office 345', '2015-06-10', 'Red and Black', '788989787', 0);
 
 -- --------------------------------------------------------
 
@@ -249,21 +252,23 @@ CREATE TABLE IF NOT EXISTS `lost` (
   `location` varchar(100) NOT NULL,
   `item_desc` varchar(256) NOT NULL,
   `date_on` date NOT NULL,
+  `category` varchar(100) NOT NULL,
   `colour` varchar(50) NOT NULL,
   `status` int(11) NOT NULL DEFAULT '0',
   `contact` varchar(15) NOT NULL
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `lost`
 --
 
-INSERT INTO `lost` (`id`, `user_id`, `name`, `location`, `item_desc`, `date_on`, `colour`, `status`, `contact`) VALUES
-(1, 4, 'Watch', 'SJT', '', '2015-06-08', 'Golden', 0, ''),
-(2, 4, 'Register', 'TT', '', '2015-06-02', 'Brown', 1, ''),
-(3, 4, 'Spects', 'MB', 'Big Spects', '2015-06-04', 'Black', 1, ''),
-(4, 4, 'football', 'SJT', 'Nike football', '2015-06-10', 'Red', 0, ''),
-(5, 4, 'Book', 'SJT', 'Library Book', '2015-06-04', 'Multiple', 1, '');
+INSERT INTO `lost` (`id`, `user_id`, `name`, `location`, `item_desc`, `date_on`, `category`, `colour`, `status`, `contact`) VALUES
+(1, 4, 'Watch', 'SJT', '', '2015-06-08', '', 'Golden', 0, ''),
+(2, 4, 'Register', 'TT', '', '2015-06-02', '', 'Brown', 1, ''),
+(3, 4, 'Spects', 'MB', 'Big Spects', '2015-06-04', '', 'Black', 1, ''),
+(4, 4, 'football', 'SJT', 'Nike football', '2015-06-10', '', 'Red', 0, ''),
+(5, 4, 'Book', 'SJT', 'Library Book', '2015-06-04', '', 'Multiple', 1, ''),
+(6, 4, 'Pen drive', 'TT', 'Lost my 8 gb pendrive in room number 123', '2015-06-03', 'Electronics', 'Red and Black', 0, '9985877878');
 
 -- --------------------------------------------------------
 
@@ -459,7 +464,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 -- AUTO_INCREMENT for table `found`
 --
 ALTER TABLE `found`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `info_user`
 --
@@ -474,7 +479,7 @@ MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 -- AUTO_INCREMENT for table `lost`
 --
 ALTER TABLE `lost`
-MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `reg_verification`
 --
