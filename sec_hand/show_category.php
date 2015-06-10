@@ -1,6 +1,6 @@
 <?php  
 $conn=mysql_connect("localhost","root","");
-$db=mysql_select_db("sec_hand");
+$db=mysql_select_db("db");
 $category=$_GET['category'];
 if($category=="all"){
 	$sql="select * from sell where sold=0";

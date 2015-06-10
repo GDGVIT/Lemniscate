@@ -6,7 +6,7 @@ $description=$_GET['description'];
 $cost=$_GET['cost'];
 $contact=$_GET['contact'];
 $uid=$_GET['uid'];
-$db=mysql_select_db("sec_hand");
+$db=mysql_select_db("db");
 
 $result=mysql_query("insert into sell (name,category,cost,description,contact,uid) values('$itemName','$category','$cost','$description','$contact','$uid')") or die(mysql_error());
 

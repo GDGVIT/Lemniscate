@@ -2,7 +2,7 @@
 
 <?php  
 $conn=mysql_connect("localhost","root","");
-$db=mysql_select_db("sec_hand");
+$db=mysql_select_db("db");
 if(isset($_GET['submit'])){
 	$id=$_GET['id'];
 	$stmt = "UPDATE buy
