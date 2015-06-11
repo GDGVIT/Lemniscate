@@ -360,7 +360,7 @@ else if(isset($_POST["get_password"]))
 		<div class="overlay"></div><!--.overlay-->
 	</div><!--.bg-blur-->
 
-<div class="ftitle"><h6>Copyright © 2015 GDG VIT Vellore. All rights reserved.</h6></div>
+<div class="ftitle"><h6>Copyright © 2015 Team Lemniscate. All rights reserved.</h6></div>
 
 
 
