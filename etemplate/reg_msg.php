@@ -1024,6 +1024,5 @@ GDGVIT Vellore.</div>
       </tbody></table>
     </center>
   
-</body></html>
-';
+</body></html>'
 ?>

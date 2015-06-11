@@ -24,7 +24,8 @@ if(isset($_SESSION["gen_id"]))
 	}
 	mysqli_close($mysqli);
 }
-//Login automatically if "Remember Me" has been choosen
+
+//Login automatically if "Remember Me" has been chosen
 else if (isset($_COOKIE['cow']) && isset($_COOKIE['calf'])) 
 {
 	require("Database/sql_con.php");
@@ -55,7 +56,8 @@ else if (isset($_COOKIE['cow']) && isset($_COOKIE['calf']))
 	mysqli_close($mysqli);
 }
 
-//When the user wants to login
+// When the user wants to login
+
 if(isset($_POST["login"]))
 {
 	require("Database/sql_con.php");
@@ -82,6 +84,7 @@ if(isset($_POST["login"]))
 				if (isset($_POST["save_login"]))
 				{
 						//Cookie to be created for auto login when "Remember me" has been chosen and the saved id and password expires in 60 days
+						
 						setcookie('cow',md5($uname_db).$salt,time()+3600*24*60);
 						setcookie('calf',md5($gen_id).$salt,time()+3600*24*60);
 				}
@@ -90,7 +93,7 @@ if(isset($_POST["login"]))
 			}
 			else
 			{
-				echo '<script>toast("Incorrect Username/Password", 3000, "#e53935 red darken-1");</script>';
+				echo '<script>toast("Incorrect User Name/Password", 3000, "#e53935 red darken-1");</script>';
 			}
 		}
 		else
@@ -146,7 +149,7 @@ else if(isset($_POST["get_password"]))
 					*/
 							$to= $email_db; 
 							$subject= "Leminiscate | Password Reset" ;
-							$message="Pls check this link  <a href='localhost/lemniscate/password_reset.php?p=$ResultStr&e=$email_db&d=$date'>Link</a> ";
+							$message="Pls check this link  <a href='localhost/lemniscate/verification/password_reset.php?p=$ResultStr&e=$email_db&d=$date'>Link</a> ";
 							//Tell PHPMailer to use SMTP
 							$mail->isSMTP();
 
@@ -410,7 +413,6 @@ function register()
 	xmlhttp.open("POST","registration/register_user.php",true);
 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 	xmlhttp.send("regno="+regno+"&email="+email+"&dob="+dob+"&mob="+mob);
-	
 	
 }
 function showtab1(){

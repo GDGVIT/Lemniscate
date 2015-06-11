@@ -92,11 +92,17 @@
 								$stmt4->execute();
 								$result = $stmt4->get_result();
 								$arr = mysqli_fetch_array($result);
-								
-								$stmt5 = $mysqli->prepare("UPDATE `courses_now` SET `alumni_id` = ? WHERE `code`= ?");
-								$stmt5->bind_param("is",$arr[0],$code);	
-								$stmt5->execute();
-								
+								if($arr)
+								{
+									$stmt5 = $mysqli->prepare("UPDATE `courses_now` SET `alumni_id` = ? WHERE `code`= ?");
+									$stmt5->bind_param("is",$arr[0],$code);	
+									$stmt5->execute();
+								}
+								//else condition if not able to set the alumni id to the current classes
+							}
+							else
+							{
+								//else condition when not able to insert in to the table
 							}
 						}
 						else
