@@ -212,7 +212,7 @@
 							$to= $email; 
 							$subject= "Leminiscate | Verification" ;
 							
-							$link="localhost/lemniscate/verify_registration.php?p=$ResultStr&e=$email&d=$dob";
+							$link="localhost/lemniscate/verification/verify_registration.php?p=$ResultStr&e=$email&d=$dob";
 							require("../etemplate/reg_msg.php");
 							//Tell PHPMailer to use SMTP
 							$mail->isSMTP();

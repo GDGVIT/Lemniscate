@@ -1,5 +1,5 @@
 <?php
-	require("Database/sql_con.php");
+	require("../Database/sql_con.php");
 	
 	$hash = substr(md5($_GET["p"]),0,20);
 	$email = $_GET["e"];
