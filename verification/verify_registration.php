@@ -15,7 +15,7 @@
 			$stmt1 = $mysqli->prepare("UPDATE `reg_verification` SET `activated` = '1' WHERE `id` = ?");
 			$stmt1->bind_param("i",$arr[0]);
 			$stmt1->execute();
-			echo "valid";
+			echo "Congrats Your account has been Activated";
 	}
 	else
 		echo "Your Verification Link is Invalid";
