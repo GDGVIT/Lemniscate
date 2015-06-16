@@ -5,4 +5,5 @@ Social Network
 
 Frontend
 1. <strike>Images are not being displayed in the mail template</strike> - Done
+<br>
 2. Date picker for DOB to be resized
