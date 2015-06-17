@@ -84,7 +84,7 @@
 		<div class="page-header full-content">
 			<div class="row">
 				<div class="col-sm-6">
-					<h1>Dashboard</h1>
+					<h1>Event Page</h1>
 				</div><!--.col-->
 				<div class="col-sm-6">
 					<ol class="breadcrumb">
