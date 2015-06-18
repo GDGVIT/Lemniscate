@@ -25,7 +25,7 @@
 	if ($result == FALSE) 
 	{
 	   //"Curl failed with error: " . curl_error($ch);
-	   echo "01: Curl Error";
+	   echo "01"; // CURL Failure
 	   return;
 	}
 	
@@ -33,7 +33,7 @@
 	if (is_null($json)) 
 	{
 	    //"Json decoding failed with error: ". json_last_error_msg();
-		echo "02: JSON Decoding Error";
+		echo "02"; // JSON Decoding Error
 		return;
 	}
 
@@ -44,16 +44,17 @@
 	
 	if(!is_array($class_details))
 	{
-		echo "03: Null Array Error";
+		echo "03"; //Null Array Error
 		return;
 	}
 	else
 	{
 		print_r($class_details["status"]);
+		
 		//Check if success or failure
-		if($class_details["status"]!="Success")
+		if($class_details["status"]=="Failure")
 		{
-			echo "Failure - Invalid Credentials";
+			echo "04"; //Failure - Invalid Credentials
 			return;
 		}
 		
@@ -63,7 +64,8 @@
 		$each_subject=array();
 		$past_subject=array();
 		
-		foreach($past as $code=>$s)
+		//Alumni Class Groups
+		foreach($past as $code=>$subject_name)
 		{	
 			$stmt = $mysqli->prepare("SELECT * FROM `alumni_classes` WHERE `code`= ?");
 			$stmt->bind_param("s",$code);	
@@ -75,45 +77,31 @@
 			//If the course is not in the alumni table
 			if($alumni_class==0)
 			{
-				$stmt1 = $mysqli->prepare("INSERT INTO `alumni_classes` (code, title) VALUES (?, ?)");
-				$stmt1->bind_param("ss",$code, $s);	
+				$stmt1 = $mysqli->prepare("INSERT INTO `alumni_classes` (code, title,members_past) VALUES (?, ?,?)");
+				$stmt1->bind_param("sss",$code, $subject_name,$regno);	
 				if($stmt1->execute())
-				{
-						$stmt2 = $mysqli->prepare("CREATE TABLE  alumni_".$code." (id INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY, regno VARCHAR(9) UNIQUE, active INT(1) DEFAULT '0') AUTO_INCREMENT = 231");	
-						if($stmt2->execute())
-						{
-							
-							$stmt3 = $mysqli->prepare("INSERT INTO `alumni_".$code."` (`regno`)VALUES(?)");
-							$stmt3->bind_param("s",$regno);	
-							if($stmt3->execute())
-							{
-								$stmt4 = $mysqli->prepare("SELECT id FROM `alumni_classes` WHERE `code`= ?");
-								$stmt4->bind_param("s",$each_subject[2]);	
-								$stmt4->execute();
-								$result = $stmt4->get_result();
-								$arr = mysqli_fetch_array($result);
-								if($arr)
-								{
-									$stmt5 = $mysqli->prepare("UPDATE `courses_now` SET `alumni_id` = ? WHERE `code`= ?");
-									$stmt5->bind_param("is",$arr[0],$code);	
-									$stmt5->execute();
-								}
-								//else condition if not able to set the alumni id to the current classes
-							}
-							else
-							{
-								//else condition when not able to insert in to the table
-							}
-						}
-						else
-						{
-							$stmt4 = $mysqli->prepare("DELETE FROM `alumni_classes` WHERE `code`= ? AND `title`=?");
-							$stmt4->bind_param("ss",$code, $s);	
-							$stmt4->execute();
-							$flag = 1;
-						}
+				{			
+					$stmt2 = $mysqli->prepare("SELECT id FROM `alumni_classes` WHERE `code`= ?");
+					$stmt2->bind_param("s",$code);	
+					$stmt2->execute();
+					$result = $stmt2->get_result();
+					$arr = mysqli_fetch_array($result);
+					if($arr)
+					{
+						$gen_id_alumni = $arr[0];
+						$stmt3 = $mysqli->prepare("UPDATE `courses_now` SET `alumni_id` = ? WHERE `code`= ?");
+						$stmt3->bind_param("is",$gen_id_alumni,$code);	
+						$stmt3->execute();
+					}
+					else 	//else condition if not able to set the alumni id to the current classes
+					{
+						$stmt4 = $mysqli->prepare("DELETE FROM `alumni_classes` WHERE `code`= ? AND `title`=?");
+						$stmt4->bind_param("ss",$code, $s);	
+						$stmt4->execute();
+						$flag = 1;
+					}
 				}
-				else
+				else //Subject NOT inserted into alumni_classes table
 				{
 					$flag = 1;
 				}
@@ -121,9 +109,20 @@
 			//If the course is already there in the alumni table
 			else if($alumni_class==1)
 			{
-				$stmt3 = $mysqli->prepare("INSERT INTO `alumni_".$code."` (`regno`)VALUES(?)");
-				$stmt3->bind_param("s",$regno);	
-				if(!$stmt3->execute())
+				$members = array();
+				$stmt5 = $mysqli->prepare("SELECT members_past FROM `alumni_classes` WHERE `code`= ?");
+				$stmt5->bind_param("s",$code);	
+				$stmt5->execute();
+				$result = $stmt5->get_result();
+				$arr1 = mysqli_fetch_array($result);
+				
+				$members = explode(",",$arr1[0]);
+				$members[count($members)] = $regno;
+				$members_str = implode("," ,$members);
+				
+				$stmt6 = $mysqli->prepare("UPDATE `alumni_classes`SET `members_past` = ? WHERE `code` = ?");
+				$stmt6->bind_param("ss",$members_str,$code);	
+				if(!$stmt6->execute())
 				{
 					$flag=1;
 				}

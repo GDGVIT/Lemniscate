@@ -383,11 +383,13 @@ function register()
 {
 	var result="";
 	var mob= document.getElementById("mobno").value;
-	var pattern_regno = /^[0-1]{1}[0-9]{1}[a-zA-Z]{3}[0-9]{4}$/;
-	var pattern_email = /^\w+([\.-]?\w+)*@vit.ac.in+$/;
 	var regno = document.getElementById("regno_id").value;
 	var email = document.getElementById("email_id").value;
 	var dob = document.getElementById("dob").value;
+
+	var pattern_regno = /^[0-1]{1}[0-9]{1}[a-zA-Z]{3}[0-9]{4}$/;
+	var pattern_email = /^\w+([\.-]?\w+)*@vit.ac.in+$/;
+	
 	if(!regno.match(pattern_regno))
 	{
 		toast("Invalid Registration Number!", 3000, "#e53935 red darken-1");
@@ -399,6 +401,7 @@ function register()
 		toast("Invalid Email!", 3000, "#e53935 red darken-1");
 		return false;
 	}
+	
 	document.getElementById("register").disabled=true;
 	var xmlhttp = new XMLHttpRequest();
   	xmlhttp.onreadystatechange=function()
@@ -407,7 +410,15 @@ function register()
     	{
 			document.getElementById("register").disabled=false;
       		var result = xmlhttp.responseText;
-			document.write(result);
+			if(result == "01")
+				toast("CURL Error!", 3000, "#e53935 red darken-1");
+			else if(result == "02")
+				toast("JSON Decoding Error!", 3000, "#e53935 red darken-1");
+			else if(result == "03")
+				toast("NULL Array Error!", 3000, "#e53935 red darken-1");
+			else if(result == "Failure")
+				toast("Invalid Credentials!", 3000, "#e53935 red darken-1");
+				toast(result, 3000, "#e53935 red darken-1");
     	}
   	}
 	xmlhttp.open("POST","registration/register_user.php",true);
