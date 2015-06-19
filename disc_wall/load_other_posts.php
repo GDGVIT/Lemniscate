@@ -1,5 +1,4 @@
 <?php
-//disc-wall
     session_start();
     if(!isset($_SESSION['user']))
     {
@@ -11,36 +10,22 @@
     }
     else
     {
-            $table_no=11;
+            $table_no=13;
     }
-    echo "<a href='logout.php'>Click here to logout</a>";
-    if(true)//check the session variable
-    {
-        require 'Database/sql_con.php';
-
+    	require 'Database/sql_con.php';
         $login_name=$_SESSION['user'];
+        $table_no=$_REQUEST['table_no'];
+        $init_count=$_REQUEST['init_count'];
+        $total_count=$_REQUEST['total_count'];
 
-        echo "<p>Upload a Picture</p>
-    	<input type='file' name='File_up' id='File_up' accept='image/x-png, image/gif, image/jpeg' />";
+        $new_init=$init_count+15;
+        $new_end=$new_init+15;
 
-      	echo"<p>Post in the group</p>
-    	<textarea id='post_user' name='post_user' rows='6' cols='50' autocomplete='off' placeholder='Enter your post here'></textarea></br></br>
-    	</br></br>
-    	
-    	<button onclick='add_post(".$table_no.",1)' name='add_question'>Add as Question</button><br/><br/>
-    	<button onclick='add_post(".$table_no.",0)' name='add_post'>Add as Post</button><br/>";
+        if($total_count>$new_end)
+            $sql_display="SELECT * FROM `post_table_$table_no` ORDER BY date_time desc LIMIT $new_init, $new_end";
+        else
+            $sql_display="SELECT * FROM `post_table_$table_no` ORDER BY date_time desc LIMIT $new_init, $total_count";
 
-    	echo "<input type='radio' name='anoymous' id='not_anoymous' value='0' checked='checked'>Post with Name</input>";
-    	echo "<input type='radio' name='anoymous' id='anoymous' value='1'>Post as Anoymous</input>
-        <hr><h4>POSTS</h4><hr>";
-        
-        echo "<div id='new_post' name='new_post'></div>";
-
-    	echo "<div id='posts_display'>";
-
-        //**  Pagination for posts  **//
-    
-        $sql_display="SELECT * FROM `post_table_$table_no` ORDER BY date_time desc LIMIT 0, 15";
         $res_display=mysqli_query($mysqli,$sql_display);
         if(mysqli_num_rows($res_display)>0)
         {
@@ -250,395 +235,20 @@
                                       </br></br></br>";
                 }
 
-            }//end of while loop
-
-            //**Pagination for the posts
-            $sql_total_display="SELECT * FROM `post_table_$table_no`";
-            $res_total_display=mysqli_query($mysqli,$sql_total_display);
-            $total_count=mysqli_num_rows($res_total_display);
-            if($total_count>15)
-            {
-                echo "<div id='more_posts_0'><button onclick='load_more_posts(".$table_no.",0,".$total_count.")'>Load More Posts</button></div><br/>";
-            }                   
-
-        }//end of IF
-        else//no new news feed 
-        {
-                echo "Sorry! Nothing available!";
+            }
+            //end of While
+            if($total_count>$new_init)
+        echo "<div id='more_posts_$init_count'><button onclick='load_more_posts(".$table_no.",".$new_init.",".$total_count.")'>Load More Posts</button></div><br/>";
+            
         }
-
-        echo"</div>";
-    }
+    
     else
     {
-		session_unset();
+    	session_unset();
 		header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 		header("Expires: Sat, 26 Jul 1997 05:00:00 GMT");
 		session_destroy();
 		header("Location:login.php");
 		exit();
 	}
-
 ?>
-
-<script type="text/javascript">
-function add_post(t_no,id)
-{
-    alert(t_no);
-	var post_user=document.getElementById('post_user').value;
-	var not_anoymous=document.getElementById('not_anoymous');
-	var anoymous=document.getElementById('anoymous');
-	var value_anoymous=0;
-	
-	if(not_anoymous.checked)
-	{	
-		value_anoymous=0;
-	}
-	else
-	{
-		value_anoymous=1;
-	}
-
-	var xmlhttp=new XMLHttpRequest();
-	xmlhttp.onreadystatechange=function()
-  	{
-    	if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    	{
-      		document.getElementById("new_post").innerHTML=xmlhttp.responseText;
-            var post_new = document.getElementById("new_post").innerHTML;
-            var post_old = document.getElementById('posts_display');
-            post_old.innerHTML = post_new + post_old.innerHTML;
-
-            //alert("IM here");
-            
-            document.getElementById('new_post').innerHTML='';
-            document.getElementById('post_user').value='';
-    	}
-  	}
- 	xmlhttp.open("GET","add_post.php?post="+post_user+"&status_post="+id+"&anoymous="+value_anoymous+"&table_no="+t_no,true);
- 	xmlhttp.send();
-}
-
-function ans_req(t_no,id)    //answer required for a question
-{
-        alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("want_ans_"+id).innerHTML=xmlhttp.responseText;
-            change_numb(t_no,id);
-        }
-    }
-    xmlhttp.open("GET","add_req_qstn.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();
-}
-
-function load_more_replies(t_no,total_rep_count,post_id)
-{
-    alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("more_replies_"+post_id).innerHTML=xmlhttp.responseText;
-        }
-    }
-    xmlhttp.open("GET","load_all_replies.php?id="+post_id+"&table_no="+t_no+"&tot_replies="+total_rep_count,true);
-    xmlhttp.send();
-}
-
-function load_more_posts(t_no,init_count_posts,total_count)
-{
-    alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("more_posts_"+init_count_posts).innerHTML=xmlhttp.responseText;
-        }
-    }
-    xmlhttp.open("GET","load_other_posts.php?table_no="+t_no+"&init_count="+init_count_posts+"&total_count="+total_count,true);
-    xmlhttp.send();
-}
-
-function hide_more_replies(t_no,total_rep_count,post_id)
-{
-    alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("more_replies_"+post_id).innerHTML=xmlhttp.responseText;
-        }
-    }
-    xmlhttp.open("GET","hide_more_replies.php?id="+post_id+"&table_no="+t_no+"&tot_replies="+total_rep_count,true);
-    xmlhttp.send();
-}
-
-function like_this(t_no,id)      //like the given post
-{
-        alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("like_ans_"+id).innerHTML=xmlhttp.responseText;
-            like_change_numb(t_no,id);
-        }
-    }
-    xmlhttp.open("GET","add_like_post.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();
-}
-
-function change_numb(t_no,id)  //change the total number of number of ans
-{
-        alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("numb_ans_"+id).innerHTML=xmlhttp.responseText;
-        }
-    }
-    xmlhttp.open("GET","change_numb.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();
-}
-
-
-
-function dnt_req_ans(t_no,id)   //don't require an answer for a question
-{
-        alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("want_ans_"+id).innerHTML=xmlhttp.responseText;
-            change_numb(t_no,id);
-        }
-    }
-    xmlhttp.open("GET","remove_req_qstn.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();
-}
-
-function dnt_like_this(t_no,id)      //unlike the post
-{
-        alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("like_ans_"+id).innerHTML=xmlhttp.responseText;
-            like_change_numb(t_no,id);
-        }
-    }
-    xmlhttp.open("GET","remove_like_post.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();
-
-}
-
-function like_change_numb(t_no,id)   //changes the post's like number 
-{
-        alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("numb_like_"+id).innerHTML=xmlhttp.responseText;
-        }
-    }
-    xmlhttp.open("GET","change_numb_likes.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();    
-}
-
-function ans_this_qstn(t_no,id)
-{
-        alert(t_no);
-    var reply_text=document.getElementById("ans_"+id).value;   
-    var anoymous=document.getElementById("reply_anoymous_"+id);
-
-    if(anoymous.checked)
-    {
-        anoymous=1;
-    }
-
-    else
-        anoymous=0;
-
-    
-    if(reply_text=='')
-    {
-        alert('Please enter the Answer');
-        return false;
-    }
-
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById('present_reply_'+id).innerHTML=''; 
-
-            document.getElementById('present_reply_'+id).innerHTML=xmlhttp.responseText;
-
-            document.getElementById('ans_'+id).value='';
-
-            var reply_new = document.getElementById('present_reply_'+id).innerHTML;
-            var reply_old = document.getElementById('prev_reply_'+id);
-            reply_old.innerHTML = reply_old.innerHTML+reply_new;  
-
-            document.getElementById("present_reply_"+id).innerHTML='';
-        }
-    }
-    xmlhttp.open("GET","reply_question.php?id="+id+"&reply_text="+reply_text+"&anoymous="+anoymous+"&table_no="+t_no,true);
-    xmlhttp.send();
-}
-
-
-function reply_this_post(t_no,id)
-{
-    alert(t_no);
-    var reply_text=document.getElementById("reply_"+id).value;   
-    var anoymous=document.getElementById("give_reply_anoymous_"+id);
-
-    if(anoymous.checked)
-    {
-        anoymous=1;
-    }
-
-    else
-        anoymous=0;
-
-    
-    if(reply_text=='')
-    {
-        alert('Please enter the Answer');
-        return false;
-    }
-
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById('present_comments_'+id).innerHTML=''; 
-
-            document.getElementById('present_comments_'+id).innerHTML=xmlhttp.responseText;
-
-            document.getElementById('reply_'+id).value='';
-
-            var reply_new = document.getElementById('present_comments_'+id).innerHTML;
-            var reply_old = document.getElementById('prev_comments_'+id);
-            reply_old.innerHTML = reply_old.innerHTML+reply_new;  
-
-            document.getElementById("present_comments_"+id).innerHTML='';
-        }
-    }
-    xmlhttp.open("GET","reply_comment.php?id="+id+"&reply_text="+reply_text+"&anoymous="+anoymous+"&table_no="+t_no,true);
-    xmlhttp.send();
-}
-
-function upvote_ans(t_no,id)
-{
-        alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("upvote_ans_"+id).innerHTML=xmlhttp.responseText;
-            change_upvotes_numb(t_no,id);
-        }
-    }
-    xmlhttp.open("GET","add_upvote_to_reply.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();
-}
-
-function like_comment(t_no,id)   //changes the status of the like for the comment
-{
-        alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("like_comment_"+id).innerHTML=xmlhttp.responseText;
-            change_likes_number_replies(t_no,id);
-        }
-    }
-    xmlhttp.open("GET","add_like_to_reply.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();
-}
-
-function change_upvotes_numb(t_no,id)
-{
-        alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("upvotes_count_"+id).innerHTML=xmlhttp.responseText;
-        }
-    }
-    xmlhttp.open("GET","change_upvotes_numb.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();
-}
-
-function dnt_upvote_ans(t_no,id)
-{
-        alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("upvote_ans_"+id).innerHTML=xmlhttp.responseText;
-            change_upvotes_numb(t_no,id);
-        }
-    }
-    xmlhttp.open("GET","remove_upvote_to_reply.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();    
-}
-
-function dnt_like_comment(t_no,id)
-{
-    alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("like_comment_"+id).innerHTML=xmlhttp.responseText;
-            change_likes_number_replies(t_no,id);
-        }
-    }
-    xmlhttp.open("GET","remove_like_to_reply.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();   
-}
-
-function change_likes_number_replies(t_no,id)
-{
-    alert(t_no);
-    var xmlhttp=new XMLHttpRequest();
-    xmlhttp.onreadystatechange=function()
-    {
-        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-        {
-            document.getElementById("likes_count_"+id).innerHTML=xmlhttp.responseText;
-        }
-    }
-    xmlhttp.open("GET","change_like_numb_reply.php?id="+id+"&table_no="+t_no,true);
-    xmlhttp.send();   
-}
-</script>

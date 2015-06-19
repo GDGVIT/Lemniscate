@@ -5,6 +5,14 @@
     {
         $_SESSION['user']='13BCE0267';
     }
+    if(isset($_REQUEST['table_no']))
+    {
+        $table_no=$_REQUEST['table_no'];
+    }
+    else
+    {
+            $table_no=13;
+    }
     if(isset($_REQUEST['id']))
     {
     	require 'Database/sql_con.php';
@@ -12,17 +20,15 @@
 
     	$unique_id=$_REQUEST['id'];
 
-    	$sql_ans_req="INSERT INTO `likes_upvotes`(regno_liked,unique_id_post) VALUES('$login_name',$unique_id);";
+    	$sql_ans_req="INSERT INTO `likes_upvotes_$table_no`(regno_liked,unique_id_post) VALUES('$login_name',$unique_id);";
     	$res_ans_req=mysqli_query($mysqli,$sql_ans_req);
     	if($res_ans_req==true)
     	{
-    		$sql_inc_ans_req="UPDATE `reply_posts` SET likes_upvotes=likes_upvotes+1 WHERE unique_id=$unique_id;";
+    		$sql_inc_ans_req="UPDATE `reply_posts_$table_no` SET likes_upvotes=likes_upvotes+1 WHERE unique_id=$unique_id;";
     		$res_inc_ans_req=mysqli_query($mysqli,$sql_inc_ans_req);
     		if($res_inc_ans_req==true)
     		{
-    			echo "<div id='upvote_ans_".$unique_id."'><button onclick='dnt_upvote_ans(this.id)' id='$unique_id' >Don't wanna upvote</button></div>";
-
-    				
+    			echo "<div id='upvote_ans_".$unique_id."'><button onclick='dnt_upvote_ans(".$table_no.",this.id)' id='$unique_id' >Don't wanna upvote</button></div>";
     		}
     		else//revert back already liked status
 	    	{

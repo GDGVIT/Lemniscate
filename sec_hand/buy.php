@@ -1,6 +1,6 @@
 <html>
 <body>
-<h1>Sell</h1>
+<h1>Buy</h1>
 	<h2>Please fill out the following things</h2>
  <?php 
 $uid=4;

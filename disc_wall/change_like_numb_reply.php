@@ -4,6 +4,14 @@
     {
         $_SESSION['user']='13BCE0267';
     }
+    if(isset($_REQUEST['table_no']))
+    {
+        $table_no=$_REQUEST['table_no'];
+    }
+    else
+    {
+            $table_no=13;
+    }
     if(isset($_REQUEST['id']))
     {
     	require 'Database/sql_con.php';
@@ -11,7 +19,7 @@
 
         $qstn_id=$_REQUEST['id'];
         
-        $sql_ans_req_count="SELECT likes_upvotes FROM `reply_posts` WHERE unique_id='$qstn_id';";
+        $sql_ans_req_count="SELECT likes_upvotes FROM `reply_posts_$table_no` WHERE unique_id='$qstn_id';";
     	$res_ans_req_count=mysqli_query($mysqli,$sql_ans_req_count);
     	if(mysqli_num_rows($res_ans_req_count)==1)
     	{

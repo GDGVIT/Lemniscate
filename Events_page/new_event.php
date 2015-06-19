@@ -8,7 +8,7 @@
     echo "
         <br>
         <div class='input-field col s12'>
-          <input id='event_name' type='text' class='validate' autocomplete='off' onkeypress='return isAlpha(event)'>
+          <input id='event_name' name='event_name' type='text' class='validate' autocomplete='off' onkeypress='return isAlpha(event)'>
           <label for='last_name'>Event Name</label>
         </div>
         <div class='input-field col s12'>
@@ -16,9 +16,9 @@
           <label for='last_name'>Registration number of Event Organiser</label>
         </div>
         <p>Type of the event :  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    
-        <input name='addevent' type='radio' id='club' class='with-gap'/>
+        <input name='event_type' type='radio' id='club' class='with-gap' checked='checked' value ='0'/>
         <label for='club'>Club Event</label>
-        <input name='addevent' type='radio' id='indiv' class='with-gap'/>
+        <input name='event_type' type='radio' id='indiv' class='with-gap' value ='1'/>
         <label for='indiv'>Individual Event</label>
         </p>
     	<div class='input-field col s12'>

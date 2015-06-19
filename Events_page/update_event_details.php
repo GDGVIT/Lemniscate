@@ -21,16 +21,23 @@ if(isset($_POST['submit']))//session variable checking
 		$venues=array();
 		$room_no=array();
 
-		$event_name=$_POST['event_name'];
-		$reg_event=$_POST['reg_event'];
-		$event_type=$_POST['event_type'];
-		$club_name=$_POST['club_name'];
-		$desc=$_POST['event_desc'];
-		$cost_event=$_POST['cost_event'];
-		$part_certif=$_POST['part_certif'];
-		$od_status=$_POST['od_status'];
-		$date_from=$_POST['date_from'];
-		$total_no_days=$_POST['total_no_days'];
+
+		if(isset($_POST['event_name'])&&isset($_POST['event_type']))
+		{
+			echo "Im here";
+			$event_name=$_POST['event_name'];
+			$reg_event=$_POST['reg_event'];
+			$event_type=$_POST['event_type'];
+			$club_name=$_POST['club_name'];
+			$desc=$_POST['event_desc'];
+			$cost_event=$_POST['cost_event'];
+			$part_certif=$_POST['part_certif'];
+			$od_status=$_POST['od_status'];
+			$date_from=$_POST['date_from'];
+			$total_no_days=$_POST['total_no_days'];
+		}
+
+		echo "<h1>".$event_name.$reg_event.$event_type.$club_name.$desc.$cost_event.$part_certif.$od_status.$date_from.$total_no_days."</h1>";
 
 		for($i=0;$i<$total_no_days;$i++)
 		{

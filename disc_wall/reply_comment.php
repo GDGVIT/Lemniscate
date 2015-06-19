@@ -4,6 +4,14 @@
     {
         $_SESSION['user']='13BCE0267';
     }
+    if(isset($_REQUEST['table_no']))
+    {
+        $table_no=$_REQUEST['table_no'];
+    }
+    else
+    {
+            $table_no=13;
+    }
     if(isset($_REQUEST['id']))
     {
     	require 'Database/sql_con.php';
@@ -15,7 +23,7 @@
 
         $d=date('Y-m-d G:i:s');
         
-        $sql_ans_req_count="SELECT * FROM `post_table` WHERE unique_id='$qstn_id';";
+        $sql_ans_req_count="SELECT * FROM `post_table_$table_no` WHERE unique_id='$qstn_id';";
     	$res_ans_req_count=mysqli_query($mysqli,$sql_ans_req_count);
         if(mysqli_num_rows($res_ans_req_count)==1)
         {
@@ -31,7 +39,7 @@
 
             //See if the replies exists for the given post or else create a new row
 
-            $sql_search_reply="SELECT * from `reply_posts` WHERE comment_id='$qstn_id' ORDER BY reply_id desc;";
+            $sql_search_reply="SELECT * from `reply_posts_$table_no` WHERE comment_id='$qstn_id' ORDER BY reply_id desc;";
             $res_search_reply=mysqli_query($mysqli,$sql_search_reply);
             if(mysqli_num_rows($res_search_reply)>0)
             {
@@ -45,14 +53,14 @@
 
                 $reply_id=$reply_id+1;
 
-                $sql_insert="INSERT INTO `db`.`reply_posts` (`regno`, `comment_id`, `reply_id`, `date_reply`, `anoymous_status`, `likes_upvotes`, `reply_text`) VALUES ('$login_name', '$qstn_id', '$reply_id', '$d', '$anoymous_status', '0', '$reply_text')";
+                $sql_insert="INSERT INTO `db`.`reply_posts_$table_no` (`regno`, `comment_id`, `reply_id`, `date_reply`, `anoymous_status`, `likes_upvotes`, `reply_text`) VALUES ('$login_name', '$qstn_id', '$reply_id', '$d', '$anoymous_status', '0', '$reply_text')";
                 $res_insert=mysqli_query($mysqli,$sql_insert);
                 if($res_insert)
                 {
 
                         //get the unique id of the reply_posts and use it here
 
-                        $sql_id_upvote="SELECT * FROM `reply_posts` WHERE comment_id=$qstn_id AND reply_id=$reply_id;";
+                        $sql_id_upvote="SELECT * FROM `reply_posts_$table_no` WHERE comment_id=$qstn_id AND reply_id=$reply_id;";
                         $res_id_upvote=mysqli_query($mysqli,$sql_id_upvote);
                         if(mysqli_num_rows($res_id_upvote)==1)
                         {
@@ -70,7 +78,7 @@
                                     <div id='likes_count_".$unique_reply."'>Likes :0</div></br>".
                                     $d."</br>";   
 
-                    echo "<div id='like_comment_".$unique_reply."'><button onclick='like_comment(this.id)' id='$unique_reply' >Like the reply</button></div><br/>";
+                    echo "<div id='like_comment_".$unique_reply."'><button onclick='like_comment(".$table_no.",this.id)' id='$unique_reply' >Like the reply</button></div><br/>";
                                 
                                 
                         }   
@@ -85,11 +93,11 @@
             {
                 //echo "no reply yet";
                 //echo "<h1>$anoymous_status</h1>";
-                $sql_insert="INSERT INTO `db`.`reply_posts` (`regno`, `comment_id`, `reply_id`, `reply_text`, `date_reply`, `anoymous_status`, `likes_upvotes`) VALUES ('$login_name', '$qstn_id', '0', '$reply_text', '$d', '$anoymous_status', '0');";
+                $sql_insert="INSERT INTO `db`.`reply_posts_$table_no` (`regno`, `comment_id`, `reply_id`, `reply_text`, `date_reply`, `anoymous_status`, `likes_upvotes`) VALUES ('$login_name', '$qstn_id', '0', '$reply_text', '$d', '$anoymous_status', '0');";
                 $res_insert=mysqli_query($mysqli,$sql_insert);
                 if($res_insert)
                 {
-                        $sql_id_upvote="SELECT * FROM `reply_posts` WHERE comment_id=$qstn_id AND reply_id=0;";
+                        $sql_id_upvote="SELECT * FROM `reply_posts_$table_no` WHERE comment_id=$qstn_id AND reply_id=0;";
                         $res_id_upvote=mysqli_query($mysqli,$sql_id_upvote);
                         if(mysqli_num_rows($res_id_upvote)==1)
                         {
@@ -106,7 +114,7 @@
                                     <div id='likes_count_".$unique_reply."'>Likes :0</div></br>".
                                     $d."</br>";
 
-                                echo "<div id='like_comment_".$unique_reply."'><button onclick='like_comment(this.id)' id='$unique_reply' >Like the reply</button></div><br/>";
+                                echo "<div id='like_comment_".$unique_reply."'><button onclick='like_comment(".$table_no.",this.id)' id='$unique_reply' >Like the reply</button></div><br/>";
                                 
                         }
         

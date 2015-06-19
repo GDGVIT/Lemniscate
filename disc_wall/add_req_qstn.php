@@ -5,21 +5,29 @@
     {
         $_SESSION['user']='13BCE0267';
     }
+    if(isset($_REQUEST['table_no']))
+    {
+        $table_no=$_REQUEST['table_no'];
+    }
+    else
+    {
+            $table_no=13;
+    }
     if(isset($_REQUEST['id']))
     {
     	require 'Database/sql_con.php';
         $login_name=$_SESSION['user'];
 
     	$qstn_id=$_REQUEST['id'];
-    	$sql_ans_req="INSERT INTO `ans_req_likes`(req_ans_reg_no,qstn_id) VALUES('$login_name','$qstn_id');";
+    	$sql_ans_req="INSERT INTO `ans_req_likes_$table_no`(req_ans_reg_no,qstn_id) VALUES('$login_name','$qstn_id');";
     	$res_ans_req=mysqli_query($mysqli,$sql_ans_req);
     	if($res_ans_req==true)
     	{
-    		$sql_inc_ans_req="UPDATE `post_table` SET no_of_likes_ans=no_of_likes_ans+1 WHERE unique_id='$qstn_id';";
+    		$sql_inc_ans_req="UPDATE `post_table_$table_no` SET no_of_likes_ans=no_of_likes_ans+1 WHERE unique_id='$qstn_id';";
     		$res_inc_ans_req=mysqli_query($mysqli,$sql_inc_ans_req);
     		if($res_inc_ans_req==true)
     		{
-    			echo "<div id='want_ans_".$qstn_id."'><button onclick='dnt_req_ans(this.id)' id='$qstn_id' >I don't wanna know answer</button></div>";
+    			echo "<div id='want_ans_".$qstn_id."'><button onclick='dnt_req_ans(".$table_no.",this.id)' id='$qstn_id' >I don't wanna know answer</button></div>";
     				
     		}
     		else//revert back already liked status

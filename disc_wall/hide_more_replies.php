@@ -18,21 +18,9 @@
         $login_name=$_SESSION['user'];
 
         $qstn_id=$_REQUEST['id'];
-        
-        $sql_ans_req_count="SELECT likes_upvotes FROM `reply_posts_$table_no` WHERE unique_id='$qstn_id';";
-    	$res_ans_req_count=mysqli_query($mysqli,$sql_ans_req_count);
-    	if(mysqli_num_rows($res_ans_req_count)==1)
-    	{
-    		while($count=mysqli_fetch_array($res_ans_req_count))
-	    	{ 
-	    		$upvotes=$count['likes_upvotes'];
-	    		echo "<div id='upvotes_count_".$qstn_id."'>Upvotes :".$upvotes."</div>";                               
-	    	}
-	    }
-        else
-        {
-        	echo "Sorry!,try again later";
-        }
+        $total_numb_replies=$_REQUEST['tot_replies'];
+
+           echo "<button onclick='load_more_replies(".$table_no.",".$total_numb_replies.",this.id)' id='$qstn_id' >Load More</button></div><br/>";
     }
     else
     {
