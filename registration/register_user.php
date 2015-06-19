@@ -128,7 +128,8 @@
 				}
 			}
 		}
-		
+		//reinitialization
+		$code="";
 		foreach($subjects_present as $code =>$s)
 		{	
 			$each_subject = $s;
@@ -141,6 +142,7 @@
 			//If the course is not in the CURRENT CLASS table
 			if($class_now==0)
 			{
+				//Retreive Alumni ID
 				$stmt = $mysqli->prepare("SELECT id FROM `alumni_classes` WHERE `code`= ?");
 				$stmt->bind_param("s",$each_subject[2]);	
 				$stmt->execute();
@@ -149,41 +151,47 @@
 					$arr = mysqli_fetch_array($result);
 				else
 					$arr[0]=0;
-				$stmt1 = $mysqli->prepare("INSERT INTO `courses_now` (`class_num`, `slot`, `title`, `code`, `venue`, `faculty`,`alumni_id`) VALUES (?, ?, ?, ?, ?, ?, ?)");
-				$stmt1->bind_param("isssssi",$code, $each_subject[0], $each_subject[1],$each_subject[2],$each_subject[3],$each_subject[4],$arr[0]);	
+				
+				$stmt1 = $mysqli->prepare("INSERT INTO `courses_now` (`class_num`, `slot`, `title`, `code`, `venue`, `faculty`,`alumni_id`,`members_present`) VALUES (?, ?, ?, ?, ?, ?, ?,?)");
+				$stmt1->bind_param("isssssis",$code, $each_subject[0], $each_subject[1],$each_subject[2],$each_subject[3],$each_subject[4],$arr[0],$regno);	
 				if($stmt1->execute())
 				{
-						$stmt2 = $mysqli->prepare("CREATE TABLE  ".$code."_class_".$each_subject[2]." (id INT(5) UNSIGNED AUTO_INCREMENT PRIMARY KEY, regno VARCHAR(9) UNIQUE, active INT(1) DEFAULT '0') AUTO_INCREMENT = 231");	
-						if($stmt2->execute())
-						{
-							$stmt3 = $mysqli->prepare("INSERT INTO `".$code."_class_".$each_subject[2]."` (`regno`) VALUES (?)");
-							$stmt3->bind_param("s",$regno);	
-							if(!$stmt3->execute())
-							{
-								$flag=1;
-							}
-						}
-						else
-						{
-							$stmt4 = $mysqli->prepare("DELETE FROM `courses_now`  WHERE `class_num`= ? AND `slot`=?  AND `code` = ? AND  `venue`=? ");
-							$stmt4->bind_param("ssssss",$code, $each_subject[0], $each_subject[1],$each_subject[2],$each_subject[3],$each_subject[4]);	
-							$stmt4->execute();
-						}
+					$stmt2 = $mysqli->prepare("UPDATE `alumni_classes`SET `members_present` = ? WHERE `code` = ?");
+					$stmt2->bind_param("ss",$regno,$code);	
+					if(!$stmt2->execute())
+					{
+						$flag=1;
+					}
 				}
 				else
 				{
-					echo "Not able to add to courses table";
+						$flag=1;
 				}
 			}
 			//If the course is already there in the courses_now table
 			else if($class_now==1)
 			{
-				$stmt3 = $mysqli->prepare("INSERT INTO `".$code."_class_".$each_subject[2]."` (`regno`) VALUES (?)");
-				$stmt3->bind_param("s",$regno);	
-				if(!$stmt3->execute())
-				{
-					$flag = 1;
-				}
+					$stmt = $mysqli->prepare("SELECT members_present FROM `courses_now` WHERE `class_num`= ? AND `slot`=?  AND `code` = ? AND  `venue`=? ");
+					$stmt->bind_param("ssss",$code, $each_subject[0], $each_subject[2], $each_subject[3]);	
+					$stmt->execute();
+			
+					$members = array();
+					$stmt1 = $mysqli->prepare("SELECT members_present FROM `alumni_classes` WHERE `code`= ?");
+					$stmt1->bind_param("s",$code);	
+					$stmt1->execute();
+					$result = $stmt1->get_result();
+					$arr1 = mysqli_fetch_array($result);
+				
+					$members = explode(",",$arr1[0]);
+					$members[count($members)] = $regno;
+					$members_str = implode("," ,$members);
+					
+					$stmt2 = $mysqli->prepare("UPDATE `alumni_classes`SET `members_present` = ? WHERE `code` = ?");
+					$stmt2->bind_param("ss",$members_str,$code);	
+					if(!$stmt2->execute())
+					{
+						$flag=1;
+					}
 			}
 		}
 	}
