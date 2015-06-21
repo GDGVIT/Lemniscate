@@ -53,7 +53,7 @@
 
           <div class='row'>
           <div class='input-field col s6'>
-           <input id='cost_event' type='text' class='validate' name='cost_event' onkeypress='return isNumber(event)'>
+           <input id='cost_event' type='number' class='validate' name='cost_event' onkeypress='return isNumber(event)'>
            <label for='cost_event'>Event cost</label>
           </div>
           </div>
@@ -80,15 +80,7 @@
 
           <div class='row'>
           <div class='input-field col s6'>
-           <input type='number' class='validate' id='cost_event' name='cost_event' onkeypress='return isNumber(event)'>
-           <label for='cost_event'>Event cost</label>
-          </div>
-          </div>
-
-          <div class='row'>
-          <div class='input-field col s6'>
-           <input id='date_from' type='date' class='validate' name='date_from' onkeypress='return isNumber(event)'>
-           <label for='date_from'>Starting date of the event (yyyy-mm-dd)</label>
+           <input id='date_from' type='date' class='validate' name='date_from' placeholder='Starting date of the event (yyyymmdd)'onkeypress='return isNumber(event)'>
           </div>
           </div>
           
