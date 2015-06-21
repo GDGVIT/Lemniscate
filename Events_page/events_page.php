@@ -30,7 +30,7 @@ session_start();
 
     //By Event Name
 
-    echo"<div id='test1' class='col s12'><br><div class='input-field col s6 offset-s3'>
+    echo"<div id='test1' class='col s12'><br><br><br><br><div class='input-field col s6 offset-s3'>
           <input id='name_event' type='text' onkeyup='showHint(this.value)'>
           <label for='name_event'>Event Name</label>
           </div>
@@ -40,7 +40,7 @@ session_start();
     //By Organiser's Name
 
     echo"<div id='test2' class='col s12'>
-         <div class='input-field col s6 offset-s3'><br>";
+         <div class='input-field col s6 offset-s3'><br><br><br><br>";
   
          $sql_club = "SELECT * FROM `events_page`";
   	     $res_club = mysqli_query($mysqli,$sql_club);
@@ -61,7 +61,7 @@ session_start();
 
     //By Date & Time
 
-    echo"<div id='test3' class='input-field col s6 offset-s3'>";
+    echo"<div id='test3' class='input-field col s6 offset-s3'><br><br><br>";
     $d=date('Y-m-d');
     echo "<div class='input-field col s12'>
           <input id='search_event_date' type='date' value=".$d." name='search_event_date' onchange='event_filtering()'>
@@ -73,7 +73,7 @@ session_start();
     
     //By Venue
 
-    echo "<div id='test4' class='col s12 '><div class='input-field col s6 offset-s3'><br>";
+    echo "<div id='test4' class='col s12 '><div class='input-field col s6 offset-s3'><br><br><br><br>";
           echo "<select name='search_event_venue' onchange='event_filtering()' id='search_event_venue' class='browser-default'>
 						<option value='0' id='event_none'>Choose anyone</option>
     					<option value='SJT'>Silver Jublie Tower (SJT)</option>
