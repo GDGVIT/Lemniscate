@@ -47,7 +47,8 @@ session_start();
 								$from_time=$arr_1['from_time'];
 								$to_time=$arr_1['to_time'];
 								$room_no=$arr_1['room_no'];
-
+								
+								
 								if($ods==0)
 									$ods="No";
 								else
@@ -101,7 +102,7 @@ session_start();
 
 							}
 						}	
-					}	
+					}
 				}
 			}
 	}

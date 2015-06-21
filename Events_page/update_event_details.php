@@ -19,25 +19,17 @@ if(isset($_POST['submit']))//session variable checking
 		$time_event_from=array();
 		$time_event_to=array();
 		$venues=array();
-		$room_no=array();
 
-
-		if(isset($_POST['event_name'])&&isset($_POST['event_type']))
-		{
-			echo "Im here";
-			$event_name=$_POST['event_name'];
-			$reg_event=$_POST['reg_event'];
-			$event_type=$_POST['event_type'];
-			$club_name=$_POST['club_name'];
-			$desc=$_POST['event_desc'];
-			$cost_event=$_POST['cost_event'];
-			$part_certif=$_POST['part_certif'];
-			$od_status=$_POST['od_status'];
-			$date_from=$_POST['date_from'];
-			$total_no_days=$_POST['total_no_days'];
-		}
-
-		echo "<h1>".$event_name.$reg_event.$event_type.$club_name.$desc.$cost_event.$part_certif.$od_status.$date_from.$total_no_days."</h1>";
+		$event_name=$_POST['event_name'];
+		$reg_event=$_POST['reg_event'];
+		$event_type=$_POST['event_type'];
+		$club_name=$_POST['club_name'];
+		$desc=$_POST['event_desc'];
+		$cost_event=$_POST['cost_event'];
+		$part_certif=$_POST['part_certif'];
+		$od_status=$_POST['od_status'];
+		$date_from=$_POST['date_from'];
+		$total_no_days=$_POST['total_no_days'];
 
 		for($i=0;$i<$total_no_days;$i++)
 		{
@@ -46,8 +38,8 @@ if(isset($_POST['submit']))//session variable checking
 			$time_event_to[$i]=$_POST["time_event_to".$i.""];
 			$venues[$i]=$_POST["venue".$i.""];
 			$room_no[$i]=$_POST["room_no".$i.""];
+				
 		}
-
 		echo "<a href='events_page.php' alt='Click here to go back' title='Event's page>Click here to go to event's page</a>";
 		$reg_event=mysqli_real_escape_string($mysqli,$reg_event);
 		$event_type=mysqli_real_escape_string($mysqli,$event_type);
@@ -75,7 +67,7 @@ if(isset($_POST['submit']))//session variable checking
 				while($arr_1=mysqli_fetch_array($res_get_event_id))
 				{
 					$id_event=$arr_1['unique_id'];
-
+				
 					for($i=0;$i<$total_no_days;$i++)
 					{			
 						if($room_no[$i]!="")
@@ -83,7 +75,7 @@ if(isset($_POST['submit']))//session variable checking
 						
 						else
 						$sql_3 ="INSERT INTO `events_info`(id,date_event,venue,from_time,to_time,room_no) VALUES($id_event,'$date_event[$i]','$venues[$i]','$time_event_from[$i]','$time_event_to[$i]',0)"; 
-							
+						
 						$rs = mysqli_query($mysqli,$sql_3);
 						if($rs==true)
 						{
@@ -123,8 +115,6 @@ if(isset($_POST['submit']))//session variable checking
 		{
 			echo "<h1>Event wasn't inserted!</h1>";
 		}
-	
 	} 	
-
 }
 ?>

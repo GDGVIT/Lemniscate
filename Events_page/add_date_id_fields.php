@@ -27,7 +27,6 @@
     				 </select>";
     			echo "Room no(optional)";
     			echo "<input type='text' name='room_no".$i."' id='room_no".$i."' placeholder='Enter the room number'><br/>";
-
 			}
 			mysqli_close($mysqli);
 		}

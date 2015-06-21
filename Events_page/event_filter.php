@@ -23,7 +23,6 @@
 			if($date_event!="")//a button to reset date search
 			echo "<button onclick='reset_fields(4)' value='Reset date search'></button>";*/
 
-
 			$date_event=mysqli_real_escape_string($mysqli,$date_event);
 			$from_time=mysqli_real_escape_string($mysqli,$from_time);
 			$to_time=mysqli_real_escape_string($mysqli,$to_time);
@@ -38,7 +37,7 @@
 					{
 						if($date_event=="")//none
 						{
-
+							
 						}
 						else//date_event
 						{
@@ -72,6 +71,7 @@
 						else//time,date
 						{
 							$info=3;
+							echo "Im here".$date_event;
 							$sql_event="SELECT * FROM `events_page` WHERE unique_id IN(SELECT distinct id FROM `events_info` WHERE from_time>='$from_time' AND to_time<='$to_time' AND date_event='$date_event');";
 						}
 						
@@ -154,7 +154,7 @@
 		$numb_events=mysqli_num_rows($res_details);
 		if($numb_events>0)
 		{	
-			echo"There are in total ".$numb_events." events";
+			echo"There are in total ".$numb_events." events</br>";
 			while($arr=mysqli_fetch_array($res_details))
 			{
 				$event_name = $arr['event_name'];
@@ -207,38 +207,44 @@
 						if($arr_venue!=$venue)
 						{
 							$fake_event++;
-							echo "venue";
+							//echo "venue";
 						}
 					}
-					else if(($from_time!="")&&($to_time!=""))
+					if(($from_time!="")&&($to_time!=""))
 					{
-						if(($arr_from_time<=$from_time)&&($arr_to_time>=$to_time))
+						//echo "in time";
+						$from_time=$from_time.":00";
+						$to_time=$to_time.":00";
+						if(($arr_from_time>=$from_time)&&($arr_to_time<=$to_time))
+						{
+						}
+						else
 						{
 							$fake_event++;
-							echo "time";
 						}
 					}
-					else if($date_event!='')
+					if($date_event!='')
 					{
-						//echo $arr_date_event." ".$date_event;
-
 						if($arr_date_event!=$date_event)
 						{
+							//echo "</br>lklklklklklkl</br>";
 							$fake_event++;
-							echo "date";
+							//echo "date";
 						}
 					}
+
 					$d=date('Y-m-d');
 					if(($fake_event==0)&&($d<=$arr_date_event))
 					{
 						echo"
+						Name : $event_name <br/>
 						Status : $indiv_status <br/>
 						Club name : $club_name <br/>
 						Description : $description<br/>
 						Venue : $arr_venue<br/>
 						Date : $arr_date_event</br>";
 						if($res_room_no!=0)
-							echo"Room : $res_room_no";
+							echo"Room : $res_room_no<br/>";
 						echo"
 						Starts at : $arr_from_time<br/>
 						Ends at : $arr_to_time<br/>

@@ -147,4 +147,11 @@
   margin-right: auto;
   margin-left: auto;
 }
-
+.stitle{
+  background-color: #3E50B4;
+  color: #FFF;
+  font-size: 40px;
+  height: 80px;
+  padding-top: 10px;
+  padding-right: 10px;
+}
