@@ -11,7 +11,7 @@
 		<option value="TT">TT</option><br>
 		<option value="MB">MB</option><br>
 	<!--More options can be added here -->
-	</select><br>	
+	</select><br>
 
 <input type = "submit" value="Search by location">	
 </form>
