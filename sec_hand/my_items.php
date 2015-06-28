@@ -1,8 +1,7 @@
 <html>
 
-<?php  
-$conn=mysql_connect("localhost","root","");
-$db=mysql_select_db("db");
+<?php
+include_once('connection.php');
 if(isset($_GET['submit'])){
 	$id=$_GET['id'];
 	$stmt = "UPDATE sell
@@ -25,7 +24,7 @@ $result=mysql_query($sql,$conn) or die(mysql_error());
 		echo "Description: ".$row['description']."<br>";
 		echo "Cost: ".$row['cost']."<br>";
 		echo "Contact Number: ".$row['contact']."<br>";
-		
+
 ?>		<form method="GET" action="my_items.php">
 		<input type="hidden" name="id" value ="<?php echo $row['id']; ?>">
 		<input type="submit" name="submit" value="Sold">

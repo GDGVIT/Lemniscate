@@ -16,8 +16,7 @@ Category<select name="category" onchange='this.form.submit()'>
 
 	<?php
 		if(isset($_GET['category'])){
-			$conn=mysql_connect("localhost","root","");
-$db=mysql_select_db("db");
+			include_once('connection.php');
 $category=$_GET['category'];
 if($category=="all"){
 	$sql="select * from sell where sold=0";

@@ -1,11 +1,10 @@
-<?php  
-$conn=mysql_connect("localhost","root","");
+<?php
+include_once('connection.php');
 $itemName=$_GET['itemname'];
 $category=$_GET['category'];
 $cost=$_GET['cost'];
 $contact=$_GET['contact'];
 $uid=$_GET['uid'];
-$db=mysql_select_db("db");
 
 $result=mysql_query("insert into buy (name,category,expected_cost,contact,uid) values('$itemName','$category','$cost','$contact','$uid')") or die(mysql_error());
 
@@ -15,7 +14,7 @@ if(isset($result)&&isset($conn))
 	?>
 
 	<a href="index.php">Back</a>
-	<?php 
+	<?php
 }
 else
 {

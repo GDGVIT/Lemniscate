@@ -1,8 +1,7 @@
 <html>
 
-<?php  
-$conn=mysql_connect("localhost","root","");
-$db=mysql_select_db("db");
+<?php
+include_once('connection.php');
 if(isset($_GET['submit'])){
 	$id=$_GET['id'];
 	$stmt = "UPDATE buy
@@ -24,7 +23,7 @@ $result=mysql_query($sql,$conn) or die(mysql_error());
 		echo "Category: ".$row['category']."<br>";
 		echo "Cost: ".$row['expected_cost']."<br>";
 		echo "Contact Number: ".$row['contact']."<br>";
-		
+
 ?>		<form method="GET" action="my_wishlist.php">
 		<input type="hidden" name="id" value ="<?php echo $row['id']; ?>">
 		<input type="submit" name="submit" value="Got it">
@@ -35,7 +34,7 @@ $result=mysql_query($sql,$conn) or die(mysql_error());
 	if($id==1){
 		echo "No items to show! ";
 	}
-	
+
 }
 
 
