@@ -1,8 +1,15 @@
-<html>
-<head>
-</head>
-<body>
 
+<script>
+$(document).ready(function() {
+	$('select').material_select();
+	$('.datepicker').pickadate({
+		selectMonths: true, // Creates a dropdown to control month
+		selectYears: 15 // Creates a dropdown of 15 years to control year
+	});
+});
+
+
+</script>
 <script type="text/javascript">
 function a()
 {
@@ -28,34 +35,51 @@ function validateForm() {
      document.sellForm.cost.focus() ;
      return false;
    }
-   if(document.sellForm.contact.length!=10 && 
+   if(document.sellForm.contact.length!=10 &&
    	isNaN(document.sellForm.contact.value))
    {
    	alert("Please enter a valid Contact number. Make sure you dont enter country code before contact number!");
    }
    return (true);
 }
-</script>	
+</script>
 <?php
 $uid=4;
 ?>
-	<h1>Sell</h1>
-	<h2>Please fill out the following things</h2>
- 
-<form name ="sellForm" onsubmit="return validateForm()" action = "sell_items.php" method="GET"  >
-	Item Name<input name="itemname" type="text"><br>
-	Category<select name="category">
-		<option type = "radio"  value="Electrical">Electrical</option><br>
-		<option type = "radio"  value="Household">Household</option><br>
-		<option type = "radio"  value="Category 3">Category 3</option><br>
-		<option type = "radio"  value="Category 4">Category 4</option><br>
-		<option type = "radio"  value="Category 5">Category 5</option><br>
-	</select>	
-	<br>Descriptcion<input name="description" type="text"><br>
-	Cost<input name="cost" type="text"><br>
-	Contact<input name="contact" type="text"><br>
+	<h5 class="header light center">Post an Ad</h5>
+<div class="row card-panel">
+<form name ="sellForm" onsubmit="return validateForm()" action = "sell_items.php" method="GET" class="col s12">
+	<div class="row">
+		<div class="input-field col s12 m6"><label>Item Name</label>
+	<input name="itemname" type="text">
+</div>
+		<div class="input-field col s12 m6">
+
+			<select name="category">
+		<option name="category" value="Electrical">Electrical</option>
+		<option name="category" value="Household">Household</option>
+		<option name="category" value="Category 3">Category 3</option>
+		<option name="category" value="Category 4">Category 4</option>
+		<option name="category" value="Category 5">Category 5</option>
+	</select>
+</div>
+</div>
+<div class="row">
+	<div class="input-field col s12 m12">
+<label>Descriptcion</label><textarea class="materialize-textarea" name="description" type="text"></textarea>
+</div>
+</div>
+<div class="row">
+	<div class="input-field col s12 m6">
+	<label>Cost</label>
+		<input name="cost" type="text">
+</div>
+<div class="input-field col s12 m6">
+	<label>Contact</label><input name="contact" type="text">
+</div>
+</div>
   <input type="hidden" name="uid" value="<?php echo $uid; ?>">
-	<input type="submit" value="Submit">
+	<button class="btn waves-effect waves-light red right" type="submit" name="action">Post
+	</button>
 	</form>
-</body>
-</html>
+</div>

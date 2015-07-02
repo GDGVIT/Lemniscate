@@ -1,8 +1,6 @@
-<html>
-<body>
 
-<form id="show_category" method="GET" action="show_items.php">
-Category<select name="category" onchange='this.form.submit()'>
+<form id="show_category" method="POST" action="">
+<select name="category" onchange='this.form.submit()'>
 		<option type="radio" value = "" selected>Select Category</option>
 		<option type="radio" value="all">Show All</option>
 		<option type = "radio"  value="Electrical">Electrical</option><br>
@@ -11,26 +9,26 @@ Category<select name="category" onchange='this.form.submit()'>
 		<option type = "radio"  value="Category 4">Category 4</option><br>
 		<option type = "radio"  value="Category 5">Category 5</option><br>
 	</select>
-	<noscript><input type="submit" value="Submit"></noscript>
+	<noscript><input type="submit" name="show_i" value="Submit"></noscript>
 </form>
-
+<ul class="collection col s12">
 	<?php
-		if(isset($_GET['category'])){
+		if(isset($_POST['category'])){
 			include_once('connection.php');
-$category=$_GET['category'];
+$category=$_POST['category'];
 if($category=="all"){
 	$sql="select * from sell where sold=0";
 $id=1;
 $result=mysql_query($sql,$conn) or die(mysql_error());
 	while ($row=mysql_fetch_array($result)) {
-
-		echo "ID: ".$id."<br>";
-		echo "Name: ".$row['name']."<br>";
+		echo "<li class='collection-item avatar'>";
+		echo "<i class='circle'>".$id."</i>";
+		echo "<span class='title'>".$row['name']."</span><p>";
 		echo "Category: ".$row['category']."<br>";
 		echo "Description: ".$row['description']."<br>";
 		echo "Cost: ".$row['cost']."<br>";
 		echo "Contact Number: ".$row['contact']."<br>";
-		echo "<hr>";
+		echo "</p></li>";
 		$id++;
 	}
 
@@ -41,19 +39,21 @@ $id=1;
 $result=mysql_query($sql,$conn) or die(mysql_error());
 	while ($row=mysql_fetch_array($result)) {
 
-		echo "ID: ".$id."<br>";
-		echo "Name: ".$row['name']."<br>";
+		echo "<li class='collection-item avatar'>";
+		echo "<i class='circle'>".$id."</i>";
+		echo "<span class='title'>".$row['name']."</span><p>";
 		echo "Category: ".$row['category']."<br>";
 		echo "Description: ".$row['description']."<br>";
 		echo "Cost: ".$row['cost']."<br>";
 		echo "Contact Number: ".$row['contact']."<br>";
-		echo "<hr>";
+		echo "</p></li>";
 		$id++;
 	}
 }
 
 		}
 	?>
+</ul>
 <script type="text/javascript">
 $('#show_category').form({
     success:function(data){
@@ -61,5 +61,3 @@ $('#show_category').form({
     }
 });
 </script>
-</body>
-</html>
