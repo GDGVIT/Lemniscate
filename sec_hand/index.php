@@ -47,7 +47,7 @@
       <li class="tab col s6 m6"><a href="#my_i">My items</a></li>
     </ul>
   </div>
-  <br><br><br><br>
+  <br><br><br>
 	<div id="sell" class="col s12 m12"><?php include_once('sell.php'); ?></div>
 	<div id="buy" class="col s12 m12"><?php include_once('buy.php'); ?></div>
 	<div id="show_i" class="col s12 m12"><?php include_once('show_items.php'); ?></div>
