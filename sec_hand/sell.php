@@ -66,7 +66,7 @@ $uid=4;
 </div>
 <div class="row">
 	<div class="input-field col s12 m12">
-<label>Descriptcion</label><textarea class="materialize-textarea" name="description" type="text"></textarea>
+<label>Description</label><textarea class="materialize-textarea" name="description" type="text"></textarea>
 </div>
 </div>
 <div class="row">
