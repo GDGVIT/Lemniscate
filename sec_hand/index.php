@@ -12,7 +12,7 @@
   <title>Buy and Sell</title>
 </head>
 <body>
-<div id='display' align='center'><div class='stitle light'>Lemniscate | Buy and Sell</div></div>
+<div id='display' align='center'><div class='stitle light'>Buy and Sell</div></div>
 	<!--<h1>Buy And Sell</h1>
 	<ul>
 	<li><a href="sell.php">Sell</a><br></li>
