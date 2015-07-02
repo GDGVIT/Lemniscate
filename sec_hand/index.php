@@ -25,7 +25,7 @@
   <title>Buy and Sell</title>
 </head>
 <body>
-<div id='display' align='center'><div class='stitle light'>Lemniscate | Buy and Sell</div></div>
+<div id='display' align='center'><div class='stitle light'>Buy and Sell</div></div>
 	<!--<h1>Buy And Sell</h1>
 	<ul>
 	<li><a href="sell.php">Sell</a><br></li>
@@ -33,6 +33,7 @@
 	<li><a href="show_items.php">Show items</a></li>
 	<li><a href="my_items.php">My Items</a></li>
 </ul> !-->
+<br>
 <div class="container row">
 	<div class="col s12 m12">
     <ul class="tabs">
@@ -46,6 +47,7 @@
       <li class="tab col s6 m6"><a href="#my_i">My items</a></li>
     </ul>
   </div>
+  <br><br><br><br>
 	<div id="sell" class="col s12 m12"><?php include_once('sell.php'); ?></div>
 	<div id="buy" class="col s12 m12"><?php include_once('buy.php'); ?></div>
 	<div id="show_i" class="col s12 m12"><?php include_once('show_items.php'); ?></div>
