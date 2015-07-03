@@ -6,6 +6,17 @@
 <body>
 <script src="../js/jquery-2.1.3.min.js"></script>
 <script src="../js/materialize.min.js"></script>
+<script>
+$(document).ready(function() {
+	$('select').material_select();
+	$('.datepicker').pickadate({
+		selectMonths: true, // Creates a dropdown to control month
+		selectYears: 15 // Creates a dropdown of 15 years to control year
+	});
+});
+
+
+</script>
 <?php
 session_start();
 	//Seaching all events according to cost ,time and also w.r.t to the location.
@@ -24,7 +35,7 @@ session_start();
                       <li class='tab col s3'><a href='#test4'>Venue</a></li>
                     </ul>
                   </div>";
-    
+
     //Events Filter
 
 
@@ -35,19 +46,19 @@ session_start();
           <label for='name_event'>Event Name</label>
           </div>
           </div>";
-    
+
 
     //By Organiser's Name
 
     echo"<div id='test2' class='col s12'>
          <div class='input-field col s6 offset-s3'><br><br><br><br>";
-  
+
          $sql_club = "SELECT * FROM `events_page`";
   	     $res_club = mysqli_query($mysqli,$sql_club);
          if(mysqli_num_rows($res_club)>0)
 			{
 				$d=date('Y-m-d');
-				echo"<select name='club_event_search' id='club_event_search' onchange='event_filtering()' class='browser-default'>";
+				echo"<select name='club_event_search' id='club_event_search' onchange='event_filtering()'>";
                 echo "<option value='0' id='event_none'>Choose anyone</option>";
 				while($club=mysqli_fetch_array($res_club))
 				{
@@ -57,24 +68,24 @@ session_start();
 				echo"</select>";
 			}
 				echo"</div></div>";
-    
+
 
     //By Date & Time
 
     echo"<div id='test3' class='input-field col s6 offset-s3'><br><br><br>";
     $d=date('Y-m-d');
     echo "<div class='input-field col s12'>
-          <input id='search_event_date' type='date' value=".$d." name='search_event_date' onchange='event_filtering()'>
+          <input id='search_event_date' type='date' value=".$d." name='search_event_date' class='datepicker' onchange='event_filtering()'>
           </div>";
     echo "<br><br><br><h6>From Time : </h6><input type='time' id='search_event_time_from' name='search_event_time_from' onchange='event_filtering()''>";
 	echo "<h6>To Time : </h6><input type='time' id='search_event_time_to' name='search_event_time_to' onchange='event_filtering()''>";
-	echo "</div>";	
+	echo "</div>";
 
-    
+
     //By Venue
 
     echo "<div id='test4' class='col s12 '><div class='input-field col s6 offset-s3'><br><br><br><br>";
-          echo "<select name='search_event_venue' onchange='event_filtering()' id='search_event_venue' class='browser-default'>
+          echo "<select name='search_event_venue' onchange='event_filtering()' id='search_event_venue'>
 						<option value='0' id='event_none'>Choose anyone</option>
     					<option value='SJT'>Silver Jublie Tower (SJT)</option>
    						<option value='TT'>Technology Tower (TT)</option>
@@ -84,7 +95,7 @@ session_start();
    						<option value='GDN'>G.D Naidu</option>
     				 </select>";
     echo"</div></div></div>";
-	
+
 	//Filtering Ends
 
     //Results
@@ -97,7 +108,7 @@ session_start();
     //Results Ends
 
 
-		
+
 
     		echo "<div id='disp_events'>";
 			$sql_event = "SELECT * FROM `events_page`";
@@ -107,7 +118,7 @@ session_start();
 				//there are some events in the events table and tracking count.
 				$count_events=0;
 				$d=date('Y-m-d');
-				
+
 				while($arr=mysqli_fetch_array($res_event))
 				{
 					$from_date=$arr['from_date'];
@@ -135,7 +146,7 @@ session_start();
 						if(mysqli_num_rows($res_event_venue)>0)
 						{
 							//if any event exsists for the given day
-							while($arr_1=mysqli_fetch_array($res_event_venue))	
+							while($arr_1=mysqli_fetch_array($res_event_venue))
 							{
 								$venue=$arr_1['venue'];
 								$from_time=$arr_1['from_time'];
@@ -148,10 +159,10 @@ session_start();
 								else
 									$ods="Yes";
 
-								
+
 								if($cerificates==0)
 									$cerificates="No";
-								else 
+								else
 									$cerificates="Yes";
 
 								if($price==0)
@@ -198,7 +209,7 @@ session_start();
 								}
 
 							}
-						}	
+						}
 					}
 					else if(($d>$to_date)&&($completed_status==0))
 					{
@@ -211,7 +222,7 @@ session_start();
 						}
 
 					}
-						
+
 				}
 			}
 			else
@@ -237,7 +248,7 @@ session_start();
 <script type="text/javascript">
 
 
-function isNumber(evt)  
+function isNumber(evt)
 {
 		var charCode = (evt.which) ? evt.which : evt.keyCode;
         if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
@@ -267,7 +278,7 @@ var d = document.getElementById("date_from").value;
 
 
 if(d=="")
-{	
+{
 	alert('Please Enter from date');
 	document.getElementById('date_from').focus();
 	return false;
@@ -343,12 +354,12 @@ function add_event()
   xmlhttp.send();
 }
 
-function showHint(str) 
+function showHint(str)
 {
   var xmlhttp=new XMLHttpRequest();
-  xmlhttp.onreadystatechange=function() 
+  xmlhttp.onreadystatechange=function()
   {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
       document.getElementById("hint").innerHTML=xmlhttp.responseText;
     }
@@ -361,9 +372,9 @@ function showHint(str)
 function getdetails(id)
 {
   var xmlhttp=new XMLHttpRequest();
-  xmlhttp.onreadystatechange=function() 
+  xmlhttp.onreadystatechange=function()
   {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
       document.getElementById("event_filter").innerHTML=xmlhttp.responseText;
     }
@@ -376,7 +387,7 @@ function getdetails(id)
 function event_filtering()
 {
 	var	event_name_id = document.getElementById("club_event_search").value;
-	
+
 	if(event_name_id=='0')//dnt take the value of event oganiser's name
 	{
 		sending_org_id="";
@@ -386,27 +397,27 @@ function event_filtering()
 		sending_org_id=event_name_id;
 	}
 
-	
-	var event_date_id=document.getElementById('search_event_date').value; 
-	
+
+	var event_date_id=document.getElementById('search_event_date').value;
+
 	var date_today=new Date();
 
 	var dd = date_today.getDate();
 	var mm = date_today.getMonth()+1; //January is 0!
 	var yyyy = date_today.getFullYear();
 
-	if(dd<10) 
+	if(dd<10)
 	{
 	    dd='0'+dd
-	} 
+	}
 
 	if(mm<10)
 	{
 	    mm='0'+mm
 	}
-	
+
 	date_today=yyyy+'-'+mm+'-'+dd;//gets the data in php format
-	
+
 	if(date_today==event_date_id) //dnt take the event's date for searching
 	{
 		sending_date=event_date_id;
@@ -422,7 +433,7 @@ function event_filtering()
 
 	if((to_time_search!="")&&(from_time_search!="")&&(to_time_search<from_time_search))
 		alert("Wrong Timing..To timing should be greater than From timing");
-	
+
 	else if((to_time_search!="")&&(from_time_search!=""))
 	{
  		sendind_to_time=to_time_search;
@@ -447,15 +458,15 @@ function event_filtering()
 	}
 
   var xmlhttp=new XMLHttpRequest();
-  xmlhttp.onreadystatechange=function() 
+  xmlhttp.onreadystatechange=function()
  {
-    if (xmlhttp.readyState==4 && xmlhttp.status==200) 
+    if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
       document.getElementById("disp_events").innerHTML=xmlhttp.responseText;
     }
   }
   xmlhttp.open("GET","event_filter.php?event_venue="+sending_venue+"&org_name="+sending_org_id+"&from_time="+sending_from_time+"&to_time="+sendind_to_time+"&date_event="+sending_date,true);
-  xmlhttp.send();	
+  xmlhttp.send();
 }
 
 function reset_details(id)
@@ -469,7 +480,7 @@ function reset_details(id)
 
 	if(id==3)//club_name
 
-	if(id==4)//date 
+	if(id==4)//date
 	*/
 
 }
